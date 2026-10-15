@@ -26,3 +26,4 @@ _DSBooksCache/
 _DSBooksSync/
 .DS_Store
 Thumbs.db
+*.idsig
