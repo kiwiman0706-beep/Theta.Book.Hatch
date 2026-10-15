@@ -1,6 +1,14 @@
 # ビルド・署名・配布
 
-## 基準
+## Claude版（0.9.0〜）
+
+- applicationId `jp.shinwakai.dsbooks.claude`。`build.sh` が `aapt --rename-manifest-package` で包装時に改名する（`DSBOOKS_APP_ID` で変更可）。Manifestの `package` とJavaのパッケージは `jp.shinwakai.dsbooks.preview` のままなので、Rクラスやクラス名は変わらない。FileProviderのauthorityは `<applicationId>.files` で、build.shが一致を確認する。
+- 鍵：PKCS12、alias `dsbooks-claude`、RSA 4096、2059年まで有効。証明書SHA-256 `27c01a801b8ad5b4c229bf5061b6fd377031ba65f4443f4bc7faafe712d16490`。既定の場所は `build/dsbooks-claude.keystore`（`DSBOOKS_KEYSTORE`、`DSBOOKS_KEY_ALIAS` で変更可）。パスワードは `DSBOOKS_KEYSTORE_PASSWORD`（環境変数経由でapksignerへ渡し、コマンドラインに出さない）。
+- 鍵とパスワードはリポジトリに入れない。利用者が手元で保管する。失うと以後の上書き更新ができない。
+- 出力名は `DSBooks-<versionName>.apk`。
+- 配布：`.github/workflows/release-upload.yml`。完成APKを分割して一時ブランチ `release-upload/<tag>` に置くと、Actionsが結合・SHA-256照合・ZIP検査をしてGitHub Releaseを作り、一時ブランチを削除する。署名はローカルで済ませ、CIに鍵を渡さない。
+
+## 基準（ChatGPT版 0.8.6）
 
 Android `jp.shinwakai.dsbooks.preview`、versionName `0.8.6-preview`、versionCode `64`。minSDK 26 / targetSDK 34 / compile platform 35。現行はBashによる手動aapt/D8構成。Gradleの推測コマンドではビルドできない。
 

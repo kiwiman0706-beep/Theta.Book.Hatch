@@ -585,7 +585,8 @@ public final class MainActivity extends Activity {
     private Uri bookUri(String localName) throws Exception {
         File file=localFile(localName);
         if(!file.isFile())throw new java.io.FileNotFoundException();
-        return Uri.parse("content://jp.shinwakai.dsbooks.preview.files/books/"+Uri.encode(localName));
+        // Authority follows the installed application id, so side-by-side builds never share a provider.
+        return Uri.parse("content://"+getPackageName()+".files/books/"+Uri.encode(localName));
     }
 
     private SecretKey getCredentialKey() throws Exception {

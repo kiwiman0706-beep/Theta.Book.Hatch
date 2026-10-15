@@ -1,0 +1,47 @@
+name: Publish signed APK
+# The APK is built and signed locally (the signing key never reaches CI).
+# Push a temporary branch release-upload/<tag> containing release-upload/RELEASE.json and the APK split
+# into parts; this job joins and verifies them, creates the GitHub Release, then deletes the branch.
+on:
+  push:
+    branches: ['release-upload/**']
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Join and verify APK
+        id: apk
+        run: |
+          set -euo pipefail
+          meta=release-upload/RELEASE.json
+          tag=$(jq -r .tag "$meta"); apk=$(jq -r .apk "$meta"); sha=$(jq -r .sha256 "$meta"); size=$(jq -r .size "$meta")
+          [[ "$tag" =~ ^v[0-9A-Za-z.\-]+$ && "$apk" =~ ^[0-9A-Za-z.\-]+\.apk$ ]] || { echo 'bad tag/apk name'; exit 1; }
+          mkdir -p out
+          jq -r '.parts[]' "$meta" | while read -r part; do cat "release-upload/$part"; done > "out/$apk"
+          echo "$sha  out/$apk" | sha256sum -c -
+          [[ "$(stat -c %s "out/$apk")" == "$size" ]]
+          python3 -m zipfile -t "out/$apk" > /dev/null
+          python3 - "out/$apk" <<'PY'
+          import sys,zipfile
+          names=set(zipfile.ZipFile(sys.argv[1]).namelist())
+          for need in ['AndroidManifest.xml','classes.dex','resources.arsc','assets/dsbooks-prototype.html','assets/ui-layout.js']:
+              assert need in names, need
+          print('entries',len(names))
+          PY
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"; echo "apk=out/$apk" >> "$GITHUB_OUTPUT"
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          meta=release-upload/RELEASE.json
+          jq -r .notes "$meta" > notes.md
+          gh release create "${{ steps.apk.outputs.tag }}" "${{ steps.apk.outputs.apk }}" \
+            --target "$(jq -r .target "$meta")" --title "$(jq -r .title "$meta")" --notes-file notes.md \
+            $( [[ "$(jq -r .prerelease "$meta")" == "true" ]] && echo --prerelease )
+      - name: Remove temporary branch
+        if: always()
+        run: git push origin --delete "${GITHUB_REF_NAME}" || true

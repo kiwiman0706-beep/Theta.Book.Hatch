@@ -3,7 +3,7 @@ const {chromium}=require('playwright');const assert=require('node:assert/strict'
  const browser=await chromium.launch({headless:true,executablePath:process.env.TEST_CHROMIUM,args:['--no-sandbox','--disable-gpu']});
  const page=await browser.newPage({viewport:{width:390,height:844}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.addInitScript(()=>{
-  localStorage.clear();window.cardId='vol-0123456789abcdef01234567';window.cardPresent=true;window.selected='internal';window.calls=[];
+  localStorage.clear();localStorage.setItem('dsbooks.settingsOpen','all');window.cardId='vol-0123456789abcdef01234567';window.cardPresent=true;window.selected='internal';window.calls=[];
   localStorage.setItem('dsbooks.catalog',JSON.stringify([
    {id:'internal',path:'/Books/One.m4b',title:'本体の音声本',type:'Audio',fileExt:'M4B',localName:'old.m4b',remote:true,folder:'Audio',cover:'c1',audioPosition:45000,progress:30,size:100},
    {id:'sd',path:'/Books/Two.m4b',title:'SDの音声本',type:'Audio',fileExt:'M4B',localName:cardId+'--card.m4b',remote:true,folder:'Audio',cover:'c2',audioPosition:12000,progress:20,size:100}

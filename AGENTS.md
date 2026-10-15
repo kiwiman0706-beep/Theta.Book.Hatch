@@ -1,11 +1,11 @@
 # DSBooksを引き継ぐAI・開発者へ
 
-このリポジトリは2026-10-15時点の0.8.6-previewを基準にした引き継ぎスナップショット。
+このリポジトリは2026-10-15時点の0.8.6-preview（ChatGPT版）を引き継ぎ、0.9.0からClaude版として開発している。
 
 1. まず `docs/AI_HANDOFF.md`、`docs/CURRENT_STATE.md`、`docs/BACKLOG.md` を読む。利用者の新しい明示指示があれば、それを優先する。
 2. 作業前に実ファイルとテストを確認する。古いREADME／ROADMAPの途中に残る「未実装」を現在の状態と誤解しない。
 3. 原本の本・NASフォルダを勝手に改名／削除しない。Calibre管理へ戻さない。常駐NASサーバーを必須にしない。
-4. 現行パッケージは `jp.shinwakai.dsbooks.preview`、versionCodeは64。次の更新は64より大きくする。署名鍵を勝手に更新しない。鍵もパスワードもコミットしない。
+4. 現行パッケージは `jp.shinwakai.dsbooks.claude`（Claude版、build.shが包装時に改名。Javaの名前空間は `jp.shinwakai.dsbooks.preview` のまま）、versionCodeは65。次の更新は65より大きくする。Claude版の鍵（alias `dsbooks-claude`、証明書SHA-256 `27c01a80…d16490`）は利用者の指示で新設した。以後この鍵を勝手に更新しない。鍵もパスワードもコミットしない。ChatGPT版 `jp.shinwakai.dsbooks.preview` と旧鍵は別アプリとして扱う。
 5. 現行のアプリコードは純粋なHTML/CSS/JavaScriptとJava。React/Capacitor/Gradleプロジェクトだと仮定しない。スクリプトの読み込み順と関数ラップを尊重する。
 6. 蔵書・保存先トークン・bookId・読書位置・栞・メモを保持する。通信失敗時に前回のカタログを空にしない。
 7. 木目の本棚は木目のまま。黒／濃緑にするのはヘッダー・フッター等。フォルダのホーム横棚とフォルダ内折り返し表示を区別する。

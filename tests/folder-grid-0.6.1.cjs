@@ -1,3 +1,4 @@
+const inSheet=async(page,fn)=>{await page.locator('#libraryControlsOpen').click();await fn();await page.locator('#libraryControls .lib-sheet-done').click();};
 const {chromium}=require('playwright');
 const assert=require('node:assert/strict');
 (async()=>{
@@ -21,15 +22,15 @@ const assert=require('node:assert/strict');
  }
  await page.setViewportSize({width:390,height:844});
  await page.locator('.folder-detail').screenshot({path:'tests/folder-grid-0.6.1.png'});
- await page.locator('#sort').selectOption('title');
+ await inSheet(page,()=>page.locator('#sort').selectOption('title'));
  assert.match(await page.locator('.folder-detail .book-title').first().textContent(),/00/);
  await page.locator('.folder-detail .book-card').first().click();assert(await page.locator('#modalBg').isVisible());assert.match(await page.locator('#modal').textContent(),/テスト書籍 00/);await page.locator('#modal .close').first().click();
  await page.reload();assert.equal(await page.locator('.folder-detail').count(),1);
  await page.locator('#search').fill('本03');assert.equal(await page.locator('.folder-detail .book-card').count(),0);
  await page.locator('#search').fill('03');assert.equal(await page.locator('.folder-detail .book-card').count(),1);
  await page.locator('#search').fill('');
- await page.locator('#allFolders').click();assert.equal(await page.locator('.folder-detail').count(),0);assert.equal(await page.locator('.folder-shelf').count(),2);assert(await page.locator('.shelf-rail').first().evaluate(e=>e.scrollWidth>e.clientWidth));
- await page.locator('#folderFilter').selectOption('音声本');assert.equal(await page.locator('.folder-detail .book-card').count(),17);
+ await page.locator('#libraryHome').click();assert.equal(await page.locator('.folder-detail').count(),0);assert.equal(await page.locator('.folder-shelf').count(),2);assert(await page.locator('.shelf-rail').first().evaluate(e=>e.scrollWidth>e.clientWidth));
+ await inSheet(page,()=>page.locator('#folderFilter').selectOption('音声本'));assert.equal(await page.locator('.folder-detail .book-card').count(),17);
  await page.evaluate(()=>{books[0].series='シリーズ';books[1].series='シリーズ';render();});assert.equal(await page.locator('.folder-detail .book-card:visible').count(),16);assert.equal(await page.locator('.series-stack-button').count(),1);
  assert.deepEqual(errors,[]);console.log(JSON.stringify({ok:true,sizes,checks:'home rail, folder grid, rotation, title sort, open, reload, search, return, selection, series stack'}));await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});

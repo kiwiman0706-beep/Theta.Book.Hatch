@@ -6,8 +6,9 @@
 
 |項目|値|
 |---|---|
-|Android package|`jp.shinwakai.dsbooks.preview`|
-|versionName / versionCode|`0.8.6-preview` / `64`|
+|Android package|`jp.shinwakai.dsbooks.claude`（0.9.0〜Claude版。ChatGPT版 `jp.shinwakai.dsbooks.preview` と共存）|
+|versionName / versionCode|`0.9.0-claude` / `65`（ChatGPT版最終は0.8.6-preview / 64）|
+|署名|Claude版の新しい鍵 alias `dsbooks-claude`、証明書SHA-256 `27c01a801b8ad5b4c229bf5061b6fd377031ba65f4443f4bc7faafe712d16490`|
 |min / target / compile SDK|26 / 34 / 35|
 |ビルド|Bash、JDK、aapt、D8 8.9.35、zipalign、apksigner。Gradleなし|
 |画面|ローカルHTML/CSS/JS、WebViewブリッジ`DSBooksNative`|
@@ -23,6 +24,7 @@
 |NAS接続・ログイン保持|I|暗号化した接続情報／SID、2FA入力。2FAコードを保存しない|
 |再接続・Tailscale案内|I|前景復帰／オンライン時に再確認、期限切れ時だけ再ログイン。通信失敗と認証待ちを分離。外部Tailscaleを開く。VPNの有無だけでTailscaleを断定しない|
 |スキャン・対象フォルダ|I|共有フォルダと直下フォルダ名の接頭辞／完全一致。明示対象の直接列挙、失敗時の前回カタログ保持。対象外の保存済み本は保存済み画面から利用|
+|操作部の配置（0.9.0）|I|種類チップ1行、表示切替セグメント、並べ替え・絞り込みの下部シート、本の詳細の主ボタン＋タイル、設定のショートカット＋折りたたみグループ。既存ID・保存値を維持。実機未確認|
 |本棚UI|I|木目のフォルダ横棚、フォルダ内折り返し、表紙サイズ、進捗／NEW／音声ジャケット、暗緑ヘッダー・フッター|
 |リスト・並べ替え|I|0.8.6：1冊1行、9種類の並べ替え、昇降順、読みかけ優先、端末内設定保存。シリーズスタックで行を隠さない|
 |大量蔵書|I|ホーム8棚×12冊、フォルダ／リスト72冊、読書中24冊ずつ。全件検索。起動オーバーレイと再読み込み。12,000件の模擬データ検証あり|
