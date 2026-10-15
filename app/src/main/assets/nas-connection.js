@@ -11,7 +11,7 @@
   box.hidden=status==='connected'||status==='idle';
   box.replaceChildren();if(!box.hidden){const text=document.createElement('span');text.textContent=message;box.appendChild(text);
    const button=(label,fn)=>{const b=document.createElement('button');b.textContent=label;b.onclick=fn;box.appendChild(b);};
-   if(status!=='checking'){button('再接続',()=>N.ensure(true,true));if(status==='auth')button('ログイン',()=>openConnectModal());else button('Tailscaleを開く',()=>window.DSBooksNative?.openTailscale());}
+   if(status!=='checking'){button('再接続',()=>N.ensure(true,true));if(status==='auth')button('ログイン',()=>openConnectModal());else button('Tailscaleを開く',()=>window.DSBooksNative?.openTailscale());button('Secure SignIn',()=>window.DSBooksNative?.openSecureSignIn?.());}
   }
   if($('nasState'))$('nasState').textContent=status==='connected'?'● DSM接続中':status==='idle'?'NAS未接続':message;
   if($('nasSub'))$('nasSub').textContent=status==='connected'?'接続を確認しました':'保存済みの本はオフラインで読めます';
@@ -65,7 +65,7 @@
  };
  resumeNasSession=async()=>{const ok=await N.ensure(true);if(ok)window.DSSync?.run();return ok;};
  const connect=connectNas;connectNas=async()=>{manualLogin=true;authBlocked=false;try{await connect();if(dsmConn){lastConnection=dsmConn;lastGood=Date.now();failures=0;show('connected','NASに接続しました');}else show('offline','接続できませんでした。入力内容とTailscaleの接続を確認してください。');}finally{manualLogin=false;}};
- const modal=openConnectModal;openConnectModal=()=>{modal();const status=$('connectStatus');if(!status)return;const box=document.createElement('div');box.className='nas-connection-help';box.innerHTML='<p id="nasConnectionHelp"></p><button class="secondary" id="nasOpenTailscale">Tailscaleを開く</button><button class="secondary" id="nasRetryConnection">保存したログインで再接続</button>';status.before(box);$('nasConnectionHelp').textContent=state.message||'Tailscaleをオンにしたら、この画面へ戻ってください。';$('nasOpenTailscale').onclick=()=>window.DSBooksNative?.openTailscale();$('nasRetryConnection').onclick=()=>N.ensure(true,true);};
+ const modal=openConnectModal;openConnectModal=()=>{modal();const status=$('connectStatus');if(!status)return;const box=document.createElement('div');box.className='nas-connection-help';box.innerHTML='<p id="nasConnectionHelp"></p><button class="secondary" id="nasOpenTailscale">Tailscaleを開く</button><button class="secondary" id="nasOpenSecureSignIn">Secure SignInを開く</button><button class="secondary" id="nasRetryConnection">保存したログインで再接続</button>';status.before(box);$('nasConnectionHelp').textContent=state.message||'Tailscaleをオンにしたら、この画面へ戻ってください。';$('nasOpenTailscale').onclick=()=>window.DSBooksNative?.openTailscale();$('nasOpenSecureSignIn').onclick=()=>window.DSBooksNative?.openSecureSignIn?.();$('nasRetryConnection').onclick=()=>N.ensure(true,true);};
  $('connectBtn').onclick=()=>openConnectModal();
  const scan=scanLibrary;scanLibrary=async(...args)=>{if(await N.ensure())return scan(...args);};
  $('syncBtn').onclick=async()=>{if(await N.ensure(true,true))scanLibrary(savedShares);};

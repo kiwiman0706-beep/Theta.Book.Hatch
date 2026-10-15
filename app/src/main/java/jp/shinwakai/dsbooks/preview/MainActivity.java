@@ -108,6 +108,8 @@ public final class MainActivity extends Activity {
             if (intent == null) return;
             String result = intent.getStringExtra("result");
             if (result != null) { evaluate("window.onNativeDownload&&window.onNativeDownload(" + result + ")"); return; }
+            String queue = intent.getStringExtra("queue");
+            if (queue != null) { evaluate("window.onNativeDownloadQueue&&window.onNativeDownloadQueue(" + queue + ")"); return; }
             String id = intent.getStringExtra("id"), state = intent.getStringExtra("state");
             int pct = intent.getIntExtra("percent", -1); long done = intent.getLongExtra("done", 0), total = intent.getLongExtra("total", 0);
             evaluate("window.onNativeDownloadProgress&&window.onNativeDownloadProgress(" + JSONObject.quote(id) + "," + pct + "," + done + "," + total + ");window.onNativeDownloadState&&window.onNativeDownloadState(" + JSONObject.quote(id) + "," + JSONObject.quote(state) + ")");
@@ -319,6 +321,23 @@ public final class MainActivity extends Activity {
             } catch (Exception ignored) { }
             return result.toString();
         }
+        /** Synology Secure SignIn (sign-in approval / OTP). Found by its launcher label, so no package id is assumed. */
+        @JavascriptInterface public void openSecureSignIn() { mainHandler.post(() -> {
+            try {
+                Intent launcher = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
+                for (android.content.pm.ResolveInfo r : getPackageManager().queryIntentActivities(launcher, 0)) {
+                    String label = String.valueOf(r.loadLabel(getPackageManager())).toLowerCase(Locale.ROOT).replace(" ", "");
+                    String pkg = r.activityInfo.packageName.toLowerCase(Locale.ROOT);
+                    if (label.contains("securesignin") || (pkg.contains("synology") && pkg.contains("signin"))) {
+                        Intent i = getPackageManager().getLaunchIntentForPackage(r.activityInfo.packageName);
+                        if (i != null) { startActivity(i); return; }
+                    }
+                }
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=" + Uri.encode("Synology Secure SignIn"))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                evaluate("toast('Secure SignInが見つからないため、ストアで検索しました')");
+            } catch (Exception e) { evaluate("toast('Secure SignInを開けませんでした。端末のアプリ一覧から開いてください')"); }
+        }); }
+
         @JavascriptInterface public void openTailscale() { mainHandler.post(() -> {
             try { Intent i=getPackageManager().getLaunchIntentForPackage("com.tailscale.ipn"); if(i==null)i=getPackageManager().getLeanbackLaunchIntentForPackage("com.tailscale.ipn"); if(i==null)throw new Exception();startActivity(i); }
             catch(Exception e) { evaluate("toast('Tailscaleアプリが見つかりません。端末のアプリ一覧から開いてください')"); }
@@ -393,6 +412,11 @@ public final class MainActivity extends Activity {
             catch (Exception e) { evaluate("window.onNativeDownload&&window.onNativeDownload({id:" + JSONObject.quote(bookId) + ",ok:false,error:'バックグラウンドダウンロードを開始できませんでした'})"); }
         }
 
+        /** Removes a waiting (not yet started) book from the download queue. */
+        @JavascriptInterface public void dequeueDownload(String bookId) {
+            try { startService(new Intent(MainActivity.this, BookDownloadService.class).setAction(BookDownloadService.ACTION_DEQUEUE).putExtra("bookId", bookId)); } catch (Exception ignored) { }
+        }
+
         @JavascriptInterface public void controlDownload(String action) {
             Intent control = new Intent(MainActivity.this, BookDownloadService.class);
             if ("pause".equals(action)) control.setAction(BookDownloadService.ACTION_PAUSE);
@@ -407,6 +431,7 @@ public final class MainActivity extends Activity {
             try {
                 JSONObject state = new JSONObject(prefs.getString("state", "{}"));
                 state.put("result", new JSONObject(prefs.getString("result", "{}")));
+                state.put("queue", new JSONArray(prefs.getString("queue", "[]")));
                 return state.toString();
             } catch (Exception e) { return "{}"; }
         }

@@ -52,7 +52,7 @@ button[data-icon]:before{content:attr(data-icon);font-size:18px;line-height:1}
 .asset-card [data-share]:before,.asset-card [data-more]:before{font-size:15px;margin-right:4px}
 
 /* Settings: four shortcuts, then one collapsible group per topic. */
-.settings-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:6px 0 14px}
+.settings-quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:6px 0 14px}
 .quick-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:74px;padding:8px 4px;border:1px solid #d6ccbe;border-radius:14px;background:#fff;color:#2f4d37;font:inherit;font-size:11px}
 .quick-tile span{font-size:20px;line-height:1}
 .quick-tile b{font-weight:600;color:#3d3a33;white-space:nowrap}
@@ -79,3 +79,25 @@ button[data-icon]:before{content:attr(data-icon);font-size:18px;line-height:1}
 }
 @media(max-width:359px){.lib-views button span:not(.lib-ico){display:none}.lib-views button{min-width:44px;justify-content:center}}
 @media(min-width:900px){.lib-sheet{align-items:center}.lib-sheet-panel{border-radius:18px}}
+
+/* 0.9.1 downloads */
+.download-chip{height:30px;padding:0 10px;border-radius:9px;border:1px solid #41634a;background:#1b2b20;color:#d3e6d6;font:inherit;font-size:11px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.download-chip[hidden]{display:none}
+.dl-current{padding:12px;margin:6px 0 4px;border:1px solid #e3d9cb;border-radius:14px;background:#fff}
+.dl-label{font-size:11px;color:#8a8175;margin-bottom:2px}
+.dl-current strong{display:block;font-size:15px;line-height:1.4;overflow-wrap:anywhere}
+.dl-bar{height:8px;margin:10px 0 6px;border-radius:4px;background:#ece4d8;overflow:hidden}
+.dl-bar i{display:block;height:100%;background:#42654b;transition:width .3s}
+.dl-current small{color:#6c665d;font-variant-numeric:tabular-nums}
+.dl-current .feature-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.dl-current .feature-actions button{min-height:44px}
+.download-sheet h3{display:flex;align-items:center;gap:8px;font-size:13px;margin:16px 0 6px}
+.dl-count{font-size:11px;font-weight:500;color:#8a8175}
+.dl-list{list-style:none;margin:0;padding:0}
+.dl-list li{display:flex;align-items:center;gap:10px;min-height:52px;padding:6px 0;border-bottom:1px solid #f0e9de}
+.dl-order{flex:0 0 26px;height:26px;display:grid;place-items:center;border-radius:50%;background:#e3e9de;color:#42654b;font-size:12px;font-weight:700}
+.dl-list li.failed .dl-order{background:#f6e2d6;color:#9a4a22}
+.dl-name{flex:1;min-width:0;font-size:13px;line-height:1.4;overflow-wrap:anywhere}
+.dl-name small{display:block;font-size:11px;color:#8a8175}
+.dl-list li.failed .dl-name small{color:#9a4a22}
+.dl-small{flex:0 0 auto;min-height:38px;padding:0 12px;font-size:12px}

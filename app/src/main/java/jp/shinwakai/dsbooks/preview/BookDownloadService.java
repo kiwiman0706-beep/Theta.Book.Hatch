@@ -31,6 +31,10 @@ public final class BookDownloadService extends Service {
     public static final String ACTION_PAUSE = "jp.shinwakai.dsbooks.preview.DOWNLOAD_PAUSE";
     public static final String ACTION_RESUME = "jp.shinwakai.dsbooks.preview.DOWNLOAD_RESUME";
     public static final String ACTION_CANCEL = "jp.shinwakai.dsbooks.preview.DOWNLOAD_CANCEL";
+    public static final String ACTION_DEQUEUE = "jp.shinwakai.dsbooks.preview.DOWNLOAD_DEQUEUE";
+    /** Waiting jobs, run one at a time in request order. In memory only: lost if the process is killed. */
+    private final java.util.ArrayDeque<Intent> queue = new java.util.ArrayDeque<>();
+    private final android.os.Handler main = new android.os.Handler(android.os.Looper.getMainLooper());
     private static final String CHANNEL = "dsbooks_downloads";
     private static final int NOTIFICATION_ID = 7406;
 
@@ -78,13 +82,29 @@ public final class BookDownloadService extends Service {
             else updateNotification("キャンセル中 · " + title, -1, true);
             return START_NOT_STICKY;
         }
+        if (ACTION_DEQUEUE.equals(action)) {
+            String id = intent.getStringExtra("bookId");
+            synchronized (queue) { queue.removeIf(j -> id != null && id.equals(j.getStringExtra("bookId"))); }
+            publishQueue();
+            if ((worker == null || !worker.isAlive()) && queueSize() == 0) stopSelf();
+            return START_NOT_STICKY;
+        }
         if (intent == null) return START_NOT_STICKY;
 
         if (worker != null && worker.isAlive()) {
-            if (bookId.equals(intent.getStringExtra("bookId"))) return START_REDELIVER_INTENT;
-            publishResultFor(intent.getStringExtra("bookId"), false, "別の本をダウンロード中です。完了後にもう一度お試しください。", null, 0);
-            return START_REDELIVER_INTENT;
+            String id = intent.getStringExtra("bookId");
+            if (bookId.equals(id)) return START_NOT_STICKY;
+            synchronized (queue) { if (queue.stream().noneMatch(j -> id != null && id.equals(j.getStringExtra("bookId")))) queue.add(intent); }
+            publishQueue();
+            return START_NOT_STICKY;
         }
+        startJob(intent);
+        return START_REDELIVER_INTENT;
+    }
+
+    private int queueSize() { synchronized (queue) { return queue.size(); } }
+
+    private void startJob(Intent intent) {
         bookId = intent.getStringExtra("bookId");
         title = intent.getStringExtra("title");
         if (bookId == null) bookId = "";
@@ -97,7 +117,15 @@ public final class BookDownloadService extends Service {
         publishState("running", 0, 0, currentTotal, null);
         worker = new Thread(() -> runDownload(job), "dsbooks-download");
         worker.start();
-        return START_REDELIVER_INTENT;
+        publishQueue();
+    }
+
+    /** Queue order for the app's download manager: [{id,title,expectedSize}]. */
+    private void publishQueue() {
+        JSONArray list = new JSONArray();
+        synchronized (queue) { for (Intent j : queue) { JSONObject o = new JSONObject(); try { o.put("id", j.getStringExtra("bookId")); o.put("title", j.getStringExtra("title")); o.put("expectedSize", j.getLongExtra("expectedSize", 0)); } catch (Exception ignored) { } list.put(o); } }
+        getSharedPreferences("download", MODE_PRIVATE).edit().putString("queue", list.toString()).apply();
+        sendBroadcast(new Intent(ACTION_EVENT).setPackage(getPackageName()).putExtra("queue", list.toString()));
     }
 
     private void runDownload(Intent job) {
@@ -169,7 +197,8 @@ public final class BookDownloadService extends Service {
             HttpURLConnection c = connection; connection = null; if (c != null) c.disconnect();
             if (wakeLock != null && wakeLock.isHeld()) wakeLock.release();
             worker = null;
-            stopSelf();
+            // Continue with the next waiting book; stop only when nothing is left.
+            main.post(() -> { Intent next; synchronized (queue) { next = queue.poll(); } if (next != null && (worker == null || !worker.isAlive())) startJob(next); else if (next == null) { publishQueue(); stopSelf(); } });
         }
     }
 

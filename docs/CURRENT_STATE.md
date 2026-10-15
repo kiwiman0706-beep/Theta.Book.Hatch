@@ -7,7 +7,7 @@
 |項目|値|
 |---|---|
 |Android package|`jp.shinwakai.dsbooks.claude`（0.9.0〜Claude版。ChatGPT版 `jp.shinwakai.dsbooks.preview` と共存）|
-|versionName / versionCode|`0.9.0-claude` / `65`（ChatGPT版最終は0.8.6-preview / 64）|
+|versionName / versionCode|`0.9.1-claude` / `66`（ChatGPT版最終は0.8.6-preview / 64）|
 |署名|Claude版の新しい鍵 alias `dsbooks-claude`、証明書SHA-256 `27c01a801b8ad5b4c229bf5061b6fd377031ba65f4443f4bc7faafe712d16490`|
 |min / target / compile SDK|26 / 34 / 35|
 |ビルド|Bash、JDK、aapt、D8 8.9.35、zipalign、apksigner。Gradleなし|
@@ -38,7 +38,7 @@
 |音声本|I|M4A/M4Bの内部VLC再生、シーク、速度、15秒移動、章、位置保存、スリープ。音声フォーカス・通知・ミニプレイヤーあり|
 |大容量M4B|P|標準MediaPlayer解析失敗を受けVLCへ置換済み。問題ファイルでの最新内蔵版の再生成功は未確認。容量原因と断定しない|
 |ストリーミング|P|NAS Rangeを検証するローカルHTTP中継。全DLを待たず再生。「保存しながら聴く」は別通信の並行DL。共通部分キャッシュ／自動ローカル切替はない|
-|DL|I/P|前景サービス、通知、一時停止・再開・中止・完了後に開く。複数キューやプロセス終了／再起動後の確実な復旧は今後|
+|DL|I/P|前景サービス、通知、一時停止・再開・中止・完了後に開く。0.9.1でサービス内の待機列（順番に自動開始）とダウンロード一覧。待機列はメモリ上のみで、プロセス終了／再起動後の復旧は今後（B04）|
 |SD保存先|P|Androidが返すアプリ専用保存先を選択。カード不在で別の場所へ黙って保存しない。任意のSAFフォルダ指定と既存本の移動は未実装|
 |同名複数形式|I|同一フォルダ＋拡張子を除いた同名を1冊に。位置は形式ごと。分離／再結合・全体設定あり。PDF添付を再生中に表示|
 |シリーズ・タグ・メモ|I|同じフォルダのシリーズスタック・巻一覧・前後巻、タグ、お気に入り、栞、共通メモ。作者のフォルダ横断ジャンプは低優先|
@@ -59,6 +59,10 @@
 - 約536MiBのM4B：0.5.2診断でサイズ一致、49章取得、MediaExtractor音声トラック0、互換コピー失敗。VLC置換前の証拠。
 - 822.1MBの「21 Lessons」：外部VLCで再生できた報告あり。これはDSBooks内蔵版成功の証拠ではない。
 - 最新0.8.5／0.8.6の全機能について、実機完了の包括的報告はまだない。
+
+## Claude版 0.9.1 のリリース証拠
+
+`DSBooks-0.9.1-claude.apk`：109,826,447 bytes、SHA-256 `990738206b513effd39c04bae8ad9efc6eddc8213138eef69a9e2d9994da178d`。ZIP CRC正常、package `jp.shinwakai.dsbooks.claude`／versionCode 66、assets 33件がソースと一致、ネイティブ4 ABI、v2/v3署名、0.9.0と同じ証明書（`27c01a80…d16490`）。実機未確認。
 
 ## Claude版 0.9.0 のリリース証拠
 
