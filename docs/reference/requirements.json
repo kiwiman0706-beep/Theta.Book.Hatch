@@ -1,0 +1,477 @@
+{
+  "schema": 1,
+  "asOf": "2026-10-15",
+  "baseline": "0.8.6-preview",
+  "semantics": "Implementation evidence is not physical-device validation; reconstructed from visible conversation and source",
+  "requirements": [
+    {
+      "id": "R01",
+      "request": "NASフォルダをそのまま本棚にする・Calibre依存を除く",
+      "status": "実装",
+      "evidence": "dsbooks-prototype.html",
+      "limits": "専用サーバー/Calibre DB必須にしない"
+    },
+    {
+      "id": "R02",
+      "request": "NASログイン保持・版の画面表示",
+      "status": "実装",
+      "evidence": "MainActivity.java / HTML",
+      "limits": "2FAは必要時入力"
+    },
+    {
+      "id": "R03",
+      "request": "EPUB/PDFをアプリ内で開く",
+      "status": "実装",
+      "evidence": "EpubContent.java / epub-reader.js / HTML",
+      "limits": "複雑なEPUBは実機回帰が必要"
+    },
+    {
+      "id": "R04",
+      "request": "M4A/M4B内蔵再生・大容量対応",
+      "status": "実装・実機待ち",
+      "evidence": "MediaPlaybackService.java",
+      "limits": "LibVLC導入済み。問題実ファイルの成功は未確認"
+    },
+    {
+      "id": "R05",
+      "request": "オフライン保存",
+      "status": "実装",
+      "evidence": "BookDownloadService.java / BookStorage.java",
+      "limits": "アンインストール時のデータ保持ではない"
+    },
+    {
+      "id": "R06",
+      "request": "読書/再生位置と進捗の保存・再開",
+      "status": "実装",
+      "evidence": "library-model.js / epub-reader.js",
+      "limits": "章内位置を保存。組版変更時は回帰確認"
+    },
+    {
+      "id": "R07",
+      "request": "最大化・画像ズーム・パン",
+      "status": "実装",
+      "evidence": "comic-reader.js / epub-reader.js",
+      "limits": "画像の原解像度以上の復元はしない"
+    },
+    {
+      "id": "R08",
+      "request": "小説のページ概念・章内の進捗",
+      "status": "実装",
+      "evidence": "epub-reader.js",
+      "limits": "全文1章の実例で検証継続"
+    },
+    {
+      "id": "R09",
+      "request": "スワイプページ送り",
+      "status": "実装",
+      "evidence": "epub-reader.js / comic-reader.js",
+      "limits": "右開き・縦書きと組合せ確認"
+    },
+    {
+      "id": "R10",
+      "request": "読みかけ再開ウィジェット",
+      "status": "実装・実機待ち",
+      "evidence": "ReadingWidgetProvider.java",
+      "limits": "ランチャー差あり"
+    },
+    {
+      "id": "R11",
+      "request": "サムネ付きリッチウィジェット",
+      "status": "実装・実機待ち",
+      "evidence": "RichReadingWidgetProvider.java / ReadingWidgetService.java",
+      "limits": "表示/更新/タップを実機確認"
+    },
+    {
+      "id": "R12",
+      "request": "表紙サムネイル表示",
+      "status": "実装",
+      "evidence": "HTML / EpubInspection.java / PC helper",
+      "limits": "表紙なし・未キャッシュの場合は代替表紙"
+    },
+    {
+      "id": "R13",
+      "request": "PCでサムネを生成しNASフォルダにキャッシュ",
+      "status": "実装",
+      "evidence": "tools/dsbooks_thumbnails.py",
+      "limits": "全書籍をスマホDLしない構成"
+    },
+    {
+      "id": "R14",
+      "request": "Windowsインストーラー付きPC GUI",
+      "status": "一部",
+      "evidence": "thumbnail-helper-release/",
+      "limits": "GUI/生成スクリプトあり。Setup.exe未提供・未検証"
+    },
+    {
+      "id": "R15",
+      "request": "全体DLせず書籍から表紙だけ直接取得",
+      "status": "未完",
+      "evidence": "PC helper / BACKLOG",
+      "limits": "PCキャッシュが主経路。任意形式への汎用Range抽出はない"
+    },
+    {
+      "id": "R16",
+      "request": "Gemini/Amazon等から表紙候補取得",
+      "status": "将来候補",
+      "evidence": "BACKLOG B18",
+      "limits": "自動送信/取得は未実装"
+    },
+    {
+      "id": "R17",
+      "request": "フォルダごと横棚、縦に棚を並べる",
+      "status": "実装",
+      "evidence": "HTML / library-pages.js",
+      "limits": "ホームの基本構成"
+    },
+    {
+      "id": "R18",
+      "request": "木目スキン、黒/緑のコンパクトなヘッダー/フッター",
+      "status": "実装",
+      "evidence": "enhancements.css / HTML",
+      "limits": "木目を緑にしないという明示的希望を保持"
+    },
+    {
+      "id": "R19",
+      "request": "読みかけ/新着を左に・POP/進捗を表示",
+      "status": "実装",
+      "evidence": "HTML / library-list.js",
+      "limits": "現行リストにも読みかけ固定を持つ"
+    },
+    {
+      "id": "R20",
+      "request": "音声本をレコードジャケット風にする",
+      "status": "実装",
+      "evidence": "enhancements.css / HTML",
+      "limits": "ディスクは上/右上に出し横幅を浪費しない"
+    },
+    {
+      "id": "R21",
+      "request": "本/フォルダ名のコントラスト・余白削減",
+      "status": "実装",
+      "evidence": "enhancements.css",
+      "limits": "暗い背景では明るい文字"
+    },
+    {
+      "id": "R22",
+      "request": "Chromecastへキャスト",
+      "status": "一部・実機待ち",
+      "evidence": "CastAudio.java / cast-audio.js",
+      "limits": "保存済み音声・同一LAN。TTS/本の画面/NAS未保存は未対応"
+    },
+    {
+      "id": "R23",
+      "request": "Android TV対応",
+      "status": "一部・実機待ち",
+      "evidence": "device-integration.js / Manifest",
+      "limits": "Leanback/DPAD試行。TVでの読書体験・VPN環境は要実機"
+    },
+    {
+      "id": "R24",
+      "request": "Android Auto対応",
+      "status": "一部・実機待ち",
+      "evidence": "CarBrowserService.java / CarLibrary.java",
+      "limits": "保存済み音声のメディア導線"
+    },
+    {
+      "id": "R25",
+      "request": "Tailscale起動案内とNAS自動再接続",
+      "status": "実装・実機待ち",
+      "evidence": "nas-connection.js / MainActivity.java",
+      "limits": "VPNを勝手にオンにはしない。到達不可をVPNオフと断定しない"
+    },
+    {
+      "id": "R26",
+      "request": "読書中の戻るで本棚に戻る",
+      "status": "実装",
+      "evidence": "MainActivity.java / library-navigation.js",
+      "limits": "子パネルを優先して閉じる"
+    },
+    {
+      "id": "R27",
+      "request": "フォルダ一覧の戻るでホームに戻る",
+      "status": "実装",
+      "evidence": "library-navigation.js",
+      "limits": "画面状態の履歴を保持"
+    },
+    {
+      "id": "R28",
+      "request": "ファイルを他アプリへ共有/保存",
+      "status": "実装",
+      "evidence": "DocumentExchange.java / LocalBookProvider.java",
+      "limits": "端末保存が前提。受信先の形式/容量制限あり"
+    },
+    {
+      "id": "R29",
+      "request": "他アプリからEPUB/PDF等を受け取る",
+      "status": "一部/要確認",
+      "evidence": "DocumentExchange.java / Manifest / BACKLOG B14",
+      "limits": "送信と受信は別。全ACTION_SEND/VIEW導線の完成扱いをしない"
+    },
+    {
+      "id": "R30",
+      "request": "複数端末の進捗同期",
+      "status": "実装・実機待ち",
+      "evidence": "nas-sync.js / library-model.js",
+      "limits": "NAS JSON手動/自動。競合UI未完成"
+    },
+    {
+      "id": "R31",
+      "request": "thumbs.dbの再利用",
+      "status": "見送り",
+      "evidence": "DEVELOPMENT_HISTORY.md",
+      "limits": "複雑な互換を優先しないとの合意"
+    },
+    {
+      "id": "R32",
+      "request": "NAS内でキャッシュ生成ツールを動かす",
+      "status": "将来候補",
+      "evidence": "BACKLOG B15",
+      "limits": "常駐管理サーバーを必須にはしない"
+    },
+    {
+      "id": "R33",
+      "request": "著者・シリーズ認識、スタック、タグ",
+      "status": "一部",
+      "evidence": "work-model.js / dsbooks_metadata.py / enhancements.js",
+      "limits": "シリーズ/巻/タグを実装。全自動書誌同定は未完"
+    },
+    {
+      "id": "R34",
+      "request": "フォルダ横断の作者ジャンプ",
+      "status": "低優先",
+      "evidence": "DEVELOPMENT_HISTORY.md",
+      "limits": "利用者が重要度を下げた。シリーズを優先"
+    },
+    {
+      "id": "R35",
+      "request": "サーバー不要のID/JSON/Markdown・Obsidian互換",
+      "status": "実装",
+      "evidence": "dsbooks_metadata.py / library-model.js",
+      "limits": "原本へのID埋込でなくsidecar。改名照合に条件あり"
+    },
+    {
+      "id": "R36",
+      "request": "DLをバックグラウンドタスク化",
+      "status": "一部",
+      "evidence": "BookDownloadService.java",
+      "limits": "foreground service。永続キュー・再起動復旧は未完"
+    },
+    {
+      "id": "R37",
+      "request": "DL後その画面から開く",
+      "status": "実装",
+      "evidence": "HTML / enhancements.js",
+      "limits": "保存完了後の状態更新を確認"
+    },
+    {
+      "id": "R38",
+      "request": "音声画面に表紙表示",
+      "status": "実装・実機待ち",
+      "evidence": "work-library.js / enhancements.js",
+      "limits": "表紙未取得なら代替。全ファイルに保証しない"
+    },
+    {
+      "id": "R39",
+      "request": "NAS音声ストリーミング",
+      "status": "実装・実機待ち",
+      "evidence": "NasAudioSource.java / audio-streaming.js",
+      "limits": "Range/認証/切断復帰を実NASで確認"
+    },
+    {
+      "id": "R40",
+      "request": "DLしながら聴く",
+      "status": "一部",
+      "evidence": "audio-streaming.js / BookDownloadService.java",
+      "limits": "現在は独立DL+ストリーム。共通部分キャッシュではない"
+    },
+    {
+      "id": "R41",
+      "request": "同名M4BとPDF添付資料を一冊にまとめる",
+      "status": "実装",
+      "evidence": "work-model.js / work-library.js",
+      "limits": "フォルダ内同名。位置は形式別"
+    },
+    {
+      "id": "R42",
+      "request": "小説EPUBの読み上げ",
+      "status": "実装",
+      "evidence": "epub-speech.js / MediaPlaybackService.java",
+      "limits": "Android TTS。画像だけの本文のOCRはない"
+    },
+    {
+      "id": "R43",
+      "request": "本棚に戻っても操作できるミニプレイヤー",
+      "status": "実装",
+      "evidence": "enhancements.js / MediaPlaybackService.java",
+      "limits": "音声とTTSの一時停止/停止/復帰"
+    },
+    {
+      "id": "R44",
+      "request": "OS通知/MediaSessionで音声・TTSを操作",
+      "status": "実装・実機待ち",
+      "evidence": "MediaPlaybackService.java",
+      "limits": "ロック画面/Bluetooth/消灯は実機検証"
+    },
+    {
+      "id": "R45",
+      "request": "実機チェックリストをロードマップから分離",
+      "status": "実装",
+      "evidence": "CHECKLIST_DEVICE_*.md",
+      "limits": "自動テスト結果と手動未確認を区別"
+    },
+    {
+      "id": "R46",
+      "request": "セルフテストとJSONレポート",
+      "status": "実装",
+      "evidence": "diagnostics.js / DeviceDiagnostics.java / FileExercise.java",
+      "limits": "深い検査も一部あり。音声/見た目の完全自動判定ではない"
+    },
+    {
+      "id": "R47",
+      "request": "保存ファイルで半自動回帰テスト",
+      "status": "一部",
+      "evidence": "FileExercise.java / BACKLOG B13",
+      "limits": "比較・課題への自動整理は今後"
+    },
+    {
+      "id": "R48",
+      "request": "M4Bチャプター一覧・ジャンプ",
+      "status": "実装",
+      "evidence": "IsoChapterParser.java / work-library.js",
+      "limits": "形式差あり。標準解析失敗と章抽出成功は両立する"
+    },
+    {
+      "id": "R49",
+      "request": "共有してNotebookLM等で要約",
+      "status": "一部",
+      "evidence": "DocumentExchange.java",
+      "limits": "汎用共有のみ。NotebookLM連携API/自動送信はない"
+    },
+    {
+      "id": "R50",
+      "request": "要約・メモを本に関連付ける",
+      "status": "実装",
+      "evidence": "work-library.js / library-model.js",
+      "limits": "メモ同期と形式別位置を分離"
+    },
+    {
+      "id": "R51",
+      "request": "SDカードをDL先に選ぶ",
+      "status": "一部",
+      "evidence": "BookStorage.java / download-storage.js",
+      "limits": "アプリ専用領域。任意フォルダ/一括移動は未完"
+    },
+    {
+      "id": "R52",
+      "request": "読書中を3冊以上表示",
+      "status": "実装",
+      "evidence": "reading-shelf.js / library-pages.js",
+      "limits": "初期24件等の分割描画。全データを削除しない"
+    },
+    {
+      "id": "R53",
+      "request": "フォルダを開いたら横スクロールでなく折返し一覧",
+      "status": "実装",
+      "evidence": "library-navigation.js / library-pages.js",
+      "limits": "ホーム横棚とフォルダ内グリッドを区別"
+    },
+    {
+      "id": "R54",
+      "request": "朗読を今見ているページから開始",
+      "status": "実装",
+      "evidence": "epub-speech.js / epub-reader.js",
+      "limits": "章頭からに戻さない"
+    },
+    {
+      "id": "R55",
+      "request": "朗読に合わせてページ送り・箇所強調",
+      "status": "実装",
+      "evidence": "SpeechCursor.java / epub-reader.js",
+      "limits": "TTS範囲通知に応じ文/範囲を追う"
+    },
+    {
+      "id": "R56",
+      "request": "大量蔵書で白画面/フリーズを抑える",
+      "status": "実装・継続課題",
+      "evidence": "startup.js / library-pages.js",
+      "limits": "分割表示。件数を切って保存しない"
+    },
+    {
+      "id": "R57",
+      "request": "対象フォルダ名変更後の古い表示を解消",
+      "status": "実装・実機待ち",
+      "evidence": "HTML scanner / scan-scope tests",
+      "limits": "範囲除外とオフライン本削除を区別"
+    },
+    {
+      "id": "R58",
+      "request": "SVG等のEPUBコミック表示",
+      "status": "実装",
+      "evidence": "EpubContent.java / EpubInspection.java",
+      "limits": "白紙例から対応。すべての出版社構造を保証しない"
+    },
+    {
+      "id": "R59",
+      "request": "CBZ/CBR対応",
+      "status": "実装",
+      "evidence": "ComicArchive.java / comic-reader.js",
+      "limits": "RAR4/5。破損/暗号化/巨大ファイルは検証必要"
+    },
+    {
+      "id": "R60",
+      "request": "シークバーでページジャンプ",
+      "status": "実装",
+      "evidence": "epub-reader.js / comic-reader.js",
+      "limits": "文字変更後のページ総数に追従"
+    },
+    {
+      "id": "R61",
+      "request": "小説フォント変更と提供フォント内蔵",
+      "status": "実装",
+      "evidence": "epub-reader.js / fonts",
+      "limits": "提供フォントはGitHub用フォルダ外に分離"
+    },
+    {
+      "id": "R62",
+      "request": "小説縦書き",
+      "status": "実装・実機待ち",
+      "evidence": "epub-reader.js",
+      "limits": "手動切替。ルビ/縦中横/禁則は継続検証"
+    },
+    {
+      "id": "R63",
+      "request": "本棚リスト表示・並べ替え",
+      "status": "実装",
+      "evidence": "library-list.js / CHECKLIST_DEVICE_0.8.6.md",
+      "limits": "9種・昇降順・読みかけ固定・設定保存"
+    },
+    {
+      "id": "R64",
+      "request": "Windows/Mac版・個人用IPA",
+      "status": "未実装/検討",
+      "evidence": "BACKLOG B16/B17",
+      "limits": "PCキャッシュツールは閲覧クライアントではない"
+    },
+    {
+      "id": "R65",
+      "request": "署名鍵を別途受け取れるようにする",
+      "status": "別管理",
+      "evidence": "BUILD_AND_RELEASE.md",
+      "limits": "過去鍵の存在は確認。今回ZIPには含めない"
+    },
+    {
+      "id": "R66",
+      "request": "切れないAPK配布リンク・インストール可能な成果物",
+      "status": "継続課題",
+      "evidence": "BUILD_AND_RELEASE.md",
+      "limits": "保存/転送後の実バイト検証まで必要"
+    },
+    {
+      "id": "R67",
+      "request": "AI/GitHub向け開発一式のZIP",
+      "status": "今回作成",
+      "evidence": "START_HERE.md / AI_HANDOFF.md",
+      "limits": "本物のGit履歴を捏造しない。欠落明記"
+    }
+  ]
+}

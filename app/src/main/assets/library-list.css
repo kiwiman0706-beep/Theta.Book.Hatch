@@ -1,0 +1,32 @@
+.viewtoggle[hidden]{display:none!important}
+.list-display-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:10px 0;color:#354b3c;font-size:12px}
+.list-display-tools button,.list-display-tools select{font:inherit;min-height:40px;border:1px solid #b8c6b9;border-radius:8px;padding:8px 10px;color:#304537;background:#fffaf2}
+.list-view-buttons{display:flex;gap:4px}
+.list-view-buttons button.selected{background:#284634;color:white;border-color:#284634}
+.list-display-tools label{display:flex;align-items:center;gap:4px;min-height:40px}
+.list-display-tools input{width:18px;height:18px;accent-color:#42654b}
+.book-list{display:flex;flex-direction:column;background:#18271e;border:1px solid #3d5142;border-radius:10px;overflow:hidden;margin:12px 0;color:#f3f3e9}
+.book-list .book-list-row{display:grid;grid-template-columns:58px minmax(0,1fr) 132px;gap:14px;align-items:center;padding:14px 16px;border-bottom:1px solid #415247;min-height:112px;cursor:pointer;transform:none;background:transparent}
+.book-list .book-list-row:last-child{border-bottom:0}
+.book-list-row:hover,.book-list-row:focus-visible{background:#263d2e!important;outline:2px solid #b9d5a9;outline-offset:-2px}
+.book-list .cover-wrap{width:58px;height:80px;aspect-ratio:auto;margin:0;border-radius:4px;box-shadow:2px 4px 8px #0006;overflow:hidden}
+.book-list .cover{padding:5px;overflow:hidden;border-radius:0}
+.book-list .cover b{font-size:9px;line-height:1.3}
+.book-list .cover small,.book-list .cover em,.book-list .cover:after{display:none}
+.book-list .cover-thumb{object-fit:contain;background:#142017}
+.book-list-copy{min-width:0}
+.book-list .book-title{font-size:15px;color:#fffaf0;line-height:1.5;margin:0 0 4px;overflow-wrap:anywhere;-webkit-line-clamp:2;text-shadow:none}
+.book-list .book-author{font-size:12px;color:#c8d3c8;overflow:hidden;text-shadow:none}
+.list-folder{display:block;max-width:100%;font-size:12px;color:#b8d8b5;background:none;border:0;padding:6px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;min-height:30px;text-decoration:underline;text-underline-offset:3px}
+.list-tags{display:flex;flex-wrap:wrap;align-items:center;gap:6px;color:#c6d0c6;font-size:11px}
+.list-tags .format{font-size:10px;color:#dce8d6;background:#3c5141;white-space:normal}
+.list-tags .format.audio{color:#e6d7f0;background:#4c3e57}
+.list-saved.saved{color:#c9e8b5}
+.book-list-status{font-size:12px;min-width:0;color:#e9eddf}
+.book-list-status strong{font-size:14px;font-variant-numeric:tabular-nums}
+.book-list-status strong span{font-size:11px;font-weight:normal}
+.book-list-status small{display:block;font-size:11px;margin-top:5px;color:#c2cfc0}
+.list-progress{height:5px;background:#445448;border-radius:4px;margin:6px 0;overflow:hidden}
+.list-progress i{display:block;height:100%;background:#d6b877}
+.list-star{color:#f7d079}
+@media(max-width:520px){.book-list .book-list-row{grid-template-columns:44px minmax(0,1fr);gap:8px 11px;padding:12px}.book-list .cover-wrap{width:44px;height:62px;grid-column:1;grid-row:1}.book-list .book-title{font-size:13px}.book-list .book-author,.list-folder{font-size:11px}.book-list-status{grid-column:2;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.book-list-status strong{font-size:12px}.book-list-status small{margin:0;font-size:10px}.book-list-status .list-progress{width:58px;margin:0}.list-display-tools{font-size:11px;gap:6px}.list-display-tools button{padding:7px 10px}}

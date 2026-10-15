@@ -1,0 +1,45 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="jp.shinwakai.dsbooks.preview" android:versionCode="64" android:versionName="0.8.6-preview">
+  <queries><package android:name="com.google.android.gms" /><package android:name="com.google.android.gms.policy_cast_dynamite" /><package android:name="org.videolan.vlc" /><package android:name="com.tailscale.ipn" /></queries>
+  <uses-feature android:name="android.software.leanback" android:required="false" />
+  <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+  <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="34" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+  <application android:extractNativeLibs="true" android:allowBackup="false" android:label="DSBooks Preview" android:banner="@drawable/tv_banner" android:icon="@drawable/ic_dsbooks" android:theme="@android:style/Theme.Material.Light.NoActionBar" android:supportsRtl="true" android:usesCleartextTraffic="true">
+    <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop" android:screenOrientation="unspecified">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+        <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <receiver android:name=".ReadingWidgetProvider" android:exported="true">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider" android:resource="@xml/reading_widget_info" />
+    </receiver>
+    <receiver android:name=".RichReadingWidgetProvider" android:label="DSBooks 表紙つき本棚" android:exported="true"><intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter><meta-data android:name="android.appwidget.provider" android:resource="@xml/reading_widget_rich_info" /></receiver>
+    <service android:name=".ReadingWidgetService" android:exported="false" android:permission="android.permission.BIND_REMOTEVIEWS" />
+    <service android:name=".BookDownloadService" android:exported="false" android:foregroundServiceType="dataSync" />
+    <meta-data android:name="com.google.android.gms.car.application" android:resource="@xml/automotive_app_desc" />
+    <service android:name=".MediaPlaybackService" android:exported="false" android:foregroundServiceType="mediaPlayback" />
+    <service android:name=".CarBrowserService" android:exported="true"><intent-filter><action android:name="android.media.browse.MediaBrowserService" /></intent-filter></service>
+    <provider android:name=".LocalBookProvider" android:authorities="jp.shinwakai.dsbooks.preview.files" android:exported="false" android:grantUriPermissions="true" />
+    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+    <meta-data android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME" android:value="jp.shinwakai.dsbooks.preview.DSCastOptions" />
+    <service android:name=".CastRelayService" android:exported="false" android:foregroundServiceType="mediaPlayback" />
+    <receiver android:name="com.google.android.gms.cast.framework.media.MediaIntentReceiver" android:exported="false" />
+    <service android:name="com.google.android.gms.cast.framework.ReconnectionService" android:exported="false" />
+    <service android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService" android:permission="android.permission.BIND_JOB_SERVICE" android:exported="false" />
+    <receiver android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver" android:exported="false" />
+    <service android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery" android:exported="false"><meta-data android:name="backend:com.google.android.datatransport.cct.CctBackendFactory" android:value="cct" /></service>
+  </application>
+</manifest>

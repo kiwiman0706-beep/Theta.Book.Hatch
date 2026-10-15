@@ -1,0 +1,13 @@
+{
+  "name": "dsbooks-handoff-tests",
+  "version": "0.8.6",
+  "private": true,
+  "description": "Development checks only; Android app is built by build.sh",
+  "scripts": {
+    "test": "node tests/model.cjs",
+    "test:list": "node tests/library-list-0.8.6.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

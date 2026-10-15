@@ -1,0 +1,25 @@
+name: 不具合報告
+description: 再現条件と診断を記録する
+title: "[Bug] "
+body:
+  - type: input
+    id: version
+    attributes:
+      label: アプリ版・端末・OS
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 再現手順・期待した動作・実際の動作
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostic
+    attributes:
+      label: セルフテスト・ログ
+      description: パスワード、SID、署名鍵、購入書籍そのものを貼らないでください。
+  - type: textarea
+    id: conditions
+    attributes:
+      label: ファイル形式・容量・保存先・通信条件

@@ -1,0 +1,23 @@
+{
+  "format": "dsbooks-catalog",
+  "schema": 2,
+  "generatedAt": 1700000000,
+  "source": "/Books",
+  "books": [
+    {
+      "bookId": "00000000-0000-4000-8000-000000000001",
+      "path": "/Books/小説/サンプル 01.epub",
+      "title": "サンプル 01",
+      "format": "epub",
+      "size": 1000,
+      "mtime": 1700000000,
+      "thumbnail": null,
+      "series": "サンプル",
+      "volume": "01",
+      "tags": [
+        "見本"
+      ],
+      "metadata": "metadata/00000000-0000-4000-8000-000000000001.md"
+    }
+  ]
+}

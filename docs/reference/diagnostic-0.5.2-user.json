@@ -1,0 +1,95 @@
+{
+  "format": "dsbooks-diagnostic",
+  "schema": 1,
+  "createdAt": "2026-10-08T04:03:54.048Z",
+  "appVersion": "0.5.2-preview",
+  "scope": "selected-file",
+  "counts": {
+    "files": 243,
+    "groupedBooks": 241,
+    "saved": 10,
+    "filesOutsideSample": 0
+  },
+  "checks": [
+    {
+      "id": "local-storage-write-read",
+      "status": "PASS"
+    },
+    {
+      "id": "reading-data-roundtrip",
+      "status": "PASS"
+    },
+    {
+      "id": "same-name-grouping",
+      "status": "PASS"
+    },
+    {
+      "id": "catalog-readable",
+      "status": "PASS"
+    },
+    {
+      "id": "catalog-unique-file-ids",
+      "status": "PASS"
+    },
+    {
+      "id": "epub-page-alignment",
+      "status": "NOT_TESTED",
+      "detail": "EPUBを開いた状態の読書メニューから診断できます"
+    }
+  ],
+  "sessionErrorCounts": {
+    "javascript": 0,
+    "promise": 0,
+    "download": 0,
+    "audio": 1
+  },
+  "native": {
+    "sdk": 36,
+    "android": "16",
+    "appVersion": "0.5.2-preview",
+    "webViewVersion": "153.0.8010.36",
+    "notificationsEnabled": true,
+    "batteryOptimizationExempt": false,
+    "freeBytes": 355445059584,
+    "requestedFiles": 1,
+    "testedFiles": 1,
+    "checks": [
+      {
+        "id": "native-cache-write-read",
+        "status": "PASS"
+      }
+    ],
+    "files": [
+      {
+        "ref": "F1",
+        "bytes": 561946781,
+        "exists": true,
+        "lastPlayback": {
+          "sourceBytes": 561946781,
+          "stage": "failed",
+          "originalError": {
+            "what": 1,
+            "extra": -2147483648,
+            "code": "MediaPlayer"
+          },
+          "compatibilityCopyError": "COMPAT_NO_AUDIO"
+        },
+        "sizeCheck": "PASS",
+        "type": "Audio",
+        "supportedChapters": 49,
+        "audioTracks": [],
+        "parseCheck": "FAIL",
+        "errorClass": "IOException"
+      }
+    ],
+    "playbackDecoder": "NOT_TESTED",
+    "nasConnection": "NOT_TESTED"
+  },
+  "notTested": [
+    "NAS接続・認証",
+    "実音声のデコードと出力",
+    "通知・画面消灯・Bluetooth",
+    "他アプリでの受信",
+    "ファイル全体のチェックサム"
+  ]
+}

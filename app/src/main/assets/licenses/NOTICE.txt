@@ -1,0 +1,36 @@
+DSBooks 0.6.0 — Third-party notices
+
+LibVLC Android 3.7.1 — VideoLAN and contributors
+GNU Lesser General Public License version 2.1 or later (see LGPL-2.1.txt).
+Distributed as unmodified dynamically linked native libraries and Java bindings.
+Official artifact: https://repo.maven.apache.org/maven2/org/videolan/android/libvlc-all/3.7.1/
+Bindings revision: 2fca0d2
+VLC revision: b04da5f3ed
+Corresponding source and build scripts:
+https://code.videolan.org/videolan/libvlcjni/-/tree/2fca0d2
+https://code.videolan.org/videolan/vlc/-/tree/b04da5f3ed
+https://code.videolan.org/videolan/libvlcjni/-/archive/2fca0d2/libvlcjni-2fca0d2.tar.gz
+https://code.videolan.org/videolan/vlc/-/archive/b04da5f3ed/vlc-b04da5f3ed.tar.gz
+Java source is also included in the DSBooks source archive, together with the
+unmodified AAR, pinned dependencies and the DSBooks build script. Users may
+replace/relink the library and debug changes to it. No restriction on reverse
+engineering for that purpose is imposed by this distribution.
+The library is provided WITHOUT ANY WARRANTY; see the license for details.
+
+AndroidX — The Android Open Source Project, Apache License 2.0.
+Kotlin — JetBrains and contributors, Apache License 2.0.
+JetBrains annotations — JetBrains, Apache License 2.0.
+See Apache-2.0.txt. Exact artifact versions, download URLs and SHA-256 digests
+are in third_party/androidx/DEPENDENCIES.json in the source archive.
+
+DSBooks 0.8.0 additions
+Google Cast SDK / Play services: Google LLC, applicable Google SDK/API terms.
+https://developers.google.com/cast/docs/terms
+https://developers.google.com/terms
+AndroidX: The Android Open Source Project, Apache-2.0.
+Kotlin: JetBrains s.r.o. and Kotlin Programming Language contributors, Apache-2.0.
+DataTransport, Firebase Encoders, Guava listenablefuture: Google LLC, Apache-2.0.
+javax.inject: The JSR-330 Expert Group, Apache-2.0.
+JetBrains annotations: JetBrains s.r.o., Apache-2.0.
+Exact coordinates and checksums: third_party/androidx/DEPENDENCIES.json in the accompanying source archive.
+No modifications to bundled binary libraries. AAPT compatibility changes apply only to extracted resource ID syntax.

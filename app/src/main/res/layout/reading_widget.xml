@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#151a17"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DSBooks　読みかけ"
+        android:textColor="#d6e4d9"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/widget_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="読書中の本はここに表示されます"
+        android:textColor="#a9b5ac"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:id="@+id/widget_row_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#202722"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="6dp">
+        <TextView android:id="@+id/widget_title_1" android:layout_width="match_parent" android:layout_height="wrap_content" android:ellipsize="end" android:maxLines="1" android:textColor="#f3f5f1" android:textSize="13sp" android:textStyle="bold" />
+        <TextView android:id="@+id/widget_detail_1" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#b9c5bb" android:textSize="10sp" />
+        <ProgressBar android:id="@+id/widget_progress_1" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="3dp" android:indeterminate="false" android:max="100" android:progressTint="#72a681" android:progressBackgroundTint="#3a443d" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/widget_row_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="#202722"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="6dp">
+        <TextView android:id="@+id/widget_title_2" android:layout_width="match_parent" android:layout_height="wrap_content" android:ellipsize="end" android:maxLines="1" android:textColor="#f3f5f1" android:textSize="13sp" android:textStyle="bold" />
+        <TextView android:id="@+id/widget_detail_2" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#b9c5bb" android:textSize="10sp" />
+        <ProgressBar android:id="@+id/widget_progress_2" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="3dp" android:indeterminate="false" android:max="100" android:progressTint="#72a681" android:progressBackgroundTint="#3a443d" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/widget_row_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="#202722"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="6dp">
+        <TextView android:id="@+id/widget_title_3" android:layout_width="match_parent" android:layout_height="wrap_content" android:ellipsize="end" android:maxLines="1" android:textColor="#f3f5f1" android:textSize="13sp" android:textStyle="bold" />
+        <TextView android:id="@+id/widget_detail_3" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#b9c5bb" android:textSize="10sp" />
+        <ProgressBar android:id="@+id/widget_progress_3" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="3dp" android:indeterminate="false" android:max="100" android:progressTint="#72a681" android:progressBackgroundTint="#3a443d" />
+    </LinearLayout>
+</LinearLayout>

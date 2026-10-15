@@ -1,0 +1,1412 @@
+{
+  "schema": 1,
+  "originalArchive": "DSBooks-0.8.6-source.zip",
+  "originalArchiveBytes": 13621182,
+  "originalArchiveSHA256": "02e13647c579cdef16a8ae96e0373b88acadf4d5cf9a012fe9728dbd1ced8910",
+  "entries": [
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.5.1.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.5.1.md",
+      "bytes": 6068,
+      "sha256": "cfec8e44fbbea1d0d793a33f66c4c071b98aae1aece1d4140f9dca870553a903"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.5.2.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.5.2.md",
+      "bytes": 2902,
+      "sha256": "7f17fb61cd484237d48404b86a91598f7bb28f046d41e36192839c6feaf1f8c4"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.5.3.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.5.3.md",
+      "bytes": 2239,
+      "sha256": "59ec7c5ed696065f1cbc5155ce1b76e5651888df4ff2ab0e85b58f3644153fb0"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.5.4.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.5.4.md",
+      "bytes": 3966,
+      "sha256": "4783b3384ca00acba2287fc56e92d7647cbff0ecb1240effd30cb143a3c367ce"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.5.5.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.5.5.md",
+      "bytes": 3887,
+      "sha256": "c6f7acf19fa4aa2860b3a06e57b8d1f421bdec1f1173ecb884b6979485f05213"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.6.0.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.6.0.md",
+      "bytes": 6999,
+      "sha256": "06c0ee779cdc0b4e08ad6f48450769382f975cf125ee478d2b82bf7ba39bfeaf"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.6.1.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.6.1.md",
+      "bytes": 1037,
+      "sha256": "8b2e1d10da2effc25e5dfad0ad1c90025c71d5dcd80d85f16d7fa3cb5b2dc9c1"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.6.2.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.6.2.md",
+      "bytes": 2500,
+      "sha256": "3d6b4fa7e4fcbd05d37878e6ace04f502513e17e5d6309edd2c36afb44decca0"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.7.0.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.7.0.md",
+      "bytes": 6833,
+      "sha256": "7b5a5fc8b9a4880e1ffb244310eaa0b95ec125a71b75ea72b6631f02243e8417"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.8.0.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.8.0.md",
+      "bytes": 5103,
+      "sha256": "4e0b588cdded7dd0e339b59145bf0515804164ea173599454008cb6c24f33835"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.8.1.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.8.1.md",
+      "bytes": 1989,
+      "sha256": "b5c6ff96f1671e23887c23d926f77f07c2796f676f8d66258e7ccf7d1d266808"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.8.2.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.8.2.md",
+      "bytes": 2480,
+      "sha256": "b714ddf051e6834ff28e3215efc1fbfa26610e90ae600ae48d9d8903418ddb2c"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.8.3.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.8.3.md",
+      "bytes": 1647,
+      "sha256": "2400f45484a84745739245b717c7ac6567c5d737dab388916b13af3d164ff600"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.8.4.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.8.4.md",
+      "bytes": 794,
+      "sha256": "2c2d79d051a4ce78ab0787ee40393bcafb89e1c4ea633f227a50152bd52d48e0"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.8.5.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.8.5.md",
+      "bytes": 2490,
+      "sha256": "24b4c41989bc44386ce0dafa810d6cbb64c051ec85339652a0f2d7edd21757c0"
+    },
+    {
+      "originalPath": "CHECKLIST_DEVICE_0.8.6.md",
+      "handoffPath": "CHECKLIST_DEVICE_0.8.6.md",
+      "bytes": 2504,
+      "sha256": "979a36dbd5844dc31b8d3b99885fd03f5fdf77d8f97d5ab2e2c0e52e191e784a"
+    },
+    {
+      "originalPath": "README.md",
+      "handoffPath": "docs/history/README-accumulated-through-0.8.6.md",
+      "bytes": 15686,
+      "sha256": "eb615aea2714fc930af7e9486dcc61062986ef6b1d8acf4e86f1dc69092e21cc"
+    },
+    {
+      "originalPath": "ROADMAP.md",
+      "handoffPath": "ROADMAP.md",
+      "bytes": 42263,
+      "sha256": "45575666cafcda9b710e3d390f1afc836935d4926b999957bc7d9b4c0e4af284"
+    },
+    {
+      "originalPath": "app/src/main/AndroidManifest.xml",
+      "handoffPath": "app/src/main/AndroidManifest.xml",
+      "bytes": 4824,
+      "sha256": "2ea6b7a90385312e44ee04131b8856ad22b9b0b5139ba975b982121a0f4cb2c7"
+    },
+    {
+      "originalPath": "app/src/main/assets/audio-streaming.js",
+      "handoffPath": "app/src/main/assets/audio-streaming.js",
+      "bytes": 5470,
+      "sha256": "e57db01a0cee94eba01012724cf994b46597891ed424644ac87edcab9110c6a1"
+    },
+    {
+      "originalPath": "app/src/main/assets/cast-audio.js",
+      "handoffPath": "app/src/main/assets/cast-audio.js",
+      "bytes": 1727,
+      "sha256": "24c4fa19dbc1c40b3272a6375498bc8c943b0d89508edfed38514bd981262d53"
+    },
+    {
+      "originalPath": "app/src/main/assets/comic-reader.js",
+      "handoffPath": "app/src/main/assets/comic-reader.js",
+      "bytes": 7676,
+      "sha256": "8fecf1c78b5d1e670869083040a6dee3e011bcf43bbc5da490a9a66847927ebd"
+    },
+    {
+      "originalPath": "app/src/main/assets/device-integration.js",
+      "handoffPath": "app/src/main/assets/device-integration.js",
+      "bytes": 6700,
+      "sha256": "14443657fd0ef76b632b28d39aea7b16cb68fd8b1d29bc04ea7f52d4fe2d3093"
+    },
+    {
+      "originalPath": "app/src/main/assets/diagnostics.js",
+      "handoffPath": "app/src/main/assets/diagnostics.js",
+      "bytes": 9795,
+      "sha256": "bf15a51b356f49aef9cfd35bd339749ed1245375579abedfc16c9ca9ed09e240"
+    },
+    {
+      "originalPath": "app/src/main/assets/download-storage.js",
+      "handoffPath": "app/src/main/assets/download-storage.js",
+      "bytes": 3202,
+      "sha256": "3dc6977f018eb6717d2968df78bc301cda36c2d4a92b879c9bf35c3d0c3084cf"
+    },
+    {
+      "originalPath": "app/src/main/assets/dsbooks-prototype.html",
+      "handoffPath": "app/src/main/assets/dsbooks-prototype.html",
+      "bytes": 113479,
+      "sha256": "890ea7194ae9afdd4ce21233739d3b0eb4252b81ec4e5a887e3c2a983ee4e224"
+    },
+    {
+      "originalPath": "app/src/main/assets/enhancements.css",
+      "handoffPath": "app/src/main/assets/enhancements.css",
+      "bytes": 5207,
+      "sha256": "c02820c0649e4fde073629003956ec63783da6201935845d2b99b162968d935a"
+    },
+    {
+      "originalPath": "app/src/main/assets/enhancements.js",
+      "handoffPath": "app/src/main/assets/enhancements.js",
+      "bytes": 21623,
+      "sha256": "ed2260fa6e949acebb01bdf84742022864379fbc2124858e462d88be26263c6f"
+    },
+    {
+      "originalPath": "app/src/main/assets/epub-reader.js",
+      "handoffPath": "app/src/main/assets/epub-reader.js",
+      "bytes": 21120,
+      "sha256": "41117e25538cc7792b3b229301481cd3caab16aba9fe1217df9890d36180ec4a"
+    },
+    {
+      "originalPath": "app/src/main/assets/epub-speech.js",
+      "handoffPath": "app/src/main/assets/epub-speech.js",
+      "bytes": 3243,
+      "sha256": "bbae9509e92e30edfaf46f2da7d93c72895ee5ce0ff173ef836362e16016afa5"
+    },
+    {
+      "originalPath": "app/src/main/assets/fonts/ShueiTimes.ttf",
+      "handoffPath": "../private-assets/ShueiTimes.ttf",
+      "bytes": 27503208,
+      "sha256": "c1349e4b7f32c98b7b761ad1524e32831b61b1d3fbe345f89633c8c841ee6cbb"
+    },
+    {
+      "originalPath": "app/src/main/assets/library-list.css",
+      "handoffPath": "app/src/main/assets/library-list.css",
+      "bytes": 3438,
+      "sha256": "5468454e3e56a662ec190f43ccaf48d03a9fe302dadf909a61fc93102491dea8"
+    },
+    {
+      "originalPath": "app/src/main/assets/library-list.js",
+      "handoffPath": "app/src/main/assets/library-list.js",
+      "bytes": 6976,
+      "sha256": "eed094c00ab59ca2d6417696feddc1064180ba42dd9dde5bdaa066158c9e239f"
+    },
+    {
+      "originalPath": "app/src/main/assets/library-model.js",
+      "handoffPath": "app/src/main/assets/library-model.js",
+      "bytes": 3751,
+      "sha256": "c1b2ec4e11cdbf27fe34236a60f8ad13e5a3b6205830a8eb9f76a7c11f9d4b47"
+    },
+    {
+      "originalPath": "app/src/main/assets/library-navigation.js",
+      "handoffPath": "app/src/main/assets/library-navigation.js",
+      "bytes": 7520,
+      "sha256": "530b9119c10d590c89c56a7e9c460fec8e3ee6319156574830b92140ae2197a1"
+    },
+    {
+      "originalPath": "app/src/main/assets/library-pages.js",
+      "handoffPath": "app/src/main/assets/library-pages.js",
+      "bytes": 2680,
+      "sha256": "013d7730c0075b67255661f4f0a7aab39fae81bdc0f8fde2711b2143f2ff6a4c"
+    },
+    {
+      "originalPath": "app/src/main/assets/licenses/Apache-2.0.txt",
+      "handoffPath": "app/src/main/assets/licenses/Apache-2.0.txt",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "originalPath": "app/src/main/assets/licenses/LGPL-2.1.txt",
+      "handoffPath": "app/src/main/assets/licenses/LGPL-2.1.txt",
+      "bytes": 26530,
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+    },
+    {
+      "originalPath": "app/src/main/assets/licenses/NOTICE.txt",
+      "handoffPath": "app/src/main/assets/licenses/NOTICE.txt",
+      "bytes": 2155,
+      "sha256": "6a56b9039c09639b09ccc20feae9d298cfaa2dc9d42abb6ce99a6fabc17dee8b"
+    },
+    {
+      "originalPath": "app/src/main/assets/licenses/index.html",
+      "handoffPath": "app/src/main/assets/licenses/index.html",
+      "bytes": 1217,
+      "sha256": "39f0a7fef58e7459dcb7b0292a48d7fe34fa4bb1947834a94624db147fde5ebd"
+    },
+    {
+      "originalPath": "app/src/main/assets/nas-connection.js",
+      "handoffPath": "app/src/main/assets/nas-connection.js",
+      "bytes": 8248,
+      "sha256": "36a72fc90cc8b901361b39418cf555d0dc8db2294ed0b004ea9eeb59123e5751"
+    },
+    {
+      "originalPath": "app/src/main/assets/nas-sync.js",
+      "handoffPath": "app/src/main/assets/nas-sync.js",
+      "bytes": 11893,
+      "sha256": "fefecd6ed1a7b74c07e7df6cbd51e2b1e60a3059dee82fc293c02e80b1d1b455"
+    },
+    {
+      "originalPath": "app/src/main/assets/reading-shelf.js",
+      "handoffPath": "app/src/main/assets/reading-shelf.js",
+      "bytes": 1338,
+      "sha256": "ee26c7748cba0a76a79003a2ecc12bde475a826dc2d08bedb3c4b77459d6f126"
+    },
+    {
+      "originalPath": "app/src/main/assets/startup.js",
+      "handoffPath": "app/src/main/assets/startup.js",
+      "bytes": 1889,
+      "sha256": "15da2e11e224176ac0d025a111f39533c7101105fdb5370e83f8047f016fbd78"
+    },
+    {
+      "originalPath": "app/src/main/assets/third-party/junrar-LICENSE.txt",
+      "handoffPath": "app/src/main/assets/third-party/junrar-LICENSE.txt",
+      "bytes": 1861,
+      "sha256": "9d90c3649d4eb064ce2fff366a7421107fbbc3c65d8eede45df5dec95e4e016c"
+    },
+    {
+      "originalPath": "app/src/main/assets/third-party/slf4j-LICENSE.txt",
+      "handoffPath": "app/src/main/assets/third-party/slf4j-LICENSE.txt",
+      "bytes": 1154,
+      "sha256": "6fbe2eaf44b193b8a40eed9208f52848572224ad8d7672dd09418aa174847e73"
+    },
+    {
+      "originalPath": "app/src/main/assets/work-library.css",
+      "handoffPath": "app/src/main/assets/work-library.css",
+      "bytes": 1767,
+      "sha256": "9efa0df4a007826969ab174a1772774cc102f3bf5aceb7c7de1fb835250edc3a"
+    },
+    {
+      "originalPath": "app/src/main/assets/work-library.js",
+      "handoffPath": "app/src/main/assets/work-library.js",
+      "bytes": 14060,
+      "sha256": "778eb323fc312bc323e3ac77acad796cd523c670ee4af205379ee4b07f783db0"
+    },
+    {
+      "originalPath": "app/src/main/assets/work-model.js",
+      "handoffPath": "app/src/main/assets/work-model.js",
+      "bytes": 1202,
+      "sha256": "4c4ab58dd5b7acb0cb880d997884163f220034b050c783b3fc2147aae36fcef1"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/AudioCompatibility.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/AudioCompatibility.java",
+      "bytes": 3783,
+      "sha256": "1608356c884c4ae9d70235ded0d10e2758deceb70d9c567a0cc159ef6aa72c07"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/BookDownloadService.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/BookDownloadService.java",
+      "bytes": 16612,
+      "sha256": "9ae6010f29a8ae7a7dbaa7832f4113eaedc2a822bd4131dd716df6e15ec488d0"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/BookLocation.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/BookLocation.java",
+      "bytes": 1538,
+      "sha256": "4d6f9bf6b588bfb817e5e3f3225d7dd86bfed596aab2e76b47ee4d1431a15621"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/BookStorage.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/BookStorage.java",
+      "bytes": 6288,
+      "sha256": "28011a90a9c8922d17883c111b55135330996c6c848316ed73d8d711a814de36"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/CarBrowserService.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/CarBrowserService.java",
+      "bytes": 3544,
+      "sha256": "8c9d25307dd14e2f53bada8e3baff279750a81e3ffdf51fb953845f4cb246945"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/CarLibrary.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/CarLibrary.java",
+      "bytes": 2417,
+      "sha256": "a1899a0fc0918c74f7b4069953143e3d7d5b6ab39c13546703cf8d4e3fe3200f"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/CastAudio.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/CastAudio.java",
+      "bytes": 12419,
+      "sha256": "fedbe63996fd0381d2a28d9857f9a93538f7ef4ce10a86833010521a8bb7c87a"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/CastFileServer.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/CastFileServer.java",
+      "bytes": 4589,
+      "sha256": "20dcd29d12436819ee615923832dbafb4087b21d9a5a0537ec94ff701635ff0e"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/CastRelayService.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/CastRelayService.java",
+      "bytes": 4786,
+      "sha256": "0155cdfd5c4fb7d76d3bf517721ff3944be75e974c8947ba51e63a20ca8dfe1c"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/ComicArchive.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/ComicArchive.java",
+      "bytes": 4814,
+      "sha256": "0a706dda6988323a4e79ef7b4b438018efa49c9aa8b4b4a3c3992ceaef40bc02"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/DSCastOptions.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/DSCastOptions.java",
+      "bytes": 866,
+      "sha256": "0b3ec96e6bae2363a62dd01ce13b9abbe7098f6e228073982a9cfd7f70579e5a"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/DeviceDiagnostics.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/DeviceDiagnostics.java",
+      "bytes": 8127,
+      "sha256": "2782890386555d5e435983a4f9b0b96a5c85d8b6da2a656b9119b167f2ae5e34"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/DocumentExchange.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/DocumentExchange.java",
+      "bytes": 7042,
+      "sha256": "7eb24bdd400468f1cc807102059efe8136a47631495514f5032ea362eddfe712"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/EpubContent.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/EpubContent.java",
+      "bytes": 5287,
+      "sha256": "a71a57ef14a2cf3c770ec50288380d58f3a62ed9132578bb552d7e3edd62d637"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/EpubInspection.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/EpubInspection.java",
+      "bytes": 4414,
+      "sha256": "bd327435896455afb66d64a680c22a159a8d5d3d01ce2a112d6a4dce5100908f"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/FileExercise.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/FileExercise.java",
+      "bytes": 6736,
+      "sha256": "94fdf6b4f0251684d694f268cee3e426f9d845e4151cbd9e09fcc3e6d7f789c4"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/IsoChapterParser.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/IsoChapterParser.java",
+      "bytes": 2240,
+      "sha256": "453f175c7061977383b76d4559593882b2bbd1d01e25685db97e08d4bd93bcce"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/LocalBookProvider.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/LocalBookProvider.java",
+      "bytes": 2723,
+      "sha256": "d538de9dc3c5fdbf421bf1419f20cbf63aeedf17c7c2768f9a8378989655b516"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/MainActivity.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/MainActivity.java",
+      "bytes": 58954,
+      "sha256": "80c6e13fb7e976db65e113005bdf1a0d9575cf3ce432fbb71160143980378773"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/MediaPlaybackService.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/MediaPlaybackService.java",
+      "bytes": 36765,
+      "sha256": "3dcd551f6ff315c5d42f216a94350065d2cb25c091f4701343bbac0f5d8943bb"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/NasAudioSource.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/NasAudioSource.java",
+      "bytes": 8804,
+      "sha256": "70867731ffbe90a505b1d4dfd4c44d38c1d92fcfbe129a8fd6f10c97e956e87d"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/ReadingWidgetProvider.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/ReadingWidgetProvider.java",
+      "bytes": 2670,
+      "sha256": "ae8dd5b0121577e19330b3c7b0fdf030316c7c7f79e037bec4203048c2b3e93b"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/ReadingWidgetService.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/ReadingWidgetService.java",
+      "bytes": 2939,
+      "sha256": "b15be1251d0357377ff847f31ea456bdd09fcb4a943b54e1fda0aaa5a07fb613"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/RichReadingWidgetProvider.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/RichReadingWidgetProvider.java",
+      "bytes": 167,
+      "sha256": "97afd3e25183a16d54bd14095f5ac2c3c03c8104a6fa86dcc25fbc05fb0dfc90"
+    },
+    {
+      "originalPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/SpeechCursor.java",
+      "handoffPath": "app/src/main/java/jp/shinwakai/dsbooks/preview/SpeechCursor.java",
+      "bytes": 1869,
+      "sha256": "1ba9eb56fdc79ef53a0085adf66f6e51dda9618735963b15408ae07d4b6d0654"
+    },
+    {
+      "originalPath": "app/src/main/res/drawable/ic_dsbooks.png",
+      "handoffPath": "app/src/main/res/drawable/ic_dsbooks.png",
+      "bytes": 266,
+      "sha256": "6a2009c43633cfc94ea9fa46311614e74625580427a31534a201266b71e635cd"
+    },
+    {
+      "originalPath": "app/src/main/res/drawable/tv_banner.png",
+      "handoffPath": "app/src/main/res/drawable/tv_banner.png",
+      "bytes": 1940,
+      "sha256": "915b7332b1d0cfcefc5bc89850d6f5b6077750ff7ff3927daf62d708109f7e34"
+    },
+    {
+      "originalPath": "app/src/main/res/layout/reading_widget.xml",
+      "handoffPath": "app/src/main/res/layout/reading_widget.xml",
+      "bytes": 4281,
+      "sha256": "6dcd543a2141650d9d96e90d3151fd394a31df05e7181fd6716ca31301dcc201"
+    },
+    {
+      "originalPath": "app/src/main/res/layout/reading_widget_cover_item.xml",
+      "handoffPath": "app/src/main/res/layout/reading_widget_cover_item.xml",
+      "bytes": 1127,
+      "sha256": "231f025c87329538bb6a52f62d62fd6c0993f779f99315657c2d5e0f14d2719f"
+    },
+    {
+      "originalPath": "app/src/main/res/layout/reading_widget_list.xml",
+      "handoffPath": "app/src/main/res/layout/reading_widget_list.xml",
+      "bytes": 963,
+      "sha256": "49e0632289e11d306f3a98a86d3a06858b29bf2ff948999e8841121cf5e439b0"
+    },
+    {
+      "originalPath": "app/src/main/res/layout/reading_widget_rich.xml",
+      "handoffPath": "app/src/main/res/layout/reading_widget_rich.xml",
+      "bytes": 1020,
+      "sha256": "a8e87aec8f8ba39a9e8762be3a7778794cfd4eb90f0a35f70ed3f3797758b24a"
+    },
+    {
+      "originalPath": "app/src/main/res/layout/reading_widget_text_item.xml",
+      "handoffPath": "app/src/main/res/layout/reading_widget_text_item.xml",
+      "bytes": 1270,
+      "sha256": "736abe893aa2689b5f5aecad924e8128147a05cff39a08fbfb104f91735cbba8"
+    },
+    {
+      "originalPath": "app/src/main/res/values/strings.xml",
+      "handoffPath": "app/src/main/res/values/strings.xml",
+      "bytes": 138,
+      "sha256": "2ab38fcde09157ef77da6ee900137fbbceb42a79fbb4d1ab063b5fe98cfde319"
+    },
+    {
+      "originalPath": "app/src/main/res/xml/automotive_app_desc.xml",
+      "handoffPath": "app/src/main/res/xml/automotive_app_desc.xml",
+      "bytes": 53,
+      "sha256": "a5dd49ccb6e1f3d5be9b34cbc386e187a7437d71dc600714ee03279f24afabcc"
+    },
+    {
+      "originalPath": "app/src/main/res/xml/reading_widget_info.xml",
+      "handoffPath": "app/src/main/res/xml/reading_widget_info.xml",
+      "bytes": 450,
+      "sha256": "0968e10b1e7f34504de80a0dd78853ea824228b61b03ce4d9460586b78eb7a2d"
+    },
+    {
+      "originalPath": "app/src/main/res/xml/reading_widget_rich_info.xml",
+      "handoffPath": "app/src/main/res/xml/reading_widget_rich_info.xml",
+      "bytes": 450,
+      "sha256": "ec48b91fc6c5e938b33beb8839ab7082f4031d14f85af7d0e706efb22c3b70cb"
+    },
+    {
+      "originalPath": "build.sh",
+      "handoffPath": "build.sh",
+      "bytes": 2629,
+      "sha256": "079faabcbb3ff80db1e5d620eb1a0c822d3c803ffc7b61e7bf04662222bd5218"
+    },
+    {
+      "originalPath": "notes/AUTOTEST_0.6.0.md",
+      "handoffPath": "notes/AUTOTEST_0.6.0.md",
+      "bytes": 1869,
+      "sha256": "1b1e71a4f7efaca3e14577b6c33d863a26e2efd1340c919d882fc6ec227c004a"
+    },
+    {
+      "originalPath": "notes/AUTOTEST_0.7.0.md",
+      "handoffPath": "notes/AUTOTEST_0.7.0.md",
+      "bytes": 2888,
+      "sha256": "dc86d52c91038e6ffc3aab714091dfa9ee2d0821fc478a39f0624fe863de5ab8"
+    },
+    {
+      "originalPath": "notes/AUTOTEST_0.8.0.md",
+      "handoffPath": "notes/AUTOTEST_0.8.0.md",
+      "bytes": 3293,
+      "sha256": "2dc700b9e44107d20c7fffc61e2f5bff0fda44d90f2ddc94bd157b49573c4718"
+    },
+    {
+      "originalPath": "notes/AUTOTEST_0.8.1.md",
+      "handoffPath": "notes/AUTOTEST_0.8.1.md",
+      "bytes": 1116,
+      "sha256": "1950cf89da8290eaba94055085d981e2d5646528384eb35ab9cc2b76314b0422"
+    },
+    {
+      "originalPath": "notes/AUTOTEST_0.8.2.md",
+      "handoffPath": "notes/AUTOTEST_0.8.2.md",
+      "bytes": 1749,
+      "sha256": "0bcf1e06ca3e0bc1ba2bcc5030b100fe73ab71488be509492c4eb61b92bd62ef"
+    },
+    {
+      "originalPath": "notes/AUTOTEST_0.8.3.md",
+      "handoffPath": "notes/AUTOTEST_0.8.3.md",
+      "bytes": 857,
+      "sha256": "3a9bae3dd515760b8340f6f5335b9940c8267c4994cb152dd73d6eb5564c311d"
+    },
+    {
+      "originalPath": "notes/AUTOTEST_0.8.4.md",
+      "handoffPath": "notes/AUTOTEST_0.8.4.md",
+      "bytes": 627,
+      "sha256": "6ca5ddf3145fb92c81d01f4a2bcf6f363ac7a20179c34cd84e8efb4312f7f2f6"
+    },
+    {
+      "originalPath": "notes/AUTOTEST_0.8.5.md",
+      "handoffPath": "notes/AUTOTEST_0.8.5.md",
+      "bytes": 652,
+      "sha256": "b65466ebef76137af8a06f18871dbd78ff57e4aef752baf1e791b9fe478d2cbb"
+    },
+    {
+      "originalPath": "notes/AUTOTEST_0.8.6.md",
+      "handoffPath": "notes/AUTOTEST_0.8.6.md",
+      "bytes": 1032,
+      "sha256": "7eefb8fa10dc5bae920020e7f207a4efcd1dbd0bfd8f9f3b972f9c1a36808974"
+    },
+    {
+      "originalPath": "notes/audio-diagnosis-0.5.2.md",
+      "handoffPath": "notes/audio-diagnosis-0.5.2.md",
+      "bytes": 1137,
+      "sha256": "cc71a265ee70d0ccf23d927bf664e179b58c2d900aa2ecd2c91657e8e32adb1c"
+    },
+    {
+      "originalPath": "tests/AudioCompatibilityTest.java",
+      "handoffPath": "tests/AudioCompatibilityTest.java",
+      "bytes": 1921,
+      "sha256": "3679989d33bfb58065288e8dd8562b60ab347f4fb788f77db87a34b87a62e309"
+    },
+    {
+      "originalPath": "tests/BookLocationTest.java",
+      "handoffPath": "tests/BookLocationTest.java",
+      "bytes": 2202,
+      "sha256": "df71ae0d399cb6613ddfde18b6dfb12ec62a74083bdf1afcb13a935961244302"
+    },
+    {
+      "originalPath": "tests/CastFileServerTest.java",
+      "handoffPath": "tests/CastFileServerTest.java",
+      "bytes": 2072,
+      "sha256": "37558b5f3c4c371fb839f859b342553de855dd11e514fdfdbe8d8373cb4f88c2"
+    },
+    {
+      "originalPath": "tests/ComicContentTest.java",
+      "handoffPath": "tests/ComicContentTest.java",
+      "bytes": 2154,
+      "sha256": "6efa12759dcabad30d948a854be88d1dd0a0410601b66ad6f04f306d249383ec"
+    },
+    {
+      "originalPath": "tests/EpubInspectionTest.java",
+      "handoffPath": "tests/EpubInspectionTest.java",
+      "bytes": 2208,
+      "sha256": "598ece0fbe4d5a0c0fa28c74057f4ff9adb45a85607628150e6b4cc9a53ba4a1"
+    },
+    {
+      "originalPath": "tests/IsoChapterTest.java",
+      "handoffPath": "tests/IsoChapterTest.java",
+      "bytes": 1588,
+      "sha256": "27f67533c8fe158edc8292eed4d9a8a75cd85de5fb3748b29fd99e3fe73368c6"
+    },
+    {
+      "originalPath": "tests/NasAudioSourceTest.java",
+      "handoffPath": "tests/NasAudioSourceTest.java",
+      "bytes": 4863,
+      "sha256": "6821194ddf776e53a959d74c8efacd7b9e2cc81b794e7caf83f8b5318c52d899"
+    },
+    {
+      "originalPath": "tests/SpeechCursorTest.java",
+      "handoffPath": "tests/SpeechCursorTest.java",
+      "bytes": 865,
+      "sha256": "317896272e06bb1a307bbdfb555769ad13278aada45bcdb7ebc384c6bfb5818a"
+    },
+    {
+      "originalPath": "tests/audio-fixtures/android/media/MediaCodec.java",
+      "handoffPath": "tests/audio-fixtures/android/media/MediaCodec.java",
+      "bytes": 287,
+      "sha256": "98db9c8234ef418a8484c5cb6e8a46606ad473da03f0404509728fef3cb8fb6c"
+    },
+    {
+      "originalPath": "tests/audio-fixtures/android/media/MediaExtractor.java",
+      "handoffPath": "tests/audio-fixtures/android/media/MediaExtractor.java",
+      "bytes": 1040,
+      "sha256": "d54d106a5c039362c69b80f148b6706651cb25885ca71b4a69e508db56816730"
+    },
+    {
+      "originalPath": "tests/audio-fixtures/android/media/MediaFormat.java",
+      "handoffPath": "tests/audio-fixtures/android/media/MediaFormat.java",
+      "bytes": 333,
+      "sha256": "747bb93be58c8f15a0d2983a019afdd272c261a8a1af91a1d7e1e94cf9ca27e0"
+    },
+    {
+      "originalPath": "tests/audio-fixtures/android/media/MediaMuxer.java",
+      "handoffPath": "tests/audio-fixtures/android/media/MediaMuxer.java",
+      "bytes": 1025,
+      "sha256": "2d5a0a2784bc8fba2ec871cb70be6c03e735ca0928702344e1eb6b4814287163"
+    },
+    {
+      "originalPath": "tests/audio-fixtures/android/os/Build.java",
+      "handoffPath": "tests/audio-fixtures/android/os/Build.java",
+      "bytes": 105,
+      "sha256": "41de6b64c42a96b09353eaa235455d9c8a211ba62e9ef07bfe5f26b9dc4c41e0"
+    },
+    {
+      "originalPath": "tests/bundled-font-0.8.4.cjs",
+      "handoffPath": "tests/bundled-font-0.8.4.cjs",
+      "bytes": 5694,
+      "sha256": "7ca74839f6949eb8e9fafa23fcc0c37ae2e2cad002c8b4bfc59c78788a3afd2f"
+    },
+    {
+      "originalPath": "tests/cast-ui-0.8.0.cjs",
+      "handoffPath": "tests/cast-ui-0.8.0.cjs",
+      "bytes": 2307,
+      "sha256": "357642512e1ff353e5de40cbc90e562f31cb176aab846ed52b76187135780680"
+    },
+    {
+      "originalPath": "tests/comic-ui-0.8.2.cjs",
+      "handoffPath": "tests/comic-ui-0.8.2.cjs",
+      "bytes": 6188,
+      "sha256": "58818aa170d68e4a961a48e4f1fcdac72f3f08b0c426026e1aa3d84be03f96f5"
+    },
+    {
+      "originalPath": "tests/device-0.7.0.cjs",
+      "handoffPath": "tests/device-0.7.0.cjs",
+      "bytes": 6722,
+      "sha256": "da97ee72c83d4fa6afe9763008805523035a85948396a222e5d9aba4aedc251f"
+    },
+    {
+      "originalPath": "tests/features-0.5.1.cjs",
+      "handoffPath": "tests/features-0.5.1.cjs",
+      "bytes": 5534,
+      "sha256": "4226e040e265e617a4afcbb604762fdc062323021f85c710e6244f5da9cc64e6"
+    },
+    {
+      "originalPath": "tests/features-0.5.2.cjs",
+      "handoffPath": "tests/features-0.5.2.cjs",
+      "bytes": 6960,
+      "sha256": "eca13233ee65e5b21f78f2cf6c22fdc0749e127ba31eaead068769c950e0f4e1"
+    },
+    {
+      "originalPath": "tests/features-0.5.3.cjs",
+      "handoffPath": "tests/features-0.5.3.cjs",
+      "bytes": 7010,
+      "sha256": "61f2c628e70d3dd00214aa351d11317c7e8846f44a6ccd81b34f776521289208"
+    },
+    {
+      "originalPath": "tests/features-0.6.0.cjs",
+      "handoffPath": "tests/features-0.6.0.cjs",
+      "bytes": 3593,
+      "sha256": "f6b53891c782a892cfa64f06d685a427c93e5016d4ada14422994bf539e18615"
+    },
+    {
+      "originalPath": "tests/fixtures/comics/encrypted.cbr",
+      "handoffPath": "tests/fixtures/comics/encrypted.cbr",
+      "bytes": 14288,
+      "sha256": "7529b3facc9a2bcbe9336c01ed3f017e640624257e67337ac3e245d9ee758d61"
+    },
+    {
+      "originalPath": "tests/fixtures/comics/pages/page1.png",
+      "handoffPath": "tests/fixtures/comics/pages/page1.png",
+      "bytes": 7184,
+      "sha256": "fde19c6b311dbb1cba731a115d1ac79b7d8eba66cfa999148e7a58bcf010769c"
+    },
+    {
+      "originalPath": "tests/fixtures/comics/pages/page10.png",
+      "handoffPath": "tests/fixtures/comics/pages/page10.png",
+      "bytes": 8407,
+      "sha256": "088a8eeea00aa4f23c40af2a993103457d0982b8a76cbe404faed3a200af3d78"
+    },
+    {
+      "originalPath": "tests/fixtures/comics/pages/page2.png",
+      "handoffPath": "tests/fixtures/comics/pages/page2.png",
+      "bytes": 7904,
+      "sha256": "af4adcf93c422d4b8cabdc7e736ece9c99d3cd811e10fdd4d7c51e040bc78237"
+    },
+    {
+      "originalPath": "tests/fixtures/comics/rar4.cbr",
+      "handoffPath": "tests/fixtures/comics/rar4.cbr",
+      "bytes": 13936,
+      "sha256": "c5c314fb863fc1ec6d696a39b5ff369c383cd8a1cc7fd2c5572407bc09557344"
+    },
+    {
+      "originalPath": "tests/fixtures/comics/rar5.cbr",
+      "handoffPath": "tests/fixtures/comics/rar5.cbr",
+      "bytes": 14024,
+      "sha256": "eeaccb8f38e9d9ed33f53ca3e3ca2eb9dd5abcb53a6557e1f54596fde936cf01"
+    },
+    {
+      "originalPath": "tests/fixtures/comics/sample.cbz",
+      "handoffPath": "tests/fixtures/comics/sample.cbz",
+      "bytes": 14169,
+      "sha256": "03b289e814f2473cfeee20cb54bfe1090b819e23cec5fbde1b03bd8f9638099a"
+    },
+    {
+      "originalPath": "tests/fixtures/comics/solid4.cbr",
+      "handoffPath": "tests/fixtures/comics/solid4.cbr",
+      "bytes": 13584,
+      "sha256": "3ed27b18c8b0ed84d661b627b8f7c5405118f86c3df3e916e2f590b6acebca3b"
+    },
+    {
+      "originalPath": "tests/fixtures/comics/solid5.cbr",
+      "handoffPath": "tests/fixtures/comics/solid5.cbr",
+      "bytes": 13674,
+      "sha256": "9ecde77e0da6cac53b58bea9a7a20d3cf7f8b6a7b43741940bfe757afea03db9"
+    },
+    {
+      "originalPath": "tests/folder-grid-0.6.1.cjs",
+      "handoffPath": "tests/folder-grid-0.6.1.cjs",
+      "bytes": 4066,
+      "sha256": "b4917b87986c95ab7f0a2e5bc69487e18ca2ff6c43d2564dcaf56b46897f6597"
+    },
+    {
+      "originalPath": "tests/library-list-0.8.6.cjs",
+      "handoffPath": "tests/library-list-0.8.6.cjs",
+      "bytes": 6254,
+      "sha256": "edeafbad9cfc024d6b2b9aa66957121a17c4f45990d5cd0fdbc0708a9326ed15"
+    },
+    {
+      "originalPath": "tests/model.cjs",
+      "handoffPath": "tests/model.cjs",
+      "bytes": 2401,
+      "sha256": "28281f177a90855630697b578749c835317e3381ba6fdb374752d09bf09a6def"
+    },
+    {
+      "originalPath": "tests/navigation-0.6.2.cjs",
+      "handoffPath": "tests/navigation-0.6.2.cjs",
+      "bytes": 5815,
+      "sha256": "3ae533b02fadeb45c75470fad3b712280b6a177494865f962fe44989f9c5903b"
+    },
+    {
+      "originalPath": "tests/reader-controls-0.8.3.cjs",
+      "handoffPath": "tests/reader-controls-0.8.3.cjs",
+      "bytes": 5208,
+      "sha256": "5cfe965d0f58dedb5bd7785f30c846b9572488de9c6d9059b6696d24c0a7e940"
+    },
+    {
+      "originalPath": "tests/release-0.8.5.cjs",
+      "handoffPath": "tests/release-0.8.5.cjs",
+      "bytes": 6676,
+      "sha256": "f7922ba15ff3e2ca4d22cbe074f54b3dae1ab9e809d93a6f1987c322fb42e01f"
+    },
+    {
+      "originalPath": "tests/scan-scope-0.8.1.cjs",
+      "handoffPath": "tests/scan-scope-0.8.1.cjs",
+      "bytes": 6992,
+      "sha256": "bedb303f0e5d9335486d5074e9d5872b3c8a9d162098db9929f61bcb94c8376d"
+    },
+    {
+      "originalPath": "tests/speech-follow-0.8.0.cjs",
+      "handoffPath": "tests/speech-follow-0.8.0.cjs",
+      "bytes": 4026,
+      "sha256": "b35e3199430be8a18be789dbc07be9f01c774b1f5f96fe2724dcccb2964aeab2"
+    },
+    {
+      "originalPath": "tests/startup-0.8.0.cjs",
+      "handoffPath": "tests/startup-0.8.0.cjs",
+      "bytes": 2683,
+      "sha256": "b98e1d30744525ab23f8927d4a90faafefd1b3b8edd847148bdd0d8ad40898e7"
+    },
+    {
+      "originalPath": "tests/storage-0.5.5.cjs",
+      "handoffPath": "tests/storage-0.5.5.cjs",
+      "bytes": 4851,
+      "sha256": "7af661d399b7ab521331aad92f6d18f57db7de63fa19d6cff45d5fe88cb0f159"
+    },
+    {
+      "originalPath": "tests/streaming-0.5.4.cjs",
+      "handoffPath": "tests/streaming-0.5.4.cjs",
+      "bytes": 6738,
+      "sha256": "56b450e002acd6ab94370c666e134ac951e8b201ed78aca5f9a6f89fa9d65570"
+    },
+    {
+      "originalPath": "tests/sync-0.6.0.cjs",
+      "handoffPath": "tests/sync-0.6.0.cjs",
+      "bytes": 6997,
+      "sha256": "090abb64ffd8106c6a8098a493e7ff3d0f00d0d5c1020b7927ea8659b1e60f6d"
+    },
+    {
+      "originalPath": "tests/test_metadata.py",
+      "handoffPath": "tests/test_metadata.py",
+      "bytes": 1757,
+      "sha256": "62b62c46af1c0b05ada6ec866adfcb2ebe03b9ba35f8e7f5adfc3ada63286d37"
+    },
+    {
+      "originalPath": "tests/ui-smoke.cjs",
+      "handoffPath": "tests/ui-smoke.cjs",
+      "bytes": 4582,
+      "sha256": "a1b947f111833e8b73fe77fa38a8179d81dd2e1505d82557536952bdae250072"
+    },
+    {
+      "originalPath": "third_party/androidx/DEPENDENCIES.json",
+      "handoffPath": "third_party/androidx/DEPENDENCIES.json",
+      "bytes": 15473,
+      "sha256": "826848a366e71feea11a90279623c955295b94b54e59c7e26a2e27188a6a3846"
+    },
+    {
+      "originalPath": "third_party/androidx/activity-1.0.0.pom",
+      "handoffPath": "third_party/androidx/activity-1.0.0.pom",
+      "bytes": 2512,
+      "sha256": "27a4be7462629c312da0b831a0978d2076fc34074145fb61dd4e86d7c8469b82"
+    },
+    {
+      "originalPath": "third_party/androidx/annotation-1.7.1.pom",
+      "handoffPath": "third_party/androidx/annotation-1.7.1.pom",
+      "bytes": 1924,
+      "sha256": "15ef0276d283a67ab67b1893a89e7e14513a32b3f707fac2939c7bd92a8dc172"
+    },
+    {
+      "originalPath": "third_party/androidx/annotation-experimental-1.4.1.pom",
+      "handoffPath": "third_party/androidx/annotation-experimental-1.4.1.pom",
+      "bytes": 2031,
+      "sha256": "fe57b228417f4d7c677903dc61fb4a7cf993d603499de26d8d8113e477cc4f1b"
+    },
+    {
+      "originalPath": "third_party/androidx/annotation-jvm-1.7.1.pom",
+      "handoffPath": "third_party/androidx/annotation-jvm-1.7.1.pom",
+      "bytes": 1742,
+      "sha256": "386dc40ca6dce7045a6889fb46c53c99c849b6a5584a482971129f1f4ac77255"
+    },
+    {
+      "originalPath": "third_party/androidx/annotations-13.0.pom",
+      "handoffPath": "third_party/androidx/annotations-13.0.pom",
+      "bytes": 4930,
+      "sha256": "965aeb2bedff369819bdde1bf7a0b3b89b8247dd69c88b86375d76163bb8c397"
+    },
+    {
+      "originalPath": "third_party/androidx/appcompat-1.0.0.pom",
+      "handoffPath": "third_party/androidx/appcompat-1.0.0.pom",
+      "bytes": 3031,
+      "sha256": "202c3fcdb80832b22e2d27df14d9e71b2f716f08f5728e828349e33454cc4d2b"
+    },
+    {
+      "originalPath": "third_party/androidx/appcompat-1.1.0.pom",
+      "handoffPath": "third_party/androidx/appcompat-1.1.0.pom",
+      "bytes": 2786,
+      "sha256": "340d617121f8ef8e02a6680c8f357aa3e542276d0c8a1cdcb6fd98984b2cb7b9"
+    },
+    {
+      "originalPath": "third_party/androidx/appcompat-resources-1.2.0.pom",
+      "handoffPath": "third_party/androidx/appcompat-resources-1.2.0.pom",
+      "bytes": 2707,
+      "sha256": "149dd8cec3664bef8ffde86c396ba1e2ab156ea68793d29800d008bacbc9c0f8"
+    },
+    {
+      "originalPath": "third_party/androidx/asynclayoutinflater-1.0.0.pom",
+      "handoffPath": "third_party/androidx/asynclayoutinflater-1.0.0.pom",
+      "bytes": 1823,
+      "sha256": "48167eeedc8da79c4d29deaf0d0cd9b5d8fedcae01f1a6efb3f28f08e8982f71"
+    },
+    {
+      "originalPath": "third_party/androidx/collection-1.0.0.pom",
+      "handoffPath": "third_party/androidx/collection-1.0.0.pom",
+      "bytes": 1497,
+      "sha256": "a7913a5275ad68e555d2612ebe8c14c367b153e14ca48a1872a64899020e54ef"
+    },
+    {
+      "originalPath": "third_party/androidx/collection-1.1.0.pom",
+      "handoffPath": "third_party/androidx/collection-1.1.0.pom",
+      "bytes": 1338,
+      "sha256": "67e9066ca4acfdc6e3cc508293c31ba0398057ff118e4f70b1e1813c9a3456d1"
+    },
+    {
+      "originalPath": "third_party/androidx/concurrent-futures-1.1.0.pom",
+      "handoffPath": "third_party/androidx/concurrent-futures-1.1.0.pom",
+      "bytes": 1888,
+      "sha256": "748a34eb5d13d19d187adecaea82667fded5f1b0b98a655e13ed2e4a8b3d8ae6"
+    },
+    {
+      "originalPath": "third_party/androidx/coordinatorlayout-1.0.0.pom",
+      "handoffPath": "third_party/androidx/coordinatorlayout-1.0.0.pom",
+      "bytes": 2021,
+      "sha256": "3e44e4de2fee6debc33d23626ee906e54e1bb3c1749b19e02bb667b614ab9392"
+    },
+    {
+      "originalPath": "third_party/androidx/core-1.0.0.pom",
+      "handoffPath": "third_party/androidx/core-1.0.0.pom",
+      "bytes": 2201,
+      "sha256": "384d529ad668ada4808de29b29a6348f0007c2841ad79cae9a5a089bd68810f5"
+    },
+    {
+      "originalPath": "third_party/androidx/core-1.10.1.pom",
+      "handoffPath": "third_party/androidx/core-1.10.1.pom",
+      "bytes": 3457,
+      "sha256": "da26fa6b89c430698d36e6d04b5dcf2f9ace9a316bdb25a2c548004bb8f5999b"
+    },
+    {
+      "originalPath": "third_party/androidx/core-1.6.0.pom",
+      "handoffPath": "third_party/androidx/core-1.6.0.pom",
+      "bytes": 2811,
+      "sha256": "3209475e3dde2cd0dcc60840430f51c19ccf2c08c656e123d6cc50c646fa66e8"
+    },
+    {
+      "originalPath": "third_party/androidx/core-common-2.0.0.pom",
+      "handoffPath": "third_party/androidx/core-common-2.0.0.pom",
+      "bytes": 1648,
+      "sha256": "4b6f1d459ddd146b4e85ed6d46e86eb8c2639c5de47904e6db4d698721334220"
+    },
+    {
+      "originalPath": "third_party/androidx/core-common-2.1.0.pom",
+      "handoffPath": "third_party/androidx/core-common-2.1.0.pom",
+      "bytes": 1315,
+      "sha256": "83bbb3960eaabc600ac366c94cb59414e441532a1d6aa9388b0b8bfface5cf01"
+    },
+    {
+      "originalPath": "third_party/androidx/core-runtime-2.0.0.pom",
+      "handoffPath": "third_party/androidx/core-runtime-2.0.0.pom",
+      "bytes": 1529,
+      "sha256": "e2007d41ddc69ee2a77fed7b5c1dc5a41e01122926ba59696aab7b18d2264411"
+    },
+    {
+      "originalPath": "third_party/androidx/core-runtime-2.1.0.pom",
+      "handoffPath": "third_party/androidx/core-runtime-2.1.0.pom",
+      "bytes": 1531,
+      "sha256": "c0c4ed0160cd2ca18390015de8b392b697c173327c6b2c0947d4e62f6958c05d"
+    },
+    {
+      "originalPath": "third_party/androidx/cursoradapter-1.0.0.pom",
+      "handoffPath": "third_party/androidx/cursoradapter-1.0.0.pom",
+      "bytes": 1611,
+      "sha256": "62d95c89850af21030b19f14d5f7ecd6d8bcc9a3014c59002ec99624caac8100"
+    },
+    {
+      "originalPath": "third_party/androidx/customview-1.0.0.pom",
+      "handoffPath": "third_party/androidx/customview-1.0.0.pom",
+      "bytes": 1795,
+      "sha256": "ce9e47b87184f5bd5e139e9becd5b26476d42d78c31bf2fdedc37acb41b9ad49"
+    },
+    {
+      "originalPath": "third_party/androidx/documentfile-1.0.0.pom",
+      "handoffPath": "third_party/androidx/documentfile-1.0.0.pom",
+      "bytes": 1608,
+      "sha256": "013288a9317a552706ce625fb24493e8223288529223ec578cf855a5ae9c16e5"
+    },
+    {
+      "originalPath": "third_party/androidx/drawerlayout-1.0.0.pom",
+      "handoffPath": "third_party/androidx/drawerlayout-1.0.0.pom",
+      "bytes": 2006,
+      "sha256": "da6733425a83f5ce850878fa7201082345fed7c668dd58550fdd19c0396c6fa4"
+    },
+    {
+      "originalPath": "third_party/androidx/firebase-encoders-17.0.0.pom",
+      "handoffPath": "third_party/androidx/firebase-encoders-17.0.0.pom",
+      "bytes": 928,
+      "sha256": "423575e3500e9910e3aa83f9d7a6d755b5f76ac591823baf67570fb6ce7ea816"
+    },
+    {
+      "originalPath": "third_party/androidx/firebase-encoders-json-18.0.0.pom",
+      "handoffPath": "third_party/androidx/firebase-encoders-json-18.0.0.pom",
+      "bytes": 1151,
+      "sha256": "3a7d59795a799683afa6435931066c5bb634adfebd2883a08b4765f38cdd3ea1"
+    },
+    {
+      "originalPath": "third_party/androidx/firebase-encoders-proto-16.0.0.pom",
+      "handoffPath": "third_party/androidx/firebase-encoders-proto-16.0.0.pom",
+      "bytes": 1153,
+      "sha256": "5f5fb74af3fff0e1f961fcb5f3f99267c103b16a23c89b556c8cb4a711a8dcb2"
+    },
+    {
+      "originalPath": "third_party/androidx/fragment-1.0.0.pom",
+      "handoffPath": "third_party/androidx/fragment-1.0.0.pom",
+      "bytes": 2627,
+      "sha256": "e329d673361e94d2e8f4d4d14e1f0586368bd43fb19efd5766ce7498bcccd162"
+    },
+    {
+      "originalPath": "third_party/androidx/fragment-1.1.0.pom",
+      "handoffPath": "third_party/androidx/fragment-1.1.0.pom",
+      "bytes": 3100,
+      "sha256": "ef78eb27ac02ddf3545d5f8a3857c73a2837a01853f8d5fcf77251011db52544"
+    },
+    {
+      "originalPath": "third_party/androidx/interpolator-1.0.0.pom",
+      "handoffPath": "third_party/androidx/interpolator-1.0.0.pom",
+      "bytes": 1608,
+      "sha256": "0ddc07cc39699f48ecd9ec894b5830c0f09e22e82959294edf37217224c88b7b"
+    },
+    {
+      "originalPath": "third_party/androidx/javax.inject-1.pom",
+      "handoffPath": "third_party/androidx/javax.inject-1.pom",
+      "bytes": 612,
+      "sha256": "943e12b100627804638fa285805a0ab788a680266531e650921ebfe4621a8bfa"
+    },
+    {
+      "originalPath": "third_party/androidx/kotlin-stdlib-1.7.10.pom",
+      "handoffPath": "third_party/androidx/kotlin-stdlib-1.7.10.pom",
+      "bytes": 1554,
+      "sha256": "6cc0cf5a2bc02dee060ebb90c3535fc3ddbd7a3bab210ace3e142aaf81764d81"
+    },
+    {
+      "originalPath": "third_party/androidx/kotlin-stdlib-2.1.0.pom",
+      "handoffPath": "third_party/androidx/kotlin-stdlib-2.1.0.pom",
+      "bytes": 2320,
+      "sha256": "134e48c17796c1c1027ecbe6c9f1c75c792f535987ab89e1e1dda43f8c366f5e"
+    },
+    {
+      "originalPath": "third_party/androidx/kotlin-stdlib-common-1.7.10.pom",
+      "handoffPath": "third_party/androidx/kotlin-stdlib-common-1.7.10.pom",
+      "bytes": 1162,
+      "sha256": "1011c63b88ee94cdff5d596937307559bc55037b733cc00ce63cda3cfae0a8eb"
+    },
+    {
+      "originalPath": "third_party/androidx/legacy-support-core-ui-1.0.0.pom",
+      "handoffPath": "third_party/androidx/legacy-support-core-ui-1.0.0.pom",
+      "bytes": 3934,
+      "sha256": "2baaf7f17551765524bd1e4d2f954a2a0178a112039cf549ba8b7d4b41e66931"
+    },
+    {
+      "originalPath": "third_party/androidx/legacy-support-core-utils-1.0.0.pom",
+      "handoffPath": "third_party/androidx/legacy-support-core-utils-1.0.0.pom",
+      "bytes": 2633,
+      "sha256": "8fd093008b3ee7c06e52c78da2af980a7b47b69b967fa91dad7af466f7a00a38"
+    },
+    {
+      "originalPath": "third_party/androidx/legacy-support-v4-1.0.0.pom",
+      "handoffPath": "third_party/androidx/legacy-support-v4-1.0.0.pom",
+      "bytes": 2432,
+      "sha256": "ed88fb124cfb70f2bb928ede1357874374aa45881bcb6d9744c1dc6680fa7c58"
+    },
+    {
+      "originalPath": "third_party/androidx/lifecycle-common-2.0.0.pom",
+      "handoffPath": "third_party/androidx/lifecycle-common-2.0.0.pom",
+      "bytes": 1663,
+      "sha256": "04d525073469214d0c99e81aaa875dd548ba32b82945abd8326bc50229df700d"
+    },
+    {
+      "originalPath": "third_party/androidx/lifecycle-common-2.3.1.pom",
+      "handoffPath": "third_party/androidx/lifecycle-common-2.3.1.pom",
+      "bytes": 1719,
+      "sha256": "8cd23d889a14095c6ce16840d29b1a6388fa5e115144c1309d4d6d469c1bc351"
+    },
+    {
+      "originalPath": "third_party/androidx/lifecycle-livedata-2.0.0.pom",
+      "handoffPath": "third_party/androidx/lifecycle-livedata-2.0.0.pom",
+      "bytes": 1788,
+      "sha256": "a84842ffc0f14e518db75c05cc112680a8a4a164fa78395be32d88304a439423"
+    },
+    {
+      "originalPath": "third_party/androidx/lifecycle-livedata-core-2.0.0.pom",
+      "handoffPath": "third_party/androidx/lifecycle-livedata-core-2.0.0.pom",
+      "bytes": 1773,
+      "sha256": "650fda1a232f5669742140571570ccad2f47a71225ab0f02179bc8d144b982c8"
+    },
+    {
+      "originalPath": "third_party/androidx/lifecycle-runtime-2.0.0.pom",
+      "handoffPath": "third_party/androidx/lifecycle-runtime-2.0.0.pom",
+      "bytes": 1731,
+      "sha256": "a92a46fa7aec8ac326a5d578734a2d5b63206976996b9e06cae171b35b0ab6de"
+    },
+    {
+      "originalPath": "third_party/androidx/lifecycle-runtime-2.3.1.pom",
+      "handoffPath": "third_party/androidx/lifecycle-runtime-2.3.1.pom",
+      "bytes": 2326,
+      "sha256": "b4442a84fc397edb2e908a1fdf713c6ae7d3a87641a09ee13d10ec8ee10b331f"
+    },
+    {
+      "originalPath": "third_party/androidx/lifecycle-viewmodel-2.0.0.pom",
+      "handoffPath": "third_party/androidx/lifecycle-viewmodel-2.0.0.pom",
+      "bytes": 1368,
+      "sha256": "60b758fd1c664089f82d1c018ed4ff7955c14a2b1620af7aa106591f733e0827"
+    },
+    {
+      "originalPath": "third_party/androidx/lifecycle-viewmodel-2.1.0.pom",
+      "handoffPath": "third_party/androidx/lifecycle-viewmodel-2.1.0.pom",
+      "bytes": 1368,
+      "sha256": "29aa72e339c3e227e74c973a4c85c7b79c926f0d37b61ed94f4d99a137c9a4b4"
+    },
+    {
+      "originalPath": "third_party/androidx/listenablefuture-1.0.pom",
+      "handoffPath": "third_party/androidx/listenablefuture-1.0.pom",
+      "bytes": 2226,
+      "sha256": "53873caf26bc1ed8a567ea6c939ab2aaa3f47a5e32d5cade95ddf5080d23238a"
+    },
+    {
+      "originalPath": "third_party/androidx/loader-1.0.0.pom",
+      "handoffPath": "third_party/androidx/loader-1.0.0.pom",
+      "bytes": 2207,
+      "sha256": "c978d550808b47434aa49a63164110a50b55b0bcc6160a93a2e37d5110df8c5e"
+    },
+    {
+      "originalPath": "third_party/androidx/localbroadcastmanager-1.0.0.pom",
+      "handoffPath": "third_party/androidx/localbroadcastmanager-1.0.0.pom",
+      "bytes": 1636,
+      "sha256": "a000041f5a1f79283c5175e1bb60cf3683780f401c6a9d34fbe9751253fa6ff9"
+    },
+    {
+      "originalPath": "third_party/androidx/media-1.0.0.pom",
+      "handoffPath": "third_party/androidx/media-1.0.0.pom",
+      "bytes": 2009,
+      "sha256": "9cdfe5f7849069ad84dc4fb0407b3677fb8c22d3d66fd2b8fdb8dec8c5dc7411"
+    },
+    {
+      "originalPath": "third_party/androidx/media-1.6.0.pom",
+      "handoffPath": "third_party/androidx/media-1.6.0.pom",
+      "bytes": 2361,
+      "sha256": "3e1ba4e81c7cce83cd721051d132359a802697708acb921c4d3460da5de71ede"
+    },
+    {
+      "originalPath": "third_party/androidx/mediarouter-1.8.0-beta01.pom",
+      "handoffPath": "third_party/androidx/mediarouter-1.8.0-beta01.pom",
+      "bytes": 3545,
+      "sha256": "f725d7668fff945cc8071b377228a913c0472141848e4149123821476d7450ac"
+    },
+    {
+      "originalPath": "third_party/androidx/palette-1.0.0.pom",
+      "handoffPath": "third_party/androidx/palette-1.0.0.pom",
+      "bytes": 1572,
+      "sha256": "85c5599135a789cfd5f99656f9e8240c9a727f72b2caaab60943aa32bb842771"
+    },
+    {
+      "originalPath": "third_party/androidx/play-services-base-18.5.0.pom",
+      "handoffPath": "third_party/androidx/play-services-base-18.5.0.pom",
+      "bytes": 1767,
+      "sha256": "2570b515c2717af386c890e97f644782e3f86da7b677a4ff1036147e7ea622a4"
+    },
+    {
+      "originalPath": "third_party/androidx/play-services-basement-18.5.0.pom",
+      "handoffPath": "third_party/androidx/play-services-basement-18.5.0.pom",
+      "bytes": 1336,
+      "sha256": "8a01dc8f3de942394c50b30145d4ad98f00bc19c1a9bcd08e1199b167d29ce81"
+    },
+    {
+      "originalPath": "third_party/androidx/play-services-cast-22.1.0.pom",
+      "handoffPath": "third_party/androidx/play-services-cast-22.1.0.pom",
+      "bytes": 2212,
+      "sha256": "8f73a38e232275f1e2829460caf31768e30d603b52a48782bc12371466b5d2ca"
+    },
+    {
+      "originalPath": "third_party/androidx/play-services-cast-framework-22.1.0.pom",
+      "handoffPath": "third_party/androidx/play-services-cast-framework-22.1.0.pom",
+      "bytes": 4347,
+      "sha256": "da2bfe27efa8fe095e30227e0af30b8f0094e09f78143479f72e0ad6af1ddf46"
+    },
+    {
+      "originalPath": "third_party/androidx/play-services-flags-18.1.0.pom",
+      "handoffPath": "third_party/androidx/play-services-flags-18.1.0.pom",
+      "bytes": 1169,
+      "sha256": "bc8ccf36ccc3ba4ae12da0b8cff48a5dc3a54980ca5ef23ce8112f242d4bde03"
+    },
+    {
+      "originalPath": "third_party/androidx/play-services-tasks-18.2.0.pom",
+      "handoffPath": "third_party/androidx/play-services-tasks-18.2.0.pom",
+      "bytes": 952,
+      "sha256": "6b99c48a895d155e58abcee66cc22146db83abd5d84caf6c8f7a2aea9b1bcd21"
+    },
+    {
+      "originalPath": "third_party/androidx/print-1.0.0.pom",
+      "handoffPath": "third_party/androidx/print-1.0.0.pom",
+      "bytes": 1586,
+      "sha256": "62482c0594841bee24bb996abb6cb7b320a6a3b77dca9f0a0ba4fe3be5530aa7"
+    },
+    {
+      "originalPath": "third_party/androidx/recyclerview-1.0.0.pom",
+      "handoffPath": "third_party/androidx/recyclerview-1.0.0.pom",
+      "bytes": 1771,
+      "sha256": "8831c06417fab6a9690c25f6e4b347b2e8c03cf6d47337be9c57e75b7fb23e6a"
+    },
+    {
+      "originalPath": "third_party/androidx/recyclerview-1.1.0.pom",
+      "handoffPath": "third_party/androidx/recyclerview-1.1.0.pom",
+      "bytes": 1929,
+      "sha256": "fe321062a6e4e168b9c2b39a1137564c8784a2e5849402729768d5d7c4d972ef"
+    },
+    {
+      "originalPath": "third_party/androidx/savedstate-1.0.0.pom",
+      "handoffPath": "third_party/androidx/savedstate-1.0.0.pom",
+      "bytes": 2072,
+      "sha256": "844d7d22fcea798c78bf5559229daf88ec9cad8136f5eea0a29aa76b3f8fde7c"
+    },
+    {
+      "originalPath": "third_party/androidx/slidingpanelayout-1.0.0.pom",
+      "handoffPath": "third_party/androidx/slidingpanelayout-1.0.0.pom",
+      "bytes": 2022,
+      "sha256": "40e90f96838c2a8156ab51b181400767049f387cec8c695e412d3d9205b0745b"
+    },
+    {
+      "originalPath": "third_party/androidx/swiperefreshlayout-1.0.0.pom",
+      "handoffPath": "third_party/androidx/swiperefreshlayout-1.0.0.pom",
+      "bytes": 2020,
+      "sha256": "8fe4b5db332af33cde899ba571ee866ad977be38114d3ab600edaca454ea8299"
+    },
+    {
+      "originalPath": "third_party/androidx/transport-api-3.0.0.pom",
+      "handoffPath": "third_party/androidx/transport-api-3.0.0.pom",
+      "bytes": 932,
+      "sha256": "1537bebd44da2eb7e3be73fc4259e1116f2a68a5305f4fe23c6cea9a6f84f791"
+    },
+    {
+      "originalPath": "third_party/androidx/transport-backend-cct-3.1.3.pom",
+      "handoffPath": "third_party/androidx/transport-backend-cct-3.1.3.pom",
+      "bytes": 1825,
+      "sha256": "55c89dacd324633ba4673d29984bccb5b6354c59411ef267d73d1a9d172d028f"
+    },
+    {
+      "originalPath": "third_party/androidx/transport-runtime-3.1.3.pom",
+      "handoffPath": "third_party/androidx/transport-runtime-3.1.3.pom",
+      "bytes": 1789,
+      "sha256": "b975643362754737d402931436d37f318bd85be7a258217f658b1d5aec5e539d"
+    },
+    {
+      "originalPath": "third_party/androidx/vectordrawable-1.0.0.pom",
+      "handoffPath": "third_party/androidx/vectordrawable-1.0.0.pom",
+      "bytes": 1560,
+      "sha256": "d7b66fea2854dc8fe162bcf24b9fe9d5e0b8b7a41515ce07391eb2984137c8aa"
+    },
+    {
+      "originalPath": "third_party/androidx/vectordrawable-1.1.0.pom",
+      "handoffPath": "third_party/androidx/vectordrawable-1.1.0.pom",
+      "bytes": 1726,
+      "sha256": "5b0e2d5b2179e54804785cbc21ce5f473b5e1ddd55a57da482e94dcd39492bb2"
+    },
+    {
+      "originalPath": "third_party/androidx/vectordrawable-animated-1.0.0.pom",
+      "handoffPath": "third_party/androidx/vectordrawable-animated-1.0.0.pom",
+      "bytes": 1636,
+      "sha256": "d646aeeadeb5163a5f966cc08f1dfea4b7a2c1b918ef9a39ab790d32f337d47e"
+    },
+    {
+      "originalPath": "third_party/androidx/vectordrawable-animated-1.1.0.pom",
+      "handoffPath": "third_party/androidx/vectordrawable-animated-1.1.0.pom",
+      "bytes": 1798,
+      "sha256": "276a20116b705fb75b9003ee9496c56f6fd3b32375fb232472811eba60a040bd"
+    },
+    {
+      "originalPath": "third_party/androidx/versionedparcelable-1.0.0.pom",
+      "handoffPath": "third_party/androidx/versionedparcelable-1.0.0.pom",
+      "bytes": 1655,
+      "sha256": "47ee7c5543239a651f8fb81310cadeeaab8e38a2d844d7bb92dd086e4ffbb320"
+    },
+    {
+      "originalPath": "third_party/androidx/versionedparcelable-1.1.1.pom",
+      "handoffPath": "third_party/androidx/versionedparcelable-1.1.1.pom",
+      "bytes": 1643,
+      "sha256": "5f51e65873ca612de3838fa90d2ee95b8d040efd31b9c390a19bf94d615cdb2f"
+    },
+    {
+      "originalPath": "third_party/androidx/viewpager-1.0.0.pom",
+      "handoffPath": "third_party/androidx/viewpager-1.0.0.pom",
+      "bytes": 1997,
+      "sha256": "1f72f836339d03c6eb013f65075e76ca87075a577578eb4f95f74a3a5d253128"
+    },
+    {
+      "originalPath": "thumbnail-helper-release/DSBooksThumbnailHelper.iss",
+      "handoffPath": "thumbnail-helper-release/DSBooksThumbnailHelper.iss",
+      "bytes": 1336,
+      "sha256": "fd783ad048e72f103978765b5e521ffacb64d37dc0ad3fa7d6466d674e615197"
+    },
+    {
+      "originalPath": "thumbnail-helper-release/README.txt",
+      "handoffPath": "thumbnail-helper-release/README.txt",
+      "bytes": 2760,
+      "sha256": "80b4c2bcd15b51d317654a808b78cff3f50c1e09d93a64e32e207f20703a68f9"
+    },
+    {
+      "originalPath": "thumbnail-helper-release/build-windows-installer.bat",
+      "handoffPath": "thumbnail-helper-release/build-windows-installer.bat",
+      "bytes": 754,
+      "sha256": "e0e944eccc42c82c31f62b66411c0b93427323e39e768ac655b12ab8dc8b8e50"
+    },
+    {
+      "originalPath": "thumbnail-helper-release/dsbooks_metadata.py",
+      "handoffPath": "thumbnail-helper-release/dsbooks_metadata.py",
+      "bytes": 4688,
+      "sha256": "2591b762fdb39225d3468155e1c29d23ea615194c9498be653f8a4b0cdc21188"
+    },
+    {
+      "originalPath": "thumbnail-helper-release/dsbooks_thumbnail_gui.pyw",
+      "handoffPath": "thumbnail-helper-release/dsbooks_thumbnail_gui.pyw",
+      "bytes": 9421,
+      "sha256": "f1e121f06272797f2b78f59bafc651ba56146144ec47c33f827f73d3d6b60354"
+    },
+    {
+      "originalPath": "thumbnail-helper-release/dsbooks_thumbnails.py",
+      "handoffPath": "thumbnail-helper-release/dsbooks_thumbnails.py",
+      "bytes": 9840,
+      "sha256": "50b900f593d1166af23e7dc2044a0e95e6eae89c65f1d495e1305fb1d1d7a6dc"
+    },
+    {
+      "originalPath": "thumbnail-helper-release/requirements.txt",
+      "handoffPath": "thumbnail-helper-release/requirements.txt",
+      "bytes": 54,
+      "sha256": "6cf5f120a1ef92da04e308383d5de51514cb9af272b7ff199afe87b5c1ce4da9"
+    },
+    {
+      "originalPath": "thumbnail-helper-release/setup.bat",
+      "handoffPath": "thumbnail-helper-release/setup.bat",
+      "bytes": 230,
+      "sha256": "efb30a8466e5694920eba91cc43b8c7933e3d0b022b7d2f87e31fc80d43a9e6c"
+    },
+    {
+      "originalPath": "thumbnail-helper-release/setup.ps1",
+      "handoffPath": "thumbnail-helper-release/setup.ps1",
+      "bytes": 3392,
+      "sha256": "7cf24f5fad476dd2dcd4c506f6b2677c2bd5a33f32377386631a385b04ed6edb"
+    },
+    {
+      "originalPath": "thumbnail-helper-release/uninstall.bat",
+      "handoffPath": "thumbnail-helper-release/uninstall.bat",
+      "bytes": 109,
+      "sha256": "f29c7e97015061012523d7bdb476da0135d7986eb7dd047878de3e9744d4fcb5"
+    },
+    {
+      "originalPath": "thumbnail-helper-release/uninstall.ps1",
+      "handoffPath": "thumbnail-helper-release/uninstall.ps1",
+      "bytes": 503,
+      "sha256": "f7207b7f87afa05638821a768b329f112fee85b9928e7d194402526724713607"
+    },
+    {
+      "originalPath": "tools/build_class.py",
+      "handoffPath": "tools/build_class.py",
+      "bytes": 3747,
+      "sha256": "ecabf6b38b4427a54ddabd17ae7865dad1ac2f407d6e6e52d92e0921a95510ed"
+    },
+    {
+      "originalPath": "tools/dsbooks_metadata.py",
+      "handoffPath": "tools/dsbooks_metadata.py",
+      "bytes": 4688,
+      "sha256": "2591b762fdb39225d3468155e1c29d23ea615194c9498be653f8a4b0cdc21188"
+    },
+    {
+      "originalPath": "tools/dsbooks_thumbnail_gui.pyw",
+      "handoffPath": "tools/dsbooks_thumbnail_gui.pyw",
+      "bytes": 9421,
+      "sha256": "f1e121f06272797f2b78f59bafc651ba56146144ec47c33f827f73d3d6b60354"
+    },
+    {
+      "originalPath": "tools/dsbooks_thumbnails.py",
+      "handoffPath": "tools/dsbooks_thumbnails.py",
+      "bytes": 9840,
+      "sha256": "50b900f593d1166af23e7dc2044a0e95e6eae89c65f1d495e1305fb1d1d7a6dc"
+    },
+    {
+      "originalPath": "tools/package-apk.py",
+      "handoffPath": "tools/package-apk.py",
+      "bytes": 920,
+      "sha256": "f6d4d30f31296a2864aed4de99fe76d86aac30b99b97d367ce95f36086b61227"
+    },
+    {
+      "originalPath": "tools/prepare-compiler.py",
+      "handoffPath": "tools/prepare-compiler.py",
+      "bytes": 628,
+      "sha256": "710d4aa6f020b0da763a0a0af67593e1bf3f7080be38bdcbcf88b29f47601338"
+    },
+    {
+      "originalPath": "tools/prepare-dependencies.py",
+      "handoffPath": "tools/prepare-dependencies.py",
+      "bytes": 2168,
+      "sha256": "4ceffc4f68d34e2499e2a1c5820d683c11a9830baf5697443c4568e068a252b2"
+    },
+    {
+      "originalPath": "tools/resolve-cast-dependencies.py",
+      "handoffPath": "tools/resolve-cast-dependencies.py",
+      "bytes": 2571,
+      "sha256": "1c6e3797de8dd0fb10d99ba100692d516883c133f90f3ddc65345db5dc1f7e47"
+    }
+  ]
+}

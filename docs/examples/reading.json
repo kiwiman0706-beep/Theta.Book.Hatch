@@ -1,0 +1,28 @@
+{
+  "format": "dsbooks-reading",
+  "schema": 1,
+  "exportedAt": 1700000000000,
+  "books": [
+    {
+      "bookId": "00000000-0000-4000-8000-000000000001",
+      "path": "/Books/小説/サンプル 01.epub",
+      "title": "サンプル 01",
+      "type": "ePub",
+      "progress": 25,
+      "chapterIndex": 0,
+      "epubPositions": {
+        "0": 0.25
+      },
+      "progressUpdatedAt": 1700000000000,
+      "metaUpdatedAt": 1700000000000,
+      "series": "サンプル",
+      "volume": "01",
+      "tags": [
+        "見本"
+      ],
+      "favorite": false,
+      "annotations": [],
+      "workNotes": []
+    }
+  ]
+}

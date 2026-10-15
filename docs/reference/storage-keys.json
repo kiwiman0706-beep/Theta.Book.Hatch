@@ -1,0 +1,420 @@
+{
+  "schema": 1,
+  "scope": "Static literal calls only; dynamic keys and constant-indirect calls may be absent",
+  "entries": [
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.catalog",
+      "file": "app/src/main/assets/diagnostics.js",
+      "line": 18
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.activeFolder",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 116
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.scanRoots",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 116
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.catalog",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 136
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.downloads",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 139
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.downloads",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 139
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.downloads",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 143
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.downloads",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 143
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.downloads",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 144
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.downloads",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 144
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.shares",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 154
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.folderPrefix",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 154
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.prefixExact",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 154
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.host",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 156
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.host",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 160
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.shares",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 162
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.folderPrefix",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 162
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.prefixExact",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 162
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.downloads",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 237
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.catalog",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 246
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.scanRoots",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 246
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.catalog",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 257
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.downloads",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 259
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.activeFolder",
+      "file": "app/src/main/assets/dsbooks-prototype.html",
+      "line": 266
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.preferences",
+      "file": "app/src/main/assets/enhancements.js",
+      "line": 15
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.preferences",
+      "file": "app/src/main/assets/enhancements.js",
+      "line": 16
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.downloads",
+      "file": "app/src/main/assets/enhancements.js",
+      "line": 49
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.downloads",
+      "file": "app/src/main/assets/enhancements.js",
+      "line": 49
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.activeFolder",
+      "file": "app/src/main/assets/enhancements.js",
+      "line": 65
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.activeFolder",
+      "file": "app/src/main/assets/enhancements.js",
+      "line": 67
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.downloads",
+      "file": "app/src/main/assets/enhancements.js",
+      "line": 74
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.downloads",
+      "file": "app/src/main/assets/enhancements.js",
+      "line": 74
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.activeFolder",
+      "file": "app/src/main/assets/library-list.js",
+      "line": 46
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.sort",
+      "file": "app/src/main/assets/library-list.js",
+      "line": 49
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.sortDirection",
+      "file": "app/src/main/assets/library-list.js",
+      "line": 55
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.sortDirection",
+      "file": "app/src/main/assets/library-list.js",
+      "line": 55
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.pinReading",
+      "file": "app/src/main/assets/library-list.js",
+      "line": 56
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.libraryView",
+      "file": "app/src/main/assets/library-list.js",
+      "line": 57
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.libraryView",
+      "file": "app/src/main/assets/library-list.js",
+      "line": 57
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.libraryView",
+      "file": "app/src/main/assets/library-list.js",
+      "line": 59
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.sort",
+      "file": "app/src/main/assets/library-list.js",
+      "line": 60
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.sortDirection",
+      "file": "app/src/main/assets/library-list.js",
+      "line": 60
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.sortDirection",
+      "file": "app/src/main/assets/library-list.js",
+      "line": 61
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.pinReading",
+      "file": "app/src/main/assets/library-list.js",
+      "line": 62
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.coverDensity",
+      "file": "app/src/main/assets/library-navigation.js",
+      "line": 17
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.coverDensity",
+      "file": "app/src/main/assets/library-navigation.js",
+      "line": 17
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.sort",
+      "file": "app/src/main/assets/library-navigation.js",
+      "line": 18
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.sort",
+      "file": "app/src/main/assets/library-navigation.js",
+      "line": 19
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.coverDensity",
+      "file": "app/src/main/assets/library-navigation.js",
+      "line": 20
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.activeFolder",
+      "file": "app/src/main/assets/library-navigation.js",
+      "line": 23
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.activeFolder",
+      "file": "app/src/main/assets/library-navigation.js",
+      "line": 29
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.activeFolder",
+      "file": "app/src/main/assets/library-pages.js",
+      "line": 16
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.sync.device",
+      "file": "app/src/main/assets/nas-sync.js",
+      "line": 7
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.sync.device",
+      "file": "app/src/main/assets/nas-sync.js",
+      "line": 7
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.sync.state",
+      "file": "app/src/main/assets/nas-sync.js",
+      "line": 9
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.readingExpanded",
+      "file": "app/src/main/assets/reading-shelf.js",
+      "line": 3
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.readingExpanded",
+      "file": "app/src/main/assets/reading-shelf.js",
+      "line": 4
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.readingExpanded",
+      "file": "app/src/main/assets/reading-shelf.js",
+      "line": 4
+    },
+    {
+      "kind": "localStorage",
+      "key": "dsbooks.readingExpanded",
+      "file": "app/src/main/assets/reading-shelf.js",
+      "line": 4
+    },
+    {
+      "kind": "SharedPreferences",
+      "key": "download",
+      "file": "app/src/main/java/jp/shinwakai/dsbooks/preview/BookDownloadService.java",
+      "line": 183
+    },
+    {
+      "kind": "SharedPreferences",
+      "key": "download",
+      "file": "app/src/main/java/jp/shinwakai/dsbooks/preview/BookDownloadService.java",
+      "line": 200
+    },
+    {
+      "kind": "SharedPreferences",
+      "key": "book_storage",
+      "file": "app/src/main/java/jp/shinwakai/dsbooks/preview/BookStorage.java",
+      "line": 15
+    },
+    {
+      "kind": "SharedPreferences",
+      "key": "audio_diagnostic",
+      "file": "app/src/main/java/jp/shinwakai/dsbooks/preview/DeviceDiagnostics.java",
+      "line": 20
+    },
+    {
+      "kind": "SharedPreferences",
+      "key": "audio_diagnostic",
+      "file": "app/src/main/java/jp/shinwakai/dsbooks/preview/DeviceDiagnostics.java",
+      "line": 44
+    },
+    {
+      "kind": "SharedPreferences",
+      "key": "download",
+      "file": "app/src/main/java/jp/shinwakai/dsbooks/preview/MainActivity.java",
+      "line": 406
+    },
+    {
+      "kind": "SharedPreferences",
+      "key": "secure",
+      "file": "app/src/main/java/jp/shinwakai/dsbooks/preview/MainActivity.java",
+      "line": 510
+    },
+    {
+      "kind": "SharedPreferences",
+      "key": "secure",
+      "file": "app/src/main/java/jp/shinwakai/dsbooks/preview/MainActivity.java",
+      "line": 516
+    },
+    {
+      "kind": "SharedPreferences",
+      "key": "secure",
+      "file": "app/src/main/java/jp/shinwakai/dsbooks/preview/MainActivity.java",
+      "line": 525
+    },
+    {
+      "kind": "SharedPreferences",
+      "key": "audio_diagnostic",
+      "file": "app/src/main/java/jp/shinwakai/dsbooks/preview/MediaPlaybackService.java",
+      "line": 200
+    }
+  ]
+}

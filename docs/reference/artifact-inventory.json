@@ -1,0 +1,453 @@
+{
+  "snapshot_date": "2026-10-15",
+  "source": "Library filename search DSBooks; metadata only, not proof of historical build contents",
+  "entries": [
+    {
+      "filename": "DSBooks-0.8.6-source.zip",
+      "size_bytes": 13621182,
+      "created_at": "2026-10-15T00:39:26.965531Z",
+      "modified_at": "2026-10-15T00:39:26.965531Z"
+    },
+    {
+      "filename": "DSBooks-0.8.6-preview.apk",
+      "size_bytes": 109809860,
+      "created_at": "2026-10-15T00:39:26.750437Z",
+      "modified_at": "2026-10-15T00:39:26.750437Z"
+    },
+    {
+      "filename": "DSBooks-0.8.5-preview.apk",
+      "size_bytes": 109801531,
+      "created_at": "2026-10-14T13:43:16.061713Z",
+      "modified_at": "2026-10-14T13:43:16.061713Z"
+    },
+    {
+      "filename": "DSBooks-0.8.5-source.zip",
+      "size_bytes": 13611517,
+      "created_at": "2026-10-14T13:43:15.659623Z",
+      "modified_at": "2026-10-14T13:43:15.659623Z"
+    },
+    {
+      "filename": "DSBooks-0.8.4-source.zip",
+      "size_bytes": 13602397,
+      "created_at": "2026-10-14T00:33:17.488639Z",
+      "modified_at": "2026-10-14T00:33:17.488639Z"
+    },
+    {
+      "filename": "DSBooks-0.8.4-preview.apk",
+      "size_bytes": 109801461,
+      "created_at": "2026-10-14T00:33:17.479835Z",
+      "modified_at": "2026-10-14T00:33:17.479835Z"
+    },
+    {
+      "filename": "DSBooks-0.8.3-preview.apk",
+      "size_bytes": 96809188,
+      "created_at": "2026-10-13T23:09:23.864717Z",
+      "modified_at": "2026-10-13T23:09:23.864717Z"
+    },
+    {
+      "filename": "DSBooks-0.8.3-source.zip",
+      "size_bytes": 493295,
+      "created_at": "2026-10-13T23:09:23.827048Z",
+      "modified_at": "2026-10-13T23:09:23.827048Z"
+    },
+    {
+      "filename": "DSBooks-0.8.2-preview.apk",
+      "size_bytes": 96809188,
+      "created_at": "2026-10-11T01:04:14.846472Z",
+      "modified_at": "2026-10-11T01:04:14.846472Z"
+    },
+    {
+      "filename": "DSBooks-0.8.2-source.zip",
+      "size_bytes": 487179,
+      "created_at": "2026-10-11T01:04:14.834445Z",
+      "modified_at": "2026-10-11T01:04:14.834445Z"
+    },
+    {
+      "filename": "DSBooks-0.8.1-preview.apk",
+      "size_bytes": 96653307,
+      "created_at": "2026-10-11T00:22:10.730253Z",
+      "modified_at": "2026-10-11T00:22:10.730253Z"
+    },
+    {
+      "filename": "DSBooks-0.8.1-source.zip",
+      "size_bytes": 371130,
+      "created_at": "2026-10-11T00:22:09.983342Z",
+      "modified_at": "2026-10-11T00:22:09.983342Z"
+    },
+    {
+      "filename": "DSBooks-0.8.0-source.zip",
+      "size_bytes": 362759,
+      "created_at": "2026-10-09T23:23:54.140163Z",
+      "modified_at": "2026-10-09T23:26:42.690849Z"
+    },
+    {
+      "filename": "DSBooks-0.8.0-preview.apk",
+      "size_bytes": 96653307,
+      "created_at": "2026-10-09T23:23:21.897891Z",
+      "modified_at": "2026-10-09T23:23:21.897891Z"
+    },
+    {
+      "filename": "DSBooks-0.8.0-work-checkpoint.zip",
+      "size_bytes": 226566,
+      "created_at": "2026-10-09T23:11:34.322325Z",
+      "modified_at": "2026-10-09T23:11:34.322325Z"
+    },
+    {
+      "filename": "DSBooks-0.7.0-source.zip",
+      "size_bytes": 94964208,
+      "created_at": "2026-10-09T04:17:12.725139Z",
+      "modified_at": "2026-10-09T04:17:12.725139Z"
+    },
+    {
+      "filename": "DSBooks-0.7.0-preview.apk",
+      "size_bytes": 93142702,
+      "created_at": "2026-10-09T04:17:12.677576Z",
+      "modified_at": "2026-10-09T04:17:12.677576Z"
+    },
+    {
+      "filename": "DSBooks-0.6.2-source.zip",
+      "size_bytes": 94941380,
+      "created_at": "2026-10-08T23:55:26.889571Z",
+      "modified_at": "2026-10-08T23:55:26.889571Z"
+    },
+    {
+      "filename": "DSBooks-0.6.2-preview.apk",
+      "size_bytes": 93130124,
+      "created_at": "2026-10-08T23:55:26.819348Z",
+      "modified_at": "2026-10-08T23:55:26.819348Z"
+    },
+    {
+      "filename": "DSBooks-0.6.1-preview.apk",
+      "size_bytes": 93125954,
+      "created_at": "2026-10-08T23:08:43.224365Z",
+      "modified_at": "2026-10-08T23:08:43.224365Z"
+    },
+    {
+      "filename": "DSBooks-0.6.1-source.zip",
+      "size_bytes": 94933596,
+      "created_at": "2026-10-08T23:08:43.221404Z",
+      "modified_at": "2026-10-08T23:08:43.221404Z"
+    },
+    {
+      "filename": "DSBooks-0.6.0-preview.apk",
+      "size_bytes": 93125954,
+      "created_at": "2026-10-08T15:57:48.741373Z",
+      "modified_at": "2026-10-08T15:57:48.741373Z"
+    },
+    {
+      "filename": "DSBooks-0.6.0-source.zip",
+      "size_bytes": 94930438,
+      "created_at": "2026-10-08T15:57:48.664921Z",
+      "modified_at": "2026-10-08T15:57:48.664921Z"
+    },
+    {
+      "filename": "DSBooks-0.5.5-source.zip",
+      "size_bytes": 94900811,
+      "created_at": "2026-10-08T10:41:13.061141Z",
+      "modified_at": "2026-10-08T10:41:13.061141Z"
+    },
+    {
+      "filename": "DSBooks-0.5.5-preview.apk",
+      "size_bytes": 93104928,
+      "created_at": "2026-10-08T10:41:13.039999Z",
+      "modified_at": "2026-10-08T10:41:13.039999Z"
+    },
+    {
+      "filename": "DSBooks-0.5.4-source.zip",
+      "size_bytes": 94884431,
+      "created_at": "2026-10-08T05:16:46.367717Z",
+      "modified_at": "2026-10-08T05:16:46.367717Z"
+    },
+    {
+      "filename": "DSBooks-0.5.4-preview.apk",
+      "size_bytes": 94698308,
+      "created_at": "2026-10-08T05:16:46.358366Z",
+      "modified_at": "2026-10-08T05:16:46.358366Z"
+    },
+    {
+      "filename": "DSBooks-0.5.3-source.zip",
+      "size_bytes": 74595071,
+      "created_at": "2026-10-08T04:22:13.559934Z",
+      "modified_at": "2026-10-08T04:22:13.559934Z"
+    },
+    {
+      "filename": "DSBooks-0.5.3-preview.apk",
+      "size_bytes": 93092497,
+      "created_at": "2026-10-08T04:22:13.550187Z",
+      "modified_at": "2026-10-08T04:22:13.550187Z"
+    },
+    {
+      "filename": "DSBooks-0.5.2-preview.apk",
+      "size_bytes": 124148,
+      "created_at": "2026-10-08T04:00:53.483655Z",
+      "modified_at": "2026-10-08T04:00:53.483655Z"
+    },
+    {
+      "filename": "DSBooks-0.5.2-source.zip",
+      "size_bytes": 150308,
+      "created_at": "2026-10-08T04:00:53.437317Z",
+      "modified_at": "2026-10-08T04:00:53.437317Z"
+    },
+    {
+      "filename": "DSBooks-0.5.1-source.zip",
+      "size_bytes": 137982,
+      "created_at": "2026-10-08T03:37:04.339345Z",
+      "modified_at": "2026-10-08T03:37:04.339345Z"
+    },
+    {
+      "filename": "DSBooks-0.5.1-preview.apk",
+      "size_bytes": 120052,
+      "created_at": "2026-10-08T03:37:04.319534Z",
+      "modified_at": "2026-10-08T03:37:04.319534Z"
+    },
+    {
+      "filename": "DSBooks-0.5.0-preview.apk",
+      "size_bytes": 107494,
+      "created_at": "2026-10-07T22:05:20.667316Z",
+      "modified_at": "2026-10-07T22:05:20.667316Z"
+    },
+    {
+      "filename": "DSBooks-PC-helper-0.3.0.zip",
+      "size_bytes": 14368,
+      "created_at": "2026-10-07T22:05:20.548111Z",
+      "modified_at": "2026-10-07T22:05:20.548111Z"
+    },
+    {
+      "filename": "DSBooks-0.5.0-source.zip",
+      "size_bytes": 120133,
+      "created_at": "2026-10-07T22:05:20.520144Z",
+      "modified_at": "2026-10-07T22:05:20.520144Z"
+    },
+    {
+      "filename": "DSBooks-0.4.9-source.zip",
+      "size_bytes": 83032,
+      "created_at": "2026-10-07T11:46:26.934465Z",
+      "modified_at": "2026-10-07T11:46:26.934465Z"
+    },
+    {
+      "filename": "DSBooks-0.4.9-preview.apk",
+      "size_bytes": 86741,
+      "created_at": "2026-10-07T11:46:24.905622Z",
+      "modified_at": "2026-10-07T11:46:24.905622Z"
+    },
+    {
+      "filename": "DSBooks-0.4.8-source.zip",
+      "size_bytes": 73962,
+      "created_at": "2026-10-07T09:47:38.744297Z",
+      "modified_at": "2026-10-07T09:47:38.744297Z"
+    },
+    {
+      "filename": "DSBooks-0.4.8-preview.apk",
+      "size_bytes": 86741,
+      "created_at": "2026-10-07T09:43:56.952083Z",
+      "modified_at": "2026-10-07T09:46:46.880841Z"
+    },
+    {
+      "filename": "DSBooks-0.4.7-preview.apk",
+      "size_bytes": 78549,
+      "created_at": "2026-10-07T08:02:05.135844Z",
+      "modified_at": "2026-10-07T08:02:05.135844Z"
+    },
+    {
+      "filename": "DSBooks-0.4.6-preview.apk",
+      "size_bytes": 70357,
+      "created_at": "2026-10-07T07:48:41.411409Z",
+      "modified_at": "2026-10-07T07:48:41.411409Z"
+    },
+    {
+      "filename": "DSBooks-0.4.5-preview.apk",
+      "size_bytes": 70357,
+      "created_at": "2026-10-07T05:33:53.047743Z",
+      "modified_at": "2026-10-07T05:33:53.047743Z"
+    },
+    {
+      "filename": "DSBooks-0.4.4-preview.apk",
+      "size_bytes": 70357,
+      "created_at": "2026-10-05T12:41:03.786987Z",
+      "modified_at": "2026-10-05T12:41:03.786987Z"
+    },
+    {
+      "filename": "DSBooks-0.4.3-preview.apk",
+      "size_bytes": 62013,
+      "created_at": "2026-10-05T10:17:05.780028Z",
+      "modified_at": "2026-10-05T10:17:05.780028Z"
+    },
+    {
+      "filename": "DSBooks-thumbnail-helper-GUI-0.2.zip",
+      "size_bytes": 12104,
+      "created_at": "2026-10-05T09:25:50.616115Z",
+      "modified_at": "2026-10-05T09:28:08.664075Z"
+    },
+    {
+      "filename": "DSBooks-0.4.2-preview.apk",
+      "size_bytes": 57917,
+      "created_at": "2026-10-05T08:12:00.659054Z",
+      "modified_at": "2026-10-05T08:13:05.394405Z"
+    },
+    {
+      "filename": "DSBooks-thumbnail-helper-0.1.zip",
+      "size_bytes": 5043,
+      "created_at": "2026-10-05T08:12:08.379517Z",
+      "modified_at": "2026-10-05T08:12:08.379517Z"
+    },
+    {
+      "filename": "DSBooks-0.4.1-preview.apk",
+      "size_bytes": 57917,
+      "created_at": "2026-10-05T07:52:12.380109Z",
+      "modified_at": "2026-10-05T07:52:12.380109Z"
+    },
+    {
+      "filename": "dsbooks-bookshelf-mockup.html",
+      "size_bytes": 33106,
+      "created_at": "2026-10-05T04:41:10.307635Z",
+      "modified_at": "2026-10-05T07:52:02.637606Z"
+    },
+    {
+      "filename": "DSBooks-0.4.0-preview.apk",
+      "size_bytes": 57917,
+      "created_at": "2026-10-05T07:45:45.301838Z",
+      "modified_at": "2026-10-05T07:45:45.301838Z"
+    },
+    {
+      "filename": "DSBooks-signing-key.keystore",
+      "size_bytes": 2762,
+      "created_at": "2026-10-04T23:21:40.744921Z",
+      "modified_at": "2026-10-04T23:21:40.744921Z",
+      "included": false,
+      "reason": "署名秘密鍵: 別管理"
+    },
+    {
+      "filename": "DSBooks-0.3.6-preview.apk",
+      "size_bytes": 53821,
+      "created_at": "2026-10-04T16:20:46.441948Z",
+      "modified_at": "2026-10-04T16:20:46.441948Z"
+    },
+    {
+      "filename": "DSBooks-0.3.5-preview.apk",
+      "size_bytes": 49725,
+      "created_at": "2026-10-04T12:04:39.097303Z",
+      "modified_at": "2026-10-04T12:04:39.097303Z"
+    },
+    {
+      "filename": "DSBooks-0.3.4-preview.apk",
+      "size_bytes": 49725,
+      "created_at": "2026-10-04T10:10:52.339450Z",
+      "modified_at": "2026-10-04T10:10:52.339450Z"
+    },
+    {
+      "filename": "DSBooks-0.3.3-preview.apk",
+      "size_bytes": 49725,
+      "created_at": "2026-10-04T09:25:06.799547Z",
+      "modified_at": "2026-10-04T09:26:29.217267Z"
+    },
+    {
+      "filename": "DSBooks-0.3.2-preview.apk",
+      "size_bytes": 49725,
+      "created_at": "2026-10-04T09:22:53.092725Z",
+      "modified_at": "2026-10-04T09:22:53.092725Z"
+    },
+    {
+      "filename": "DSBooks-0.3.1-preview.apk",
+      "size_bytes": 49725,
+      "created_at": "2026-10-04T08:44:46.165331Z",
+      "modified_at": "2026-10-04T08:44:46.165331Z"
+    },
+    {
+      "filename": "DSBooks-0.3.0-preview.apk",
+      "size_bytes": 45629,
+      "created_at": "2026-10-04T08:17:01.901406Z",
+      "modified_at": "2026-10-04T08:17:01.901406Z"
+    },
+    {
+      "filename": "DSBooks-0.2.9-preview.apk",
+      "size_bytes": 37437,
+      "created_at": "2026-10-04T07:24:45.241234Z",
+      "modified_at": "2026-10-04T07:24:45.241234Z"
+    },
+    {
+      "filename": "DSBooks-0.2.8-preview.apk",
+      "size_bytes": 29245,
+      "created_at": "2026-10-04T07:00:03.482246Z",
+      "modified_at": "2026-10-04T07:00:03.482246Z"
+    },
+    {
+      "filename": "DSBooks-0.2.7-preview.apk",
+      "size_bytes": 25149,
+      "created_at": "2026-10-04T06:24:42.249508Z",
+      "modified_at": "2026-10-04T06:24:42.249508Z"
+    },
+    {
+      "filename": "DSBooks-0.2.6-preview.apk",
+      "size_bytes": 25149,
+      "created_at": "2026-10-04T06:22:48.410500Z",
+      "modified_at": "2026-10-04T06:22:48.410500Z"
+    },
+    {
+      "filename": "DSBooks-0.2.5-preview.apk",
+      "size_bytes": 25149,
+      "created_at": "2026-10-04T05:53:57.480637Z",
+      "modified_at": "2026-10-04T05:53:57.480637Z"
+    },
+    {
+      "filename": "DSBooks-0.2.4-preview.apk",
+      "size_bytes": 25149,
+      "created_at": "2026-10-04T00:38:44.611813Z",
+      "modified_at": "2026-10-04T00:38:44.611813Z"
+    },
+    {
+      "filename": "DSBooks-0.2.3-preview.apk",
+      "size_bytes": 25149,
+      "created_at": "2026-10-03T22:16:24.498932Z",
+      "modified_at": "2026-10-03T22:16:24.498932Z"
+    },
+    {
+      "filename": "DSBooks-0.2.2-preview.apk",
+      "size_bytes": 25149,
+      "created_at": "2026-10-03T19:40:25.568217Z",
+      "modified_at": "2026-10-03T19:40:25.568217Z"
+    },
+    {
+      "filename": "DSBooks-0.2.1-preview.apk",
+      "size_bytes": 25149,
+      "created_at": "2026-10-03T16:37:42.336985Z",
+      "modified_at": "2026-10-03T16:37:42.336985Z"
+    },
+    {
+      "filename": "dsbooks-0.2.0-preview-source.zip",
+      "size_bytes": 25436,
+      "created_at": "2026-10-01T06:56:03.705085Z",
+      "modified_at": "2026-10-01T06:56:03.705085Z"
+    },
+    {
+      "filename": "DSBooks-0.2.0-preview.apk",
+      "size_bytes": 25149,
+      "created_at": "2026-10-01T06:24:49.555369Z",
+      "modified_at": "2026-10-01T06:24:49.555369Z"
+    },
+    {
+      "filename": "dsbooks-0.2.0-source.zip",
+      "size_bytes": 25084,
+      "created_at": "2026-10-01T05:49:06.342755Z",
+      "modified_at": "2026-10-01T05:49:06.342755Z"
+    },
+    {
+      "filename": "dsbooks-0.2.0.apk",
+      "size_bytes": 25149,
+      "created_at": "2026-10-01T05:49:04.342457Z",
+      "modified_at": "2026-10-01T05:49:04.342457Z"
+    },
+    {
+      "filename": "dsbooks-prototype-0.1.0.apk",
+      "size_bytes": 21053,
+      "created_at": "2026-10-01T04:25:10.047962Z",
+      "modified_at": "2026-10-01T04:25:10.047962Z"
+    },
+    {
+      "filename": "dsbooks-prototype.html",
+      "size_bytes": 35865,
+      "created_at": "2026-10-01T04:01:40.927670Z",
+      "modified_at": "2026-10-01T04:10:34.255431Z"
+    }
+  ],
+  "warning": "Metadata timestamps are artifact storage times, not verified release dates. Old APKs are catalogued only."
+}
