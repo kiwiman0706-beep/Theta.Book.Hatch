@@ -60,7 +60,11 @@
 - 822.1MBの「21 Lessons」：外部VLCで再生できた報告あり。これはDSBooks内蔵版成功の証拠ではない。
 - 最新0.8.5／0.8.6の全機能について、実機完了の包括的報告はまだない。
 
-## 今回のリリース証拠
+## Claude版 0.9.0 のリリース証拠
+
+`DSBooks-0.9.0-claude.apk`：109,822,281 bytes、SHA-256 `9a313e1fa0f4a464fd8311c1249bbdf7d492a15fd455d6e7e2dc48c9f3b86405`。ZIP CRC正常、package `jp.shinwakai.dsbooks.claude`／versionCode 65／label「DSBooks Claude」、provider `jp.shinwakai.dsbooks.claude.files`、assets 32件がソースと一致（ShueiTimes含む）、ネイティブ4 ABI、v2/v3署名、証明書SHA-256 `27c01a801b8ad5b4c229bf5061b6fd377031ba65f4443f4bc7faafe712d16490`。実機での起動・動作は未確認。
+
+## ChatGPT版 0.8.6 のリリース証拠
 
 APK SHA-256：`80c8fa21309201bf4a1d9de8e9118fbf07a735e7fb957d6fdddeed0ce6fb97d3`
 
