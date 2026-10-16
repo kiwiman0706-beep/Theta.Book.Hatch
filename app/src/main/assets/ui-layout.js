@@ -102,7 +102,7 @@ window.DSLayout=(()=>{
    const quick=el('div','settings-quick');quick.setAttribute('role','group');quick.setAttribute('aria-label','よく使う操作');
    const tile=(icon,label,run,id)=>{const b=el('button','quick-tile',`<span aria-hidden="true">${icon}</span><b>${label}</b>`);b.type='button';if(id)b.id=id;b.onclick=run;return b;};
    const importBtn=$('importBooks'),tail=$('launchTailscale');
-   quick.append(tile('＋','本を追加',()=>importBtn?.click(),'quickImport'),tile('⟳','今すぐ同期',()=>{const r=$('runNasSync');if(r)r.click();else window.DSBooksSync?.run?.();},'quickSync'),tile('↓','ダウンロード',()=>window.DSDownloads?.open(),'quickDownloads'),tile('⇄','Tailscale',()=>tail?.click(),'quickTailscale'),tile('✔','Secure SignIn',()=>window.DSBooksNative?.openSecureSignIn?.(),'quickSecureSignIn'),tile('✓','セルフテスト',()=>$('selfTest')?.click(),'quickSelfTest'));
+   quick.append(tile('＋','本を追加',()=>importBtn?.click(),'quickImport'),tile('⟳','今すぐ同期',()=>{const r=$('runNasSync');if(r)r.click();else window.DSSync?.run?.(true);},'quickSync'),tile('↓','ダウンロード',()=>window.DSDownloads?.open(),'quickDownloads'),tile('⇄','Tailscale',()=>tail?.click(),'quickTailscale'),tile('✔','Secure SignIn',()=>window.DSBooksNative?.openSecureSignIn?.(),'quickSecureSignIn'),tile('✓','セルフテスト',()=>$('selfTest')?.click(),'quickSelfTest'));
    const first=importBtn?.closest('.feature-actions');if(first){first.hidden=true;}
    sheetEl.querySelector(':scope>h2').after(quick);
   }
