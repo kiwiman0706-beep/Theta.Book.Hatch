@@ -4,6 +4,10 @@
 
 **Claude版 0.9.3（versionCode 68、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
 
+Windows版 desktop 0.2.0
+- 本ごとの別ウインドウ、DeskHatchのドロワー（本は別ウインドウで開く）、全ウインドウ・ドロワーで同じ本棚と読書位置（アプリ側の保存領域で一元管理）、バックグラウンド起動、Shuei Times同梱、朗読速度の修正。
+- 「複数ダウンロードで前がキャンセルされる」は模擬NASで再現せず（待ち行列は正常）。download.logで実機の状況を確認する。
+
 Windows版 desktop 0.1.0
 - `desktop/`：Android版の画面をWindowsのウィンドウ（WebView2）で表示。NAS接続・ダウンロード待ち・EPUB/PDF/CBZ/Markdown・M4B再生・朗読（Windows音声）・読書データ同期。表紙キャッシュ作成ツールを☰メニューとスタートメニューから起動。
 - インストーラーと持ち運び版ZIPをWindowsのCIでビルドし、ビルド済みexeを起動して確認してから公開。署名なし。

@@ -29,6 +29,7 @@ Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "デスクトップにショートカットを作成"; GroupDescription: "追加アイコン:"
+Name: "startup"; Description: "Windowsの起動時にバックグラウンドで起動する（DeskHatchのドロワーで使う場合）"; GroupDescription: "起動:"; Flags: unchecked
 
 [Files]
 Source: "dist\DSBooks\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -37,6 +38,7 @@ Source: "dist\DSBooks\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs 
 Name: "{autoprograms}\DSBooks"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autoprograms}\DSBooks ライブラリ管理（表紙キャッシュ）"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--library-tools"
 Name: "{autodesktop}\DSBooks"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{userstartup}\DSBooks（バックグラウンド）"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--background"; Tasks: startup
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "DSBooksを起動"; Flags: postinstall nowait skipifsilent

@@ -25,7 +25,7 @@ try:
         return json.loads(urllib.request.urlopen(req).read())["r"]
     assert bridge("getAppVersion").endswith("-desktop")
     assert json.loads(bridge("getStorageInfo"))["available"] is True
-    for asset in ("desktop-bridge.js", "epub-reader.js", "ui-layout.css"):
+    for asset in ("desktop-bridge.js", "epub-reader.js", "ui-layout.css") + (("fonts/ShueiTimes.ttf",) if os.environ.get("DSBOOKS_REQUIRE_FONT") else ()):
         assert urllib.request.urlopen("http://127.0.0.1:" + PORT + "/" + asset).status == 200
     if window:
         time.sleep(8)

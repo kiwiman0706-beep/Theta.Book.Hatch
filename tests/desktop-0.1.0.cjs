@@ -12,7 +12,7 @@ fs.writeFileSync(path.join(fx,'bad.txt'),'x');
  const browser=await chromium.launch({headless:true,executablePath:process.env.TEST_CHROMIUM,args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:1100,height:800}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(`http://127.0.0.1:${APP}/`);await page.waitForFunction(()=>window.DSBoot&&DSBoot.readyMs!==undefined);
- assert.equal(await page.evaluate(()=>DSBooksNative.getAppVersion()),'0.1.0-desktop');
+ assert.match(await page.evaluate(()=>DSBooksNative.getAppVersion()),/^0\.\d+\.\d+-desktop$/);
  // Bridge requires the per-run token.
  assert.equal(await page.evaluate(async()=>(await fetch('/bridge/getAppVersion',{method:'POST',body:'[]'})).status),403);
  // Import through the (test) file dialog: 3 books in, 1 rejected.

@@ -1,5 +1,5 @@
 """Minimal fake DSM for desktop tests: SYNO.FileStation.Download and a JSON API reply."""
-import json, sys, threading, urllib.parse
+import json, sys, threading, time, urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 FILES = {}
@@ -20,6 +20,12 @@ class H(BaseHTTPRequestHandler):
                 start = int(rng.split('=')[1].split('-')[0]); part = data[start:]
                 self.send_response(206); self.send_header('Content-Range', 'bytes %d-%d/%d' % (start, len(data) - 1, len(data)))
                 self.send_header('Content-Type', 'application/octet-stream'); self.send_header('Content-Length', str(len(part))); self.end_headers(); self.wfile.write(part); return
+            if '/slow' in path:
+                # Throttled so a second download starts while this one is still running.
+                self.send_response(200); self.send_header('Content-Type', 'application/octet-stream'); self.send_header('Content-Length', str(len(data))); self.end_headers()
+                for i in range(0, len(data), 4096):
+                    self.wfile.write(data[i:i + 4096]); self.wfile.flush(); time.sleep(0.05)
+                return
             return self._reply(200, data, 'application/octet-stream')
         return self._reply(200, json.dumps({'success': True, 'data': {'echo': q.get('x', [''])[0]}}).encode(), 'application/json')
     def do_POST(self):

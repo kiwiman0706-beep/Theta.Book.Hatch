@@ -12,6 +12,7 @@ jobs:
     runs-on: windows-latest
     env:
       PYTHONUTF8: '1'
+      DSBOOKS_REQUIRE_FONT: '1'
     defaults:
       run:
         shell: bash
@@ -29,6 +30,18 @@ jobs:
           [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "bad version $VERSION"; exit 1; }
           grep -q "APP_VERSION = \"$VERSION-desktop\"" desktop/bridge.py || { echo "bridge.py APP_VERSION does not match $VERSION"; exit 1; }
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      - name: Bundle the user's Shuei Times font from the latest Android release (private repo; never committed)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG=$(gh release list --limit 30 --json tagName -q '.[].tagName' | grep -E '^v[0-9.]+-claude$' | head -1)
+          [ -n "$TAG" ] || { echo "no Android release found"; exit 1; }
+          gh release download "$TAG" -p '*.apk' -D apkdl
+          mkdir -p app/src/main/assets/fonts
+          unzip -p apkdl/*.apk assets/fonts/ShueiTimes.ttf > app/src/main/assets/fonts/ShueiTimes.ttf
+          echo "c1349e4b7f32c98b7b761ad1524e32831b61b1d3fbe345f89633c8c841ee6cbb  app/src/main/assets/fonts/ShueiTimes.ttf" | sha256sum -c -
+          rm -rf apkdl
       - name: Smoke test (source)
         run: python desktop/smoke_test.py
       - name: Freeze

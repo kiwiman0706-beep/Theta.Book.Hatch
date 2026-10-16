@@ -2,6 +2,8 @@
 
   DSBooks.exe                    the library viewer (Android UI in a native window)
   DSBooks.exe --library-tools    the cover-cache / Obsidian-metadata tool (former PC helper)
+  DSBooks.exe --background       run without showing the shelf (for a DeskHatch drawer at
+                                 http://127.0.0.1:47817/); starting DSBooks again shows it
   python dsbooks_desktop.py --serve-only   development/test: serve the UI without a window
 """
 from __future__ import annotations
@@ -59,6 +61,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--library-tools", action="store_true")
     parser.add_argument("--serve-only", action="store_true")
+    parser.add_argument("--background", action="store_true")
     args, _ = parser.parse_known_args()
     if args.library_tools:
         library_tools()
@@ -68,11 +71,12 @@ def main() -> int:
     from server import make_server
 
     if already_running():
-        if not args.serve_only:
-            import webview
-            webview.create_window("DSBooks", html="<p style='font-family:sans-serif;padding:24px'>DSBooksはすでに起動しています。タスクバーのDSBooksを開いてください。</p>", width=420, height=160)
-            webview.start()
-        return 1
+        # Already running (window, background or drawer server): bring its shelf forward instead.
+        try:
+            urllib.request.urlopen("http://127.0.0.1:%d/show" % PORT, timeout=2).read()
+        except Exception:
+            pass
+        return 0
 
     window_ref = {}
     bridge = Bridge(window_provider=lambda: window_ref.get("w"))
@@ -87,8 +91,42 @@ def main() -> int:
         return 0
 
     import webview
-    window = webview.create_window("DSBooks", url, width=1200, height=820, min_size=(380, 560), background_color="#101814")
+    window = webview.create_window("DSBooks", url, width=1200, height=820, min_size=(380, 560), background_color="#101814", hidden=args.background)
     window_ref["w"] = window
+
+    def open_reader(query, title):
+        # Each book gets its own window; they share the library through the bridge's store.
+        return webview.create_window(title, url + query, width=900, height=1000, min_size=(360, 480), background_color="#101814")
+    bridge.open_window = open_reader
+
+    def show_main():
+        try:
+            window.show()
+            window.restore()
+        except Exception:
+            pass
+    bridge.show_main = show_main
+
+    quitting = {"now": False}
+
+    def quit_app():
+        quitting["now"] = True
+        for w in list(webview.windows):
+            try:
+                w.destroy()
+            except Exception:
+                pass
+    bridge.quit_app = quit_app
+    bridge.background = args.background
+
+    if args.background:
+        # In background mode closing the shelf only hides it, so drawers and reader windows keep working.
+        def closing():
+            if quitting["now"]:
+                return True
+            window.hide()
+            return False
+        window.events.closing += closing
 
     # Reading positions are saved on every page turn, so nothing has to run while the window closes.
     storage = app_home() / "webview"

@@ -19,15 +19,20 @@ import threading
 import time
 import urllib.parse
 import urllib.request
+import secrets
 import zipfile
 from collections import deque
 from pathlib import Path
 
 import epub_content
 
-APP_VERSION = "0.1.0-desktop"
+APP_VERSION = "0.2.0-desktop"
 SUPPORTED_IMPORT = ("pdf", "epub", "md", "m4a", "m4b", "cbz", "cbr")
 IMAGE_EXT = (".jpg", ".jpeg", ".png", ".webp", ".gif")
+
+
+def secrets_token() -> str:
+    return secrets.token_hex(6)
 
 
 def app_home() -> Path:
@@ -92,8 +97,23 @@ class Bridge:
         for d in (self.books, self.thumbs):
             d.mkdir(parents=True, exist_ok=True)
         self.window = window_provider or (lambda: None)
-        self.events: deque = deque()
+        # Each page (main window, reader windows, a DeskHatch drawer) is a client with its own event queue.
+        self.clients: dict[str, dict] = {}
+        self.tls = threading.local()
         self.cv = threading.Condition()
+        # Shared store for the page's "dsbooks.*" localStorage keys, so every window and the drawer
+        # see one library. Written to storage.json shortly after each change.
+        self.store: dict[str, str] = self._load_json("storage.json", {})
+        self.store_versions: dict[str, int] = {}
+        self.store_lock = threading.Lock()
+        self.store_timer: threading.Timer | None = None
+        # Native windows (set by dsbooks_desktop.py): open_window(url_query, title) -> handle
+        self.open_window = None
+        self.show_main = None
+        self.quit_app = None
+        self.background = False
+        self.windows: dict[str, object] = {}
+        self.book_windows: dict[str, str] = {}
         self.download_lock = threading.Lock()
         self.queue: list[dict] = []
         self.worker: threading.Thread | None = None
@@ -106,17 +126,29 @@ class Bridge:
         self.current: dict = {}
 
     # ---------- plumbing ----------
-    def emit(self, callback: str, *args):
+    def _client(self) -> str | None:
+        return getattr(self.tls, "client", None)
+
+    def emit(self, callback: str, *args, to: str | None = None, skip: str | None = None):
+        """Queue a callback for one client (`to`) or, when `to` is None, for every client except `skip`."""
         with self.cv:
-            self.events.append({"cb": callback, "args": list(args)})
+            now = time.time()
+            for cid in [c for c, v in self.clients.items() if now - v["seen"] > 120]:
+                del self.clients[cid]  # pages that stopped polling (closed windows)
+            targets = [to] if to else [c for c in self.clients if c != skip]
+            for cid in targets:
+                self.clients.setdefault(cid, {"q": deque(), "seen": now})["q"].append({"cb": callback, "args": list(args)})
             self.cv.notify_all()
 
-    def take_events(self, timeout: float = 25.0) -> list:
+    def take_events(self, client: str = "default", timeout: float = 25.0) -> list:
         with self.cv:
-            if not self.events:
+            entry = self.clients.setdefault(client, {"q": deque(), "seen": time.time()})
+            entry["seen"] = time.time()
+            if not entry["q"]:
                 self.cv.wait(timeout)
-            out = list(self.events)
-            self.events.clear()
+            entry["seen"] = time.time()
+            out = list(entry["q"])
+            entry["q"].clear()
             return out
 
     def _load_json(self, name, default):
@@ -130,20 +162,113 @@ class Bridge:
         tmp.write_text(json.dumps(value, ensure_ascii=False), "utf-8")
         tmp.replace(self.home / name)
 
+    def log(self, *parts):
+        """Download diagnostics without NAS addresses or session ids: %LOCALAPPDATA%\\DSBooks\\download.log."""
+        try:
+            path = self.home / "download.log"
+            if path.exists() and path.stat().st_size > 512 * 1024:
+                path.replace(self.home / "download.old.log")
+            with open(path, "a", encoding="utf-8") as f:
+                f.write(time.strftime("%Y-%m-%d %H:%M:%S ") + " ".join(str(p) for p in parts) + "\n")
+        except Exception:
+            pass
+
     def local(self, name: str) -> Path:
         path = (self.books / valid_leaf(name)).resolve()
         if path.parent != self.books.resolve():
             raise ValueError("保存先の範囲外です")
         return path
 
-    def call(self, method: str, args: list):
+    def call(self, method: str, args: list, client: str | None = None):
         fn = getattr(self, "n_" + method, None)
         if fn is None:
             return ""  # Android-only features (widgets, Cast, TV) are no-ops on the desktop.
-        return fn(*args)
+        self.tls.client = client
+        try:
+            return fn(*args)
+        finally:
+            self.tls.client = None
 
-    def toast(self, text: str):
-        self.emit("toast", text)
+    def toast(self, text: str, to: str | None = None):
+        self.emit("toast", text, to=to or self._client())
+
+    # ---------- shared store ----------
+    def n_storageSnapshot(self):
+        with self.store_lock:
+            return json.dumps(self.store, ensure_ascii=False)
+
+    def n_storageGet(self, key):
+        with self.store_lock:
+            return self.store.get(key)
+
+    def _store_changed(self, key, removed=False):
+        self.store_versions[key] = self.store_versions.get(key, 0) + 1
+        if self.store_timer:
+            self.store_timer.cancel()
+        self.store_timer = threading.Timer(0.5, self._store_flush)
+        self.store_timer.daemon = True
+        self.store_timer.start()
+        # Others fetch the value when they need it; catalogs can be megabytes.
+        self.emit("dsStorage", key, self.store_versions[key], removed, skip=self._client())
+
+    def _store_flush(self):
+        with self.store_lock:
+            snapshot = dict(self.store)
+        self._save_json("storage.json", snapshot)
+
+    def n_storageSet(self, key, value):
+        if not str(key).startswith("dsbooks."):
+            return False
+        with self.store_lock:
+            if self.store.get(key) == value:
+                return True
+            self.store[key] = value
+        self._store_changed(key)
+        return True
+
+    def n_storageRemove(self, key):
+        with self.store_lock:
+            if key not in self.store:
+                return True
+            del self.store[key]
+        self._store_changed(key, True)
+        return True
+
+    # ---------- windows ----------
+    def n_canOpenWindows(self): return self.open_window is not None
+
+    def n_openReaderWindow(self, book_id, title):
+        if self.open_window is None:
+            return False
+        wid = self.book_windows.get(str(book_id))
+        win = self.windows.get(wid) if wid else None
+        if win is not None:
+            try:
+                win.restore()
+                win.show()
+                return True
+            except Exception:
+                pass
+        wid = secrets_token()
+        self.windows[wid] = self.open_window("?reader=" + urllib.parse.quote(str(book_id)) + "&w=" + wid, title or "DSBooks")
+        self.book_windows[str(book_id)] = wid
+        return True
+
+    def n_isBackground(self): return bool(self.background)
+
+    def n_quitApp(self):
+        if self.quit_app:
+            threading.Thread(target=self.quit_app, daemon=True).start()
+        return ""
+
+    def n_closeWindow(self, wid):
+        win = self.windows.pop(str(wid), None)
+        for k, v in list(self.book_windows.items()):
+            if v == str(wid):
+                del self.book_windows[k]
+        if win is not None:
+            threading.Thread(target=win.destroy, daemon=True).start()
+        return ""
 
     # ---------- basic info ----------
     def n_getAppVersion(self): return APP_VERSION
@@ -201,9 +326,10 @@ class Bridge:
     def n_setDownloadStorage(self, _id): return ""
 
     def n_checkSavedBooks(self, names_json):
+        to = self._client()
         def run():
             names = json.loads(names_json or "[]")[:50000]
-            self.emit("onSavedBooksChecked", {n: self.n_hasBook(n) for n in names})
+            self.emit("onSavedBooksChecked", {n: self.n_hasBook(n) for n in names}, to=to)
         threading.Thread(target=run, daemon=True).start()
         return ""
 
@@ -230,6 +356,7 @@ class Bridge:
             return None
 
     def n_renderPdfPage(self, name, page_index, token):
+        to = self._client()
         def run():
             result = {}
             try:
@@ -250,7 +377,7 @@ class Bridge:
                     result = {"ok": True, "page": index, "count": doc.page_count, "image": "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()}
             except Exception as e:
                 result = {"ok": False, "error": str(e) or "PDFを表示できませんでした"}
-            self.emit("onPdfPage", token, result)
+            self.emit("onPdfPage", token, result, to=to)
         threading.Thread(target=run, daemon=True).start()
         return ""
 
@@ -271,6 +398,7 @@ class Bridge:
         return archive, names
 
     def n_renderComicPage(self, name, requested, token):
+        to = self._client()
         def run():
             o = {}
             try:
@@ -282,7 +410,7 @@ class Bridge:
                 o = {"ok": True, "page": index, "count": len(names), "name": names[index], "image": "data:%s;base64,%s" % (kind, base64.b64encode(data).decode())}
             except Exception as e:
                 o = {"ok": False, "error": str(e) or "コミックを開けませんでした"}
-            self.emit("onComicPage", token, o)
+            self.emit("onComicPage", token, o, to=to)
         threading.Thread(target=run, daemon=True).start()
         return ""
 
@@ -315,6 +443,7 @@ class Bridge:
         return None
 
     def n_requestBookThumbnail(self, name):
+        to = self._client()
         def run():
             data = None
             try:
@@ -328,7 +457,7 @@ class Bridge:
                 data = self._thumb_data(target)
             except Exception:
                 data = None
-            self.emit("onBookThumbnail", name, data)
+            self.emit("onBookThumbnail", name, data, to=to)
         threading.Thread(target=run, daemon=True).start()
         return ""
 
@@ -351,6 +480,7 @@ class Bridge:
         return endpoint + "?" + query
 
     def n_requestRemoteBookThumbnail(self, base, api_path, version, sid, remote_path, cache_key):
+        to = self._client()
         def run():
             target = self.thumbs / ("remote-" + digest(cache_key) + ".jpg")
             try:
@@ -363,7 +493,7 @@ class Bridge:
                                 target.write_bytes(data)
             except Exception:
                 pass
-            self.emit("onRemoteBookThumbnail", cache_key, self._thumb_data(target))
+            self.emit("onRemoteBookThumbnail", cache_key, self._thumb_data(target), to=to)
         threading.Thread(target=run, daemon=True).start()
         return ""
 
@@ -392,12 +522,16 @@ class Bridge:
             if self.worker and self.worker.is_alive():
                 if self.current["bookId"] != job["bookId"] and all(j["bookId"] != job["bookId"] for j in self.queue):
                     self.queue.append(job)
+                    self.log("queued", job["bookId"], "behind", self.current.get("bookId"), "waiting", len(self.queue))
+                else:
+                    self.log("ignored duplicate request", job["bookId"])
                 self._publish_queue()
                 return ""
             self._start(job)
         return ""
 
     def _start(self, job):
+        self.log("start", job["bookId"], "expected", job["expectedSize"])
         self.current = job
         self.cancelled = False
         self.paused.clear()
@@ -407,6 +541,7 @@ class Bridge:
         self._publish_queue()
 
     def _finish(self, ok, error=None, local_name=None, size=0):
+        self.log("finish", self.current.get("bookId"), "ok" if ok else "failed", size, ("cancelled-by-request" if self.cancelled else "") , error or "")
         self.result = {"id": self.current["bookId"], "ok": ok, "size": size}
         if error:
             self.result["error"] = error
@@ -497,6 +632,7 @@ class Bridge:
             self.paused.clear()
             self._publish_state("running", self.state.get("percent", 0), self.state.get("done", 0), self.state.get("total", 0))
         elif action == "cancel":
+            self.log("cancel requested", self.current.get("bookId"), "client", self._client())
             self.cancelled = True
             self.paused.clear()
         return ""
@@ -543,6 +679,7 @@ class Bridge:
                 "fileExt": ext.upper(), "size": target.stat().st_size, "type": kind, "offline": True, "folder": "端末から取り込み", "author": "", "cover": "c5", "progress": 0}
 
     def n_chooseBooks(self):
+        to = self._client()
         def run():
             paths = self._dialog("open", allow_multiple=True, file_types=("本 (*.epub;*.pdf;*.md;*.m4a;*.m4b;*.cbz;*.cbr)", "すべて (*.*)"))
             if not paths:
@@ -553,11 +690,12 @@ class Bridge:
                     books.append(self._import(Path(p)))
                 except Exception as e:
                     errors.append(str(e) or "取り込み失敗")
-            self.emit("onDataExchange", {"kind": "books", "books": books, "errors": errors})
+            self.emit("onDataExchange", {"kind": "books", "books": books, "errors": errors}, to=to)
         threading.Thread(target=run, daemon=True).start()
         return ""
 
     def n_chooseReadingData(self):
+        to = self._client()
         def run():
             paths = self._dialog("open", file_types=("JSON (*.json)", "すべて (*.*)"))
             if not paths:
@@ -566,22 +704,24 @@ class Bridge:
                 data = Path(paths[0]).read_bytes()
                 if len(data) > 8 * 1024 * 1024:
                     raise ValueError("JSONは8MB以下にしてください")
-                self.emit("onDataExchange", {"kind": "data", "document": json.loads(data.decode("utf-8"))})
+                self.emit("onDataExchange", {"kind": "data", "document": json.loads(data.decode("utf-8"))}, to=to)
             except Exception as e:
-                self.emit("onDataExchange", {"error": str(e) or "読み込めませんでした"})
+                self.emit("onDataExchange", {"error": str(e) or "読み込めませんでした"}, to=to)
         threading.Thread(target=run, daemon=True).start()
         return ""
 
     def _export(self, text: str, name: str):
+        to = self._client()
+
         def run():
             paths = self._dialog("save", save_filename=name)
             if not paths:
                 return
             try:
                 Path(paths[0]).write_text(text, "utf-8")
-                self.emit("onDataExchange", {"kind": "exported"})
+                self.emit("onDataExchange", {"kind": "exported"}, to=to)
             except Exception as e:
-                self.emit("onDataExchange", {"error": str(e) or "保存できませんでした"})
+                self.emit("onDataExchange", {"error": str(e) or "保存できませんでした"}, to=to)
         threading.Thread(target=run, daemon=True).start()
         return ""
 
@@ -589,14 +729,15 @@ class Bridge:
     def n_exportText(self, text, name): return self._export(text, name or "dsbooks.txt")
 
     def n_exportBook(self, name, suggested, mime):
+        to = self._client()
         def run():
             paths = self._dialog("save", save_filename=suggested or name)
             if paths:
                 try:
                     shutil.copyfile(self.local(name), paths[0])
-                    self.emit("onDataExchange", {"kind": "exported"})
+                    self.emit("onDataExchange", {"kind": "exported"}, to=to)
                 except Exception as e:
-                    self.emit("onDataExchange", {"error": str(e)})
+                    self.emit("onDataExchange", {"error": str(e)}, to=to)
         threading.Thread(target=run, daemon=True).start()
         return ""
 
@@ -619,7 +760,7 @@ class Bridge:
     def n_openAudioInVlc(self, name, display): return self.n_openBook(name, "")
 
     def n_copyText(self, text):
-        self.emit("desktopCopy", text)
+        self.emit("desktopCopy", text, to=self._client())
         return ""
 
     def n_shareText(self, text): return self.n_copyText(text)
@@ -651,6 +792,7 @@ class Bridge:
         return ""
 
     def n_runSelfTest(self, files, token):
+        to = self._client()
         def run():
             names = json.loads(files or "[]") if files else []
             saved = [n for n in (x.get("localName") if isinstance(x, dict) else x for x in names) if n]

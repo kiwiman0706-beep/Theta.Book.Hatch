@@ -73,7 +73,13 @@ def make_server(bridge, assets: Path, web: Path, port: int):
             if path == "/events":
                 if not self._authorized():
                     return self._send(403, b"{}")
-                return self._send(200, json.dumps(bridge.take_events(), ensure_ascii=False).encode("utf-8"))
+                client = self.headers.get("X-DSBooks-Client") or "default"
+                return self._send(200, json.dumps(bridge.take_events(client), ensure_ascii=False).encode("utf-8"))
+            if path == "/show":
+                # Starting DSBooks again (Start menu) brings the running app's main window forward.
+                if bridge.show_main:
+                    bridge.show_main()
+                return self._send(200, b'{"shown":true}')
             if path.startswith("/media/"):
                 return self._media(bridge.media_tokens.get(path[7:]))
             if path == "/nas-stream":
@@ -165,7 +171,7 @@ def make_server(bridge, assets: Path, web: Path, port: int):
                 method = path[8:]
                 try:
                     args = json.loads(self._body() or b"[]")
-                    result = bridge.call(method, args)
+                    result = bridge.call(method, args, self.headers.get("X-DSBooks-Client"))
                     return self._send(200, json.dumps({"r": result}, ensure_ascii=False).encode("utf-8"))
                 except Exception as e:
                     return self._send(200, json.dumps({"r": None, "error": str(e)}, ensure_ascii=False).encode("utf-8"))
