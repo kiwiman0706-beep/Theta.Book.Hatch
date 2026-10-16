@@ -50,7 +50,8 @@ jobs:
           set -euo pipefail
           if [ ! -f "/c/Program Files (x86)/Inno Setup 6/ISCC.exe" ]; then choco install innosetup -y --no-progress; fi
           cp desktop/DSBooks.iss DSBooks.iss
-          "/c/Program Files (x86)/Inno Setup 6/ISCC.exe" "/DMyAppVersion=${{ steps.v.outputs.version }}" DSBooks.iss
+          # Git Bash would rewrite "/D..." as a path; keep the Inno Setup switch as written.
+          MSYS_NO_PATHCONV=1 "/c/Program Files (x86)/Inno Setup 6/ISCC.exe" "/DMyAppVersion=${{ steps.v.outputs.version }}" DSBooks.iss
           mkdir -p out && cp dist-installer/*.exe out/
           (cd dist && 7z a -tzip "../out/DSBooks-${{ steps.v.outputs.version }}-windows-portable.zip" DSBooks >/dev/null)
           (cd out && sha256sum * > SHA256SUMS.txt && cat SHA256SUMS.txt)
