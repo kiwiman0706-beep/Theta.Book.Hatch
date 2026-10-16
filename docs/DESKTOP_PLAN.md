@@ -35,6 +35,7 @@ Electron/Tauriも候補だが、既存の中核がPythonで、PyMuPDF・mutagen�
 ## 段階
 
 1. **済（0.3.1）**：今のツールをWindowsインストーラー＋Mac版としてCIで配布できるようにした。
+- **済（desktop 0.1.0、Windows）**：`desktop/` に pywebview＋Pythonブリッジで実装し、段階2〜4の大半と表紙ツールの統合（`--library-tools`）を一度に行った。ブリッジは同期HTTP（`/bridge`）＋イベントのロングポーリング（`/events`）、NAS要求は `/proxy` で中継（DSMはCORS非対応のため）。音声・朗読は画面側（HTML audio／speechSynthesis）。残り：CBR、Mac版、通知・バックグラウンドDL、自動更新、署名。
 2. フォルダ構成を `desktop/`（アプリ本体）＋`desktop/core/`（今の表紙・メタデータ処理）に整理。今のGUIは「ライブラリ管理」画面として残す。
 3. pywebviewで本棚を表示し、ローカルの本（端末フォルダ）でPDF・EPUB・CBZを読めるようにする。
 4. NAS接続・ダウンロード・読書データ同期を追加し、Android版と位置を共有。

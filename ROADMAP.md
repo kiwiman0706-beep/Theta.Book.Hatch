@@ -4,6 +4,11 @@
 
 **Claude版 0.9.3（versionCode 68、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
 
+Windows版 desktop 0.1.0
+- `desktop/`：Android版の画面をWindowsのウィンドウ（WebView2）で表示。NAS接続・ダウンロード待ち・EPUB/PDF/CBZ/Markdown・M4B再生・朗読（Windows音声）・読書データ同期。表紙キャッシュ作成ツールを☰メニューとスタートメニューから起動。
+- インストーラーと持ち運び版ZIPをWindowsのCIでビルドし、ビルド済みexeを起動して確認してから公開。署名なし。
+- 未対応：CBR、Cast/TV/ウィジェット、通知・閉じた後のDL、自動更新、Mac版。実機確認はCHECKLIST_DESKTOP_0.1.0.md。
+
 0.9.3：EPUBスワイプの修正・方向設定、☰メニュー
 - 不具合：右開き指定（page-progression-direction="rtl"）の小説を横書き表示で読むと、画像だけの表紙ページは「左→右＝次」、本文は「左→右＝前」になり、スワイプで表紙とタイトルを往復して本文へ進めなかった。
 - 修正：章の半分以上に文字がある本は、表紙・挿絵の画像ページも本文と同じ方向（横書き：右→左で次、縦書き：左→右で次）でめくる。利用者が「右開き／左開き」を明示した場合と、画像だけの本（コミック）は従来どおり。

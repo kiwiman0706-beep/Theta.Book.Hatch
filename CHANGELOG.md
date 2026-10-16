@@ -4,6 +4,7 @@
 
 |版|versionCode（確認値）|主要変更/確認できる範囲|根拠・留保|
 |---|---|---|---|
+|desktop 0.1.0|—|Windows版の最初の配布。Android版と同じ画面をWebView2で表示し、Pythonでブリッジ（NAS中継・ダウンロード待ち・EPUB移植・PDF/CBZ・表紙・DPAPI保存）を実装。表紙キャッシュ作成ツールを同じexeに統合。共通画面の不具合修正：NAS未接続の新規状態で「端末の本を追加」が `remoteMode` 未定義で失敗していた（Android版も次の版で反映）。|ソース/CHECKLIST_DESKTOP_0.1.0.md/tests/desktop-0.1.0.cjs/.github/workflows/release-desktop.yml|
 |0.9.3-claude|68|右開き指定の小説EPUBで、画像だけの表紙ページのスワイプ方向が本文と逆だったため、表紙⇄タイトルを往復して先へ進めなかった不具合を修正。文字中心の本では画像ページも本文と同じ方向でめくる（画像だけの本は従来どおり）。スワイプ方向の設定（自動／右→左で次／左→右で次、EPUB・コミック共通）。上部の黒いバーを常に表示し、☰メニュー（本棚ホーム・最近・保存済み・音声本・ダウンロード・NAS再接続・蔵書更新・同期・Tailscale・Secure SignIn・接続設定・本の追加・設定）を追加。ロゴで本棚ホームへ。登録済みならNAS登録ボタンと説明文を隠す。|ソース/CHECKLIST_DEVICE_0.9.3.md/tests/epub-swipe-0.9.3.cjs|
 |PCツール 0.3.1|—|表紙キャッシュ作成ツールをWindowsインストーラー（.exe）とMac版（.app）としてGitHub ActionsでビルドしてRelease `helper-v0.3.1` で配布。Mac用フォント・設定保存先、画面に版表示。PC/Mac版ビューワーとの統合計画 `docs/DESKTOP_PLAN.md`。|ソース/.github/workflows/release-pc-helper.yml|
 |0.9.2-claude|67|本棚（ホーム・フォルダ・リスト・横並び）の表紙に、保存中は円形の進捗リング（%・一時停止表示）、待機中は「↓ 待ち n番目」の帯を表示。読書の進捗バーとは別表示。|ソース/CHECKLIST_DEVICE_0.9.2.md/tests/downloads-0.9.1.cjs|

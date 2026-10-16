@@ -23,6 +23,9 @@ window.DSMenu=(()=>{
   ['本棚',[['home','▦','本棚ホーム'],['recent','◷','最近読んだ本'],['downloaded','↓','保存済みの本'],['audio','♫','音声本'],['downloads','⇣','ダウンロード一覧']]],
   ['NAS',[['reconnect','⟲','NASに再接続'],['rescan','⟳','蔵書を更新'],['sync','⇅','読書データを今すぐ同期'],['tailscale','⇄','Tailscaleを開く'],['securesignin','✔','Secure SignInを開く'],['connect','⚙','NASの接続設定']]],
   ['その他',[['import','＋','端末の本を追加'],['settings','⚙','設定']]]];
+ // PC/Mac: the cover-cache tool and the data folder live in the same app.
+ let desktop=false;try{desktop=!!native().isDesktop?.();}catch(e){}
+ if(desktop)items.splice(2,0,['PC',[['libraryTools','▤','ライブラリ管理（表紙キャッシュ作成）'],['dataFolder','▣','データフォルダを開く']]]);
  function render(){
   const state=$('nasState')?.textContent?.trim()||'',version=$('versionLabel')?.textContent?.trim()||'';
   drawer.innerHTML='<div class="app-menu-backdrop" data-close></div><nav class="app-menu-panel"><div class="app-menu-head"><strong>DSBooks</strong><small>'+escapeHtml(state)+'</small><button type="button" class="app-menu-close" data-close aria-label="閉じる">×</button></div>'
@@ -36,7 +39,7 @@ window.DSMenu=(()=>{
   reconnect:async()=>{toast('NASに再接続しています…');const ok=await N()?.ensure?.(true,true);if(ok)toast('NASに接続しました');},
   rescan:()=>$('syncBtn')?.click(),sync:()=>window.DSSync?.run?.(true),
   tailscale:()=>native().openTailscale?.(),securesignin:()=>native().openSecureSignIn?.(),connect:()=>openConnectModal(),
-  import:()=>native().chooseBooks?.(),settings:()=>F.settings()};
+  import:()=>native().chooseBooks?.(),settings:()=>F.settings(),libraryTools:()=>native().openLibraryTools?.(),dataFolder:()=>native().openDataFolder?.()};
  let last=null;
  function open(){last=document.activeElement;render();drawer.hidden=false;document.body.classList.add('app-menu-open');requestAnimationFrame(()=>drawer.querySelector('[data-menu]')?.focus());}
  function close(){if(drawer.hidden)return false;drawer.hidden=true;document.body.classList.remove('app-menu-open');try{last?.focus?.();}catch(e){}return true;}

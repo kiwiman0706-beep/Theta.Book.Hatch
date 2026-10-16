@@ -1,0 +1,66 @@
+name: Build and publish DSBooks for Windows
+# Push a temporary branch release-desktop/v<version> at the commit to release.
+# Builds on windows-latest: tests the source, freezes with PyInstaller (one folder), smoke-tests the built
+# exe in --serve-only mode, makes the Inno Setup installer, publishes "desktop-v<version>", deletes the branch.
+on:
+  push:
+    branches: ['release-desktop/**']
+permissions:
+  contents: write
+jobs:
+  windows:
+    runs-on: windows-latest
+    env:
+      PYTHONUTF8: '1'
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install
+        run: python -m pip install -r desktop/requirements.txt pyinstaller
+      - name: Version
+        id: v
+        run: |
+          VERSION="${GITHUB_REF_NAME#release-desktop/v}"
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "bad version $VERSION"; exit 1; }
+          grep -q "APP_VERSION = \"$VERSION-desktop\"" desktop/bridge.py || { echo "bridge.py APP_VERSION does not match $VERSION"; exit 1; }
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      - name: Smoke test (source)
+        run: python desktop/smoke_test.py
+      - name: Freeze
+        run: |
+          set -euo pipefail
+          python -m PyInstaller --noconfirm --clean --windowed --name DSBooks \
+            --paths desktop --paths thumbnail-helper-release \
+            --hidden-import dsbooks_thumbnail_gui --hidden-import dsbooks_thumbnails --hidden-import dsbooks_metadata --hidden-import bridge --hidden-import server --hidden-import epub_content \
+            --add-data "app/src/main/assets;assets" --add-data "desktop/web;web" \
+            --collect-all webview --collect-all fitz --collect-all pymupdf --collect-all mutagen --collect-all PIL \
+            desktop/dsbooks_desktop.py
+          test -f dist/DSBooks/DSBooks.exe
+      - name: Smoke test (built exe)
+        run: python desktop/smoke_test.py dist/DSBooks/DSBooks.exe
+      - name: Smoke test (built exe, real window)
+        run: python desktop/smoke_test.py dist/DSBooks/DSBooks.exe --window
+      - name: Installer
+        run: |
+          set -euo pipefail
+          if [ ! -f "/c/Program Files (x86)/Inno Setup 6/ISCC.exe" ]; then choco install innosetup -y --no-progress; fi
+          cp desktop/DSBooks.iss DSBooks.iss
+          "/c/Program Files (x86)/Inno Setup 6/ISCC.exe" "/DMyAppVersion=${{ steps.v.outputs.version }}" DSBooks.iss
+          mkdir -p out && cp dist-installer/*.exe out/
+          (cd dist && 7z a -tzip "../out/DSBooks-${{ steps.v.outputs.version }}-windows-portable.zip" DSBooks >/dev/null)
+          (cd out && sha256sum * > SHA256SUMS.txt && cat SHA256SUMS.txt)
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          { cat desktop/RELEASE_NOTES.md; echo; echo '```'; cat out/SHA256SUMS.txt; echo '```'; } > notes.md
+          gh release create "desktop-v${{ steps.v.outputs.version }}" out/* --target "$GITHUB_SHA" --title "DSBooks for Windows ${{ steps.v.outputs.version }}" --notes-file notes.md --prerelease
+      - name: Remove temporary branch
+        if: always()
+        run: git push origin --delete "${GITHUB_REF_NAME}" || true
