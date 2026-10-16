@@ -13,7 +13,13 @@ from dsbooks_thumbnails import generate_cache
 
 
 APP_NAME = "DSBooks 表紙キャッシュ作成"
-APP_DIR = Path(os.environ.get("APPDATA", str(Path.home()))) / "DSBooksThumbnailHelper"
+APP_VERSION = "0.3.1"
+if sys.platform == "darwin":
+    APP_DIR = Path.home() / "Library" / "Application Support" / "DSBooksThumbnailHelper"
+else:
+    APP_DIR = Path(os.environ.get("APPDATA", str(Path.home()))) / "DSBooksThumbnailHelper"
+# Japanese UI font per OS; Tk falls back to its default when a family is missing.
+UI_FONT = "Yu Gothic UI" if sys.platform == "win32" else "Hiragino Sans" if sys.platform == "darwin" else "Noto Sans CJK JP"
 CONFIG = APP_DIR / "settings.json"
 
 
@@ -32,11 +38,11 @@ class ThumbnailApp:
         except tk.TclError:
             pass
         style.configure("TFrame", background="#f3f1eb")
-        style.configure("TLabel", background="#f3f1eb", foreground="#292b27", font=("Yu Gothic UI", 10))
-        style.configure("Title.TLabel", background="#173729", foreground="#f4f5f1", font=("Yu Gothic UI", 18, "bold"))
-        style.configure("Sub.TLabel", background="#173729", foreground="#c5d7c7", font=("Yu Gothic UI", 9))
+        style.configure("TLabel", background="#f3f1eb", foreground="#292b27", font=(UI_FONT, 10))
+        style.configure("Title.TLabel", background="#173729", foreground="#f4f5f1", font=(UI_FONT, 18, "bold"))
+        style.configure("Sub.TLabel", background="#173729", foreground="#c5d7c7", font=(UI_FONT, 9))
         style.configure("TEntry", padding=8, fieldbackground="#fffefa")
-        style.configure("Primary.TButton", background="#315c43", foreground="white", padding=(16, 10), font=("Yu Gothic UI", 10, "bold"))
+        style.configure("Primary.TButton", background="#315c43", foreground="white", padding=(16, 10), font=(UI_FONT, 10, "bold"))
         style.map("Primary.TButton", background=[("disabled", "#9aa89c"), ("active", "#254c35")])
         style.configure("TButton", padding=(9, 7))
         style.configure("TProgressbar", troughcolor="#e1e4dc", background="#4c805e")
@@ -46,7 +52,7 @@ class ThumbnailApp:
         header = tk.Frame(outer, bg="#173729", padx=24, pady=18)
         header.pack(fill="x")
         ttk.Label(header, text="DSBooks", style="Title.TLabel").pack(anchor="w")
-        ttk.Label(header, text="表紙・シリーズ・Obsidianメタデータを作成", style="Sub.TLabel").pack(anchor="w", pady=(2, 0))
+        ttk.Label(header, text=f"表紙・シリーズ・Obsidianメタデータを作成 · v{APP_VERSION}", style="Sub.TLabel").pack(anchor="w", pady=(2, 0))
 
         body = ttk.Frame(outer, padding=(24, 18, 24, 14))
         body.pack(fill="both", expand=True)
@@ -62,7 +68,7 @@ class ThumbnailApp:
 
         note = tk.Frame(body, bg="#e7e9e1", padx=12, pady=10)
         note.grid(row=5, column=0, columnspan=2, sticky="ew", pady=(0, 14))
-        tk.Label(note, text="ePub・PDF・M4A/M4Bの表紙を小さくして保存します。元の本は変更しません。\n2回目以降は変更された本だけ処理します。外部サイトへの通信はありません。", bg="#e7e9e1", fg="#454b43", justify="left", font=("Yu Gothic UI", 9)).pack(anchor="w")
+        tk.Label(note, text="ePub・PDF・M4A/M4Bの表紙を小さくして保存します。元の本は変更しません。\n2回目以降は変更された本だけ処理します。外部サイトへの通信はありません。", bg="#e7e9e1", fg="#454b43", justify="left", font=(UI_FONT, 9)).pack(anchor="w")
 
         action = ttk.Frame(body)
         action.grid(row=6, column=0, columnspan=2, sticky="ew")
@@ -75,13 +81,13 @@ class ThumbnailApp:
         self.progress.pack(side="right")
 
         ttk.Label(body, text="処理状況").grid(row=7, column=0, columnspan=2, sticky="w", pady=(14, 5))
-        self.output = tk.Text(body, height=12, wrap="word", state="disabled", bg="#fffefa", fg="#394139", relief="solid", borderwidth=1, font=("Yu Gothic UI", 9), padx=10, pady=8)
+        self.output = tk.Text(body, height=12, wrap="word", state="disabled", bg="#fffefa", fg="#394139", relief="solid", borderwidth=1, font=(UI_FONT, 9), padx=10, pady=8)
         self.output.grid(row=8, column=0, columnspan=2, sticky="nsew")
         body.columnconfigure(0, weight=1)
         body.rowconfigure(8, weight=1)
         footer = tk.Frame(outer, bg="#101814", padx=20, pady=8)
         footer.pack(fill="x")
-        tk.Label(footer, text="キャッシュ先: 選択したフォルダ内の _DSBooksCache", bg="#101814", fg="#c2cec4", font=("Yu Gothic UI", 8)).pack(anchor="w")
+        tk.Label(footer, text="キャッシュ先: 選択したフォルダ内の _DSBooksCache", bg="#101814", fg="#c2cec4", font=(UI_FONT, 8)).pack(anchor="w")
 
         self.load_config()
         self.root.after(100, self.poll_events)

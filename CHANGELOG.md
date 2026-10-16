@@ -4,6 +4,7 @@
 
 |版|versionCode（確認値）|主要変更/確認できる範囲|根拠・留保|
 |---|---|---|---|
+|PCツール 0.3.1|—|表紙キャッシュ作成ツールをWindowsインストーラー（.exe）とMac版（.app）としてGitHub ActionsでビルドしてRelease `helper-v0.3.1` で配布。Mac用フォント・設定保存先、画面に版表示。PC/Mac版ビューワーとの統合計画 `docs/DESKTOP_PLAN.md`。|ソース/.github/workflows/release-pc-helper.yml|
 |0.9.2-claude|67|本棚（ホーム・フォルダ・リスト・横並び）の表紙に、保存中は円形の進捗リング（%・一時停止表示）、待機中は「↓ 待ち n番目」の帯を表示。読書の進捗バーとは別表示。|ソース/CHECKLIST_DEVICE_0.9.2.md/tests/downloads-0.9.1.cjs|
 |0.9.1-claude|66|ダウンロード中に別の本の詳細へ進捗が出る不具合を修正。2冊目以降はサービス内の待機列に入り順番に自動保存。ダウンロード一覧（進捗・一時停止・キャンセル・待機取り消し・最近の結果と再試行）とヘッダーの進捗チップ。Synology Secure SignInを開くボタンをTailscaleの隣に追加。|ソース/CHECKLIST_DEVICE_0.9.1.md/tests/downloads-0.9.1.cjs|
 |0.9.0-claude|65|Claude版として別アプリ化（パッケージ・表示名・署名鍵・ファイル提供元を分離）。本棚の操作部を「種類チップ／表示切替／並べ替え・絞り込みシート」に整理、本の詳細を主ボタン＋アイコンタイルに、設定を4つのショートカット＋5つの折りたたみグループに再構成。|ソース/CHECKLIST_DEVICE_0.9.0.md/tests/ui-layout-0.9.0.cjs|

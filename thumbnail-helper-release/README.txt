@@ -27,7 +27,7 @@ PDFの先頭ページ、ePubの埋め込み表紙、M4A/M4Bの埋め込み画像
 
 Setup.exeを作る場合
 WindowsにPython 3.10以降とInno Setup 6を入れ、build-windows-installer.batを実行してください。
-dist-installer内にDSBooks-Thumbnail-Helper-Setup-0.1.0.exeが作成されます。
+dist-installer内にDSBooks-Thumbnail-Helper-Setup-0.3.1.exeが作成されます。ビルド済みのWindows版・Mac版はGitHubのReleases（helper-v0.3.1〜）から入手できます。
 
 
 0.3.0 追加：安定した本IDとObsidian互換メタデータ

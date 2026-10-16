@@ -21,6 +21,6 @@ if errorlevel 1 exit /b 1
 ISCC.exe DSBooksThumbnailHelper.iss
 if errorlevel 1 exit /b 1
 echo.
-echo インストーラー: dist-installer\DSBooks-Thumbnail-Helper-Setup-0.3.0.exe
+echo インストーラー: dist-installer\DSBooks-Thumbnail-Helper-Setup-0.3.1.exe
 pause
 popd

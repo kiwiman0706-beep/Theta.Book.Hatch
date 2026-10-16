@@ -1,5 +1,5 @@
 #define MyAppName "DSBooks 表紙キャッシュ"
-#define MyAppVersion "0.3.0"
+#define MyAppVersion "0.3.1"
 #define MyAppPublisher "DSBooks"
 #define MyAppExeName "DSBooksThumbnailHelper.exe"
 

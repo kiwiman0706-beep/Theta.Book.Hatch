@@ -1,0 +1,89 @@
+name: Build and publish PC/Mac helper
+# Push a temporary branch release-helper/v<version> pointing at the commit to release.
+# Windows and macOS runners build the helper, smoke-test the core on a generated PDF,
+# then one job creates the GitHub Release "helper-v<version>" and deletes the branch.
+# Unsigned builds: Windows SmartScreen and macOS Gatekeeper will warn on first launch.
+on:
+  push:
+    branches: ['release-helper/**']
+permissions:
+  contents: write
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      PYTHONUTF8: '1'
+    defaults:
+      run:
+        shell: bash
+        working-directory: thumbnail-helper-release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install
+        run: python -m pip install -r requirements.txt pyinstaller
+      - name: Smoke test (core on a generated PDF, GUI module import)
+        run: |
+          set -euo pipefail
+          mkdir -p ../smoke/lib/本
+          python -c "import fitz,sys;d=fitz.open();p=d.new_page();p.insert_text((72,72),'Cover');d.save(sys.argv[1])" "../smoke/lib/本/テスト.pdf"
+          python dsbooks_thumbnails.py ../smoke/lib --nas-root /Books/テスト
+          python -c "import json,sys;d=json.load(open(sys.argv[1],encoding='utf-8'));assert d['format']=='dsbooks-catalog' and len(d['books'])==1,d" ../smoke/lib/_DSBooksCache/catalog.json
+          ls ../smoke/lib/_DSBooksCache/thumbs/*.jpg
+          python -c "import importlib.machinery as m;l=m.SourceFileLoader('gui','dsbooks_thumbnail_gui.pyw');mod=l.load_module();print('GUI', mod.APP_VERSION)"
+      - name: Build Windows installer
+        if: runner.os == 'Windows'
+        run: |
+          set -euo pipefail
+          python -m PyInstaller --noconfirm --clean --onefile --windowed --name DSBooksThumbnailHelper --paths . --collect-all fitz --collect-all pymupdf --collect-all mutagen --collect-all PIL dsbooks_thumbnail_gui.pyw
+          if ! command -v ISCC.exe >/dev/null && [ ! -f "/c/Program Files (x86)/Inno Setup 6/ISCC.exe" ]; then choco install innosetup -y --no-progress; fi
+          ISCC="/c/Program Files (x86)/Inno Setup 6/ISCC.exe"; [ -f "$ISCC" ] || ISCC=ISCC.exe
+          "$ISCC" DSBooksThumbnailHelper.iss
+          mkdir -p ../out && cp dist-installer/*.exe ../out/
+      - name: Build macOS app
+        if: runner.os == 'macOS'
+        run: |
+          set -euo pipefail
+          python -m PyInstaller --noconfirm --clean --windowed --name "DSBooks Thumbnail Helper" --osx-bundle-identifier jp.shinwakai.dsbooks.helper --paths . --collect-all fitz --collect-all pymupdf --collect-all mutagen --collect-all PIL dsbooks_thumbnail_gui.pyw
+          test -d "dist/DSBooks Thumbnail Helper.app"
+          VERSION=$(python -c "import re;print(re.search(r'APP_VERSION = \"([^\"]+)\"',open('dsbooks_thumbnail_gui.pyw',encoding='utf-8').read()).group(1))")
+          mkdir -p ../out && ditto -c -k --keepParent "dist/DSBooks Thumbnail Helper.app" "../out/DSBooks-Thumbnail-Helper-$VERSION-macOS-$(uname -m).zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: helper-${{ runner.os }}
+          path: out/*
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - name: Portable ZIP (setup.bat, uses installed Python)
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#release-helper/v}"
+          (cd thumbnail-helper-release && zip -q -r "../artifacts/DSBooks-Thumbnail-Helper-$VERSION-portable.zip" . -x 'dist*' 'build/*' '__pycache__/*')
+          (cd artifacts && sha256sum * > SHA256SUMS.txt && cat SHA256SUMS.txt)
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#release-helper/v}"
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "bad version $VERSION"; exit 1; }
+          { cat thumbnail-helper-release/RELEASE_NOTES.md; echo; echo '```'; cat artifacts/SHA256SUMS.txt; echo '```'; } > notes.md
+          gh release create "helper-v$VERSION" artifacts/* --target "$GITHUB_SHA" --title "DSBooks 表紙キャッシュ作成ツール $VERSION（Windows / Mac）" --notes-file notes.md --prerelease
+      - name: Remove temporary branch
+        if: always()
+        run: git push origin --delete "${GITHUB_REF_NAME}" || true
