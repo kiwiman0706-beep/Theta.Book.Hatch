@@ -52,8 +52,25 @@ window.DSDownloads=(()=>{
   if(!row){row=document.createElement('div');row.id='downloadQueued';row.className='feature-actions';row.innerHTML='<button class="secondary" id="downloadQueuedManager">ダウンロード一覧</button><button class="secondary" id="downloadQueuedCancel">待ちを取り消す</button>';st.after(row);
    $('downloadQueuedManager').onclick=open;$('downloadQueuedCancel').onclick=()=>{native().dequeueDownload?.(id);queue=queue.filter(q=>String(q.id)!==id);row.remove();st.textContent='ダウンロード待ちを取り消しました。';refresh();};}
  }
+ /* Library covers: a ring for the book being saved, a band for books waiting. Separate from reading progress. */
+ function decorateCards(s){
+  const runningId=active(s)?String(s.id):'',pct=Math.max(0,Math.min(100,Number(s.percent)||0)),paused=s.state==='paused';
+  const order=new Map(queue.map((q,i)=>[String(q.id),i+1]));
+  document.querySelectorAll('.book-card[data-id]').forEach(el=>{
+   const wrap=el.querySelector('.cover-wrap');if(!wrap)return;
+   const b=bookFor(decodeURIComponent(el.dataset.id)),ids=b?(window.DSWork?DSWork.members(b):[b]).map(x=>String(x.id)):[decodeURIComponent(el.dataset.id)];
+   const running=ids.includes(runningId),pos=ids.map(id=>order.get(id)).filter(Boolean).sort((a,c)=>a-c)[0];
+   let ring=wrap.querySelector(':scope>.dl-ring'),band=wrap.querySelector(':scope>.dl-wait');
+   if(running){if(!ring){ring=document.createElement('div');ring.className='dl-ring';ring.innerHTML='<span></span>';wrap.appendChild(ring);}
+    ring.style.setProperty('--p',pct);ring.classList.toggle('paused',paused);ring.querySelector('span').textContent=paused?'Ⅱ':pct+'%';
+    ring.setAttribute('aria-label',(paused?'ダウンロード一時停止中 ':'ダウンロード中 ')+pct+'%');ring.setAttribute('role','img');}
+   else ring?.remove();
+   if(!running&&pos){if(!band){band=document.createElement('div');band.className='dl-wait';wrap.appendChild(band);}band.textContent=`↓ 待ち ${pos}番目`;band.setAttribute("aria-label",`ダウンロード待ち ${pos}番目`);}
+   else band?.remove();
+  });
+ }
  function refresh(){
-  const s=load(),busy=active(s);
+  const s=load(),busy=active(s);decorateCards(s);
   chip.hidden=!busy&&!queue.length;
   chip.textContent=busy?`↓ ${Math.max(0,Number(s.percent)||0)}%${queue.length?` +${queue.length}`:''}`:`↓ 待機 ${queue.length}`;
   chip.setAttribute('aria-label',busy?`ダウンロード中 ${Math.max(0,Number(s.percent)||0)}%、待機${queue.length}冊。一覧を開く`:`ダウンロード待ち${queue.length}冊。一覧を開く`);
@@ -64,6 +81,10 @@ window.DSDownloads=(()=>{
  for(const key of ['onNativeDownloadProgress','onNativeDownloadState']){const old=window[key];window[key]=(...a)=>{old?.(...a);refresh();};}
  const done=window.onNativeDownload;window.onNativeDownload=r=>{done?.(r);remember(r);refresh();};
  new MutationObserver(()=>{if($('downloadStatus')&&!$('downloadQueued'))detailStatus();}).observe($('modal'),{childList:true});
+ // Shelves are re-rendered on sort/filter/paging; decorate the new cards each time.
+ // Cards are added in batches after render(), so watch the shelf itself; our own overlays are ignored.
+ let queued=false;new MutationObserver(ms=>{if(queued||ms.every(m=>[...m.addedNodes,...m.removedNodes].every(n=>n.classList?.contains('dl-ring')||n.classList?.contains('dl-wait'))))return;queued=true;requestAnimationFrame(()=>{queued=false;try{decorateCards(state());}catch(e){}});}).observe($('bookGrid'),{childList:true,subtree:true});
+
 
  /* Settings: entry in the storage group (ui-layout groups it by the heading). */
  const settings=F.settings;F.settings=()=>{settings();const sheet=document.querySelector('.feature-sheet');if(!sheet)return;const box=document.createElement('section');

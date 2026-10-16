@@ -30,6 +30,15 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  await page.evaluate(()=>{ds.queue=[{id:'B',title:'本B',expectedSize:212.7e6}];onNativeDownloadQueue(ds.queue);});
  assert.match(await page.locator('#downloadStatus').textContent(),/1番目/);assert.equal(await page.locator('#downloadQueuedCancel').isVisible(),true);
  assert.match(await page.locator('#downloadChip').textContent(),/81% \+1/);
+ // Home covers: ring with percent on the saving book, waiting band on the queued one, nothing on the idle one.
+ assert.equal(await page.locator('.book-card[data-id="A"] .dl-ring span').first().textContent(),'81%');
+ assert.equal(await page.locator('.book-card[data-id="A"] .dl-ring').first().evaluate(e=>getComputedStyle(e).getPropertyValue('--p').trim()),'81');
+ assert.match(await page.locator('.book-card[data-id="B"] .dl-wait').first().textContent(),/待ち 1番目/);
+ assert.equal(await page.locator('.book-card[data-id="C"] .dl-ring, .book-card[data-id="C"] .dl-wait').count(),0);
+ await page.evaluate(()=>{ds.state='paused';onNativeDownloadState('A','paused');});assert.equal(await page.locator('.book-card[data-id="A"] .dl-ring.paused span').first().textContent(),'Ⅱ');
+ await page.evaluate(()=>{ds.state='running';onNativeDownloadState('A','running');render();});await page.waitForTimeout(100);assert.equal(await page.locator('.book-card[data-id="A"] .dl-ring').count()>0,true,'ring survives re-render');
+ await page.evaluate(()=>closeModal());await page.locator('.book-card[data-id="A"]').first().scrollIntoViewIfNeeded();await page.screenshot({path:'tests/downloads-home-0.9.2.png'});
+ await page.evaluate(()=>openBook('B'));await page.waitForTimeout(50);if(!await page.locator('#downloadStatus').count())await page.locator('[data-more]').first().click();await page.waitForTimeout(50);
  // A finishes: B (queued, not the detail-open "open after") must not auto-open; A gets saved.
  await page.evaluate(()=>{ds={state:'complete',id:'A',percent:100,queue:[]};onNativeDownload({id:'A',ok:true,localName:'a.pdf',size:1});});
  assert.equal(await page.evaluate(()=>books.find(b=>b.id==='A').localName),'a.pdf');assert.equal(await page.locator('#modalBg.open').count(),1);
@@ -37,6 +46,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  // B now runs: its own detail shows progress.
  await page.evaluate(()=>{ds={state:'running',id:'B',percent:5,done:1,total:2,queue:[]};onNativeDownloadQueue([]);onNativeDownloadProgress('B',5,10e6,212.7e6);onNativeDownloadState('B','running');});
  assert.match(await page.locator('#downloadStatus').textContent(),/5%/);
+ assert.equal(await page.locator('.book-card[data-id="A"] .dl-ring').count(),0,'finished book ring removed');assert.equal(await page.locator('.book-card[data-id="B"] .dl-wait').count(),0);assert.equal(await page.locator('.book-card[data-id="B"] .dl-ring span').first().textContent(),'5%');
  // Manager: current card, controls, waiting list with dequeue, history with retry.
  await page.evaluate(()=>{ds.queue=[{id:'C',title:'本C',expectedSize:1e6}];onNativeDownloadQueue(ds.queue);onNativeDownload({id:'X',ok:false,error:'失敗テスト'});});
  await page.evaluate(()=>closeModal());await page.locator('#downloadChip').click();await page.waitForTimeout(50);
@@ -54,5 +64,5 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  assert.deepEqual(await page.evaluate(()=>calls.at(-1)),['securesignin']);assert.equal(await page.locator('#downloadManager').count(),1);
  await page.evaluate(()=>{closeModal();openConnectModal();});await page.locator('#nasOpenSecureSignIn').click();assert.equal(await page.evaluate(()=>calls.filter(c=>c[0]==='securesignin').length),2);
  assert.equal(await page.locator('details[data-group=storage] #openDownloadManager').count(),0+await page.locator('#openDownloadManager').count());
- assert.deepEqual(errors,[]);console.log('PASS downloads: no cross-book progress, queue on second request, position/cancel in detail, no auto-open of queued book, manager controls/dequeue/history, Secure SignIn buttons');await browser.close();
+ assert.deepEqual(errors,[]);console.log('PASS downloads: cover ring/waiting band/paused/re-render, no cross-book progress, queue on second request, position/cancel in detail, no auto-open of queued book, manager controls/dequeue/history, Secure SignIn buttons');await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});
