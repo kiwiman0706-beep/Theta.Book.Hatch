@@ -2,7 +2,10 @@
 
 ## 現在
 
-**Claude版 0.9.3（versionCode 68、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
+**Claude版 0.9.4（versionCode 69、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
+
+0.9.4：端末の本の追加の修正
+- NAS未接続の新規状態で「端末の本を追加」がエラーになり本が入らなかった不具合を修正。Windows版の作業中に発見。
 
 Windows版 desktop 0.2.0
 - 本ごとの別ウインドウ、DeskHatchのドロワー（本は別ウインドウで開く）、全ウインドウ・ドロワーで同じ本棚と読書位置（アプリ側の保存領域で一元管理）、バックグラウンド起動、Shuei Times同梱、朗読速度の修正。

@@ -2,7 +2,7 @@
 
 Synology NAS上のフォルダをそのまま本棚として扱う、個人用Android読書・オーディオブックアプリです。EPUB、PDF、CBZ/CBR、Markdown、M4A/M4Bを扱います。NASにはDSM File Station APIで接続し、遠隔利用はTailscaleを前提にしています。
 
-現在は **Claude版 0.9.3-claude / versionCode 68**（`jp.shinwakai.dsbooks.claude`、ChatGPT版0.8.6とは別署名・別アプリ）。Android本体とPC用キャッシュ／メタデータ生成ツールのソースを含みます。Windows/Mac用の読書クライアントやiOS版の完成品ではありません。
+現在は **Claude版 0.9.4-claude / versionCode 69**（`jp.shinwakai.dsbooks.claude`、ChatGPT版0.8.6とは別署名・別アプリ）。Android本体とPC用キャッシュ／メタデータ生成ツールのソースを含みます。Windows/Mac用の読書クライアントやiOS版の完成品ではありません。
 
 ## はじめに読むもの
 
