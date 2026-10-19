@@ -61,6 +61,10 @@
 - 822.1MBの「21 Lessons」：外部VLCで再生できた報告あり。これはDSBooks内蔵版成功の証拠ではない。
 - 最新0.8.5／0.8.6の全機能について、実機完了の包括的報告はまだない。
 
+## Claude版 0.9.6 のリリース証拠
+
+`DSBooks-0.9.6-claude.apk`：109,847,124 bytes、SHA-256 `388722b9352a5fbf66084beffc169f1928ed3d69d93eec7983d6709212232336`（GitHub側のdigestと一致）。ZIP CRC正常、versionCode 71／versionName 0.9.6-claude、assets 36件がソースと一致（`digest.js` を含む）、v2/v3署名、同じ証明書。Javaに `saveLocalText` を追加。リリースノートの表の「SHA-256」の見出しが置換ミスでハッシュ値に化けている（APKには影響なし）。実機未確認。
+
 ## Claude版 0.9.5 のリリース証拠
 
 `DSBooks-0.9.5-claude.apk`：109,834,774 bytes、SHA-256 `69828dcd4c9d488692cbda50efcff0293cf9c9b3d1a3b69dc07b1d27610c722c`。ZIP CRC正常、package `jp.shinwakai.dsbooks.claude`／versionCode 70／versionName 0.9.5-claude、assets 35件がソースと一致（`md-page-anchors.js` を含む）、v2/v3署名、同じ証明書（`27c01a80…d16490`）。実機未確認。
