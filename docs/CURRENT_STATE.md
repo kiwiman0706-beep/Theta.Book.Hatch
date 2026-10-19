@@ -7,7 +7,7 @@
 |項目|値|
 |---|---|
 |Android package|`jp.shinwakai.dsbooks.claude`（0.9.0〜Claude版。ChatGPT版 `jp.shinwakai.dsbooks.preview` と共存）|
-|versionName / versionCode|`0.9.4-claude` / `69`（ChatGPT版最終は0.8.6-preview / 64）|
+|versionName / versionCode|`0.9.5-claude` / `70`（ChatGPT版最終は0.8.6-preview / 64）|
 |署名|Claude版の新しい鍵 alias `dsbooks-claude`、証明書SHA-256 `27c01a801b8ad5b4c229bf5061b6fd377031ba65f4443f4bc7faafe712d16490`|
 |min / target / compile SDK|26 / 34 / 35|
 |ビルド|Bash、JDK、aapt、D8 8.9.35、zipalign、apksigner。Gradleなし|
@@ -60,6 +60,10 @@
 - 約536MiBのM4B：0.5.2診断でサイズ一致、49章取得、MediaExtractor音声トラック0、互換コピー失敗。VLC置換前の証拠。
 - 822.1MBの「21 Lessons」：外部VLCで再生できた報告あり。これはDSBooks内蔵版成功の証拠ではない。
 - 最新0.8.5／0.8.6の全機能について、実機完了の包括的報告はまだない。
+
+## Claude版 0.9.5 のリリース証拠
+
+`DSBooks-0.9.5-claude.apk`：109,834,774 bytes、SHA-256 `69828dcd4c9d488692cbda50efcff0293cf9c9b3d1a3b69dc07b1d27610c722c`。ZIP CRC正常、package `jp.shinwakai.dsbooks.claude`／versionCode 70／versionName 0.9.5-claude、assets 35件がソースと一致（`md-page-anchors.js` を含む）、v2/v3署名、同じ証明書（`27c01a80…d16490`）。実機未確認。
 
 ## Mac版 desktop 0.2.1 のリリース証拠
 

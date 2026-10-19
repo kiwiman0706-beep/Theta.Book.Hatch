@@ -2,9 +2,9 @@
 
 ## 現在
 
-**Claude版 0.9.4（versionCode 69、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
+**Claude版 0.9.5（versionCode 70、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
 
-0.9.5（ソースのみ・未配布）：FullOCRのページ対応（fullocr-1）
+0.9.5：FullOCRのページ対応（fullocr-1）
 - FullOCRが出すMarkdownの不可視ページ印を読み、読書画面上部に「原文 p.15」を表示。押すと原PDFをそのページで開く。PDFからは「本文へ」で同じページの本文（章ファイルをまたぐ）へ戻る。仕様と実装の対応は docs/FULLOCR_PAGE_ANCHORS.md。
 - Markdown表示の改善：front-matter・HTMLコメント・Obsidianの%%コメントを隠す、[[リンク]]で章ファイルへ移動。
 - 自動テスト tests/md-anchors-0.9.5.cjs。実機確認は CHECKLIST_DEVICE_0.9.5.md。
