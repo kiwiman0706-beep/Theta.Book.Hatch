@@ -61,6 +61,10 @@
 - 822.1MBの「21 Lessons」：外部VLCで再生できた報告あり。これはDSBooks内蔵版成功の証拠ではない。
 - 最新0.8.5／0.8.6の全機能について、実機完了の包括的報告はまだない。
 
+## Mac版 desktop 0.2.1 のリリース証拠
+
+Release `desktop-mac-v0.2.1`（コミット `5b5aeca`、Actions run 39195467926）。`DSBooks-0.2.1-macOS-arm64.dmg` 68,281,936 bytes、SHA-256 `1be1de309a234ab93473643e68ba1f02a7e678b8eb59c8d6e19826c70d1f0e02`（hdiutil verify 正常）。`DSBooks-0.2.1-macOS-arm64.zip` 59,697,738 bytes、SHA-256 `28c5025d18058dd9eb086eac939bd78b9a9fd89aa90362f9245121e030ab8bd5`。GitHub側のdigestとCIの値が一致。ad-hoc署名（`codesign --verify --deep --strict` 正常）、未公証。CIでソース／.app の起動・ブリッジ・フォント・実ウインドウ起動を確認。Mac実機未確認。
+
 ## Claude版 0.9.4 のリリース証拠
 
 `DSBooks-0.9.4-claude.apk`：109,830,607 bytes（署名ブロックの4KB境界詰めで0.9.3と同サイズ）、SHA-256 `d91d54535300c920583780070adb96117ea7bc13d00313c594cb1f404d775f0a`。ZIP CRC正常、versionCode 69、assets 34件がソースと一致、v2/v3署名、同じ証明書。実機未確認。
