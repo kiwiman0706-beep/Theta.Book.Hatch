@@ -4,6 +4,7 @@
 
 |版|versionCode（確認値）|主要変更/確認できる範囲|根拠・留保|
 |---|---|---|---|
+|0.9.5-claude|70|FullOCR ページアンカー（`fullocr-1`）対応：Markdown内の `<!-- fullocr:page pdf=N print="…" -->` を非表示にし、読書画面に「原文 p.15」（印刷ページ→`page_offset`計算→PDF通し）。押すと同じフォルダの原PDF（`00_index.md` の `pdf_file`、なければ `*_text.pdf`／唯一のPDF）をそのページで開く。PDFから「本文へ」で章ファイルをまたいで同じページの本文へ。Markdown全般：front-matter・HTMLコメント・`%%`コメントを非表示、`[[wikilink]]` で同じフォルダの章へ移動。|ソース/docs/FULLOCR_PAGE_ANCHORS.md/CHECKLIST_DEVICE_0.9.5.md/tests/md-anchors-0.9.5.cjs（未署名・未配布）|
 |desktop 0.2.1（Mac）|—|Mac 版の最初の配布（Apple Silicon、.dmg／.zip、未署名・未公証、ad-hoc署名）。ログイン情報を macOS キーチェーンに保存（失敗時は権限600のファイル）。Dock クリック・Finder からの再起動で本棚を前面に、⌘Q で終了（バックグラウンド時も）、⌘[ で戻る、⌘W で本のウインドウを閉じる。表紙ツールの .pyw を Windows 以外でも読み込めるように。Info.plist にローカルネットワーク利用の説明。Windows 版はこの版では配布しない。|ソース/CHECKLIST_DESKTOP_MAC_0.2.1.md/desktop/test_credentials.py/.github/workflows/release-desktop-mac.yml|
 |0.9.4-claude|69|NASに一度も接続していない新しい状態で「端末の本を追加」が失敗する不具合を修正（`remoteMode` 未宣言）。Windows版と共通の画面の更新（PC専用メニュー項目はAndroidでは表示しない）。|ソース/CHECKLIST_DEVICE_0.9.4.md|
 |desktop 0.2.0|—|本ごとの別ウインドウ（同じ本は既存ウインドウを前面に）、DeskHatchドロワー対応（`http://127.0.0.1:47817/`、本は別ウインドウで開く）、本棚・読書位置をアプリ側で一元管理しウインドウ間・ドロワーで即時共有、ページごとの応答振り分け、バックグラウンド起動（起動時オプション、2回目の起動で本棚を前面に、☰から終了）、Shuei TimesをCIで最新Android版APKから取り出して同梱（SHA-256照合）、朗読の速度変更を修正、ダウンロード記録（download.log）。|ソース/CHECKLIST_DESKTOP_0.2.0.md/tests/desktop-0.2.0.cjs|
