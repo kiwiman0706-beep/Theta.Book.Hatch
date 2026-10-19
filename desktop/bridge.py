@@ -382,6 +382,21 @@ class Bridge:
         except Exception as e:
             return json.dumps({"ok": False, "error": str(e) or "章を読み込めませんでした"}, ensure_ascii=False)
 
+    def n_saveLocalText(self, prefix, text):
+        """A text the app made itself (an AI digest) saved as a local book. Never touches NAS files."""
+        if not text or len(text) > 4 * 1024 * 1024:
+            return None
+        data = text.encode("utf-8")
+        hx = hashlib.sha256(data).hexdigest()
+        safe = prefix if re.fullmatch(r"[a-z]{1,16}", prefix or "") else "text"
+        local = "%s-%s.md" % (safe, hx)
+        target = self.books / local
+        if not target.is_file():
+            tmp = self.books / (local + ".part")
+            tmp.write_bytes(data)
+            tmp.replace(target)
+        return json.dumps({"localName": local, "bookId": "sha256:" + hx, "size": len(data)})
+
     def n_readText(self, name):
         try:
             path = self.local(name)

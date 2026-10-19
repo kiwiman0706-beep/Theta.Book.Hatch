@@ -2,7 +2,12 @@
 
 ## 現在
 
-**Claude版 0.9.5（versionCode 70、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
+**Claude版 0.9.6（versionCode 71、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
+
+0.9.6：Theta ダイジェスト（AI要約・マインドマップ・一問一答）
+- FullOCR が作る `_digest.md` を3タブで表示し、各項目から原文PDFのページや本文の見出しへ移動。
+- FullOCRの本で「✦ AI要約」：自分の Gemini API キーで節ごとに要約を作り、同じ形式（generator="bookhatch"）で保存。ページ番号はAIに言わせず、アプリが区切った節のページを使う。送信は確認画面でボタンを押した時だけ。
+- 未対応：EPUB形式の出力（`id="pdf-N"`）、ページ画像の併送。仕様と実装は docs/THETA_DIGEST.md、実機確認は CHECKLIST_DEVICE_0.9.6.md。
 
 0.9.5：FullOCRのページ対応（fullocr-1）
 - FullOCRが出すMarkdownの不可視ページ印を読み、読書画面上部に「原文 p.15」を表示。押すと原PDFをそのページで開く。PDFからは「本文へ」で同じページの本文（章ファイルをまたぐ）へ戻る。仕様と実装の対応は docs/FULLOCR_PAGE_ANCHORS.md。

@@ -39,7 +39,7 @@ window.DSMdAnchors=(()=>{
  }
 
  /* ---------- books of the same folder ---------- */
- const dir=b=>{const s=String(b?.path||'');const i=s.lastIndexOf('/');return i>0?s.slice(0,i):null;};
+ const dir=b=>{if(b?.digestDir)return b.digestDir;const s=String(b?.path||'');const i=s.lastIndexOf('/');return i>0?s.slice(0,i):null;};
  const base=s=>{s=String(s||'');return s.slice(s.lastIndexOf('/')+1);};
  const fileOf=b=>base(b.path)||base(b.localName)||(b.title||'')+'.'+String(b.fileExt||'').toLowerCase();
  const stem=s=>base(s).replace(/\.[^.]+$/,'');
@@ -71,6 +71,15 @@ window.DSMdAnchors=(()=>{
  }
  function scrollTo(viewport,el){if(!el)return;viewport.scrollTop+=el.getBoundingClientRect().top-viewport.getBoundingClientRect().top-4;}
  function openOther(b){if(local(b))openLocalBook(b);else openBook(b.id);}
+ // Open the source PDF of `from`'s folder at physical page n (1-based); false when there is no such PDF.
+ function openPdfPage(from,meta,n){const pdf=pdfFor(from,meta);if(!pdf)return false;pdf.currentPage=Math.max(0,n-1);saveCatalog();back={md:from.id,pdf:pdf.id};openOther(pdf);return true;}
+ // Open a Markdown file of `from`'s folder (by file stem, or the file holding that heading) at a heading or a physical page.
+ function openMd(from,file,heading,pdfPage){
+  const mds=siblings(from).filter(x=>x.type==='Markdown');let target=file?mds.find(x=>stem(fileOf(x))===stem(file)):null;
+  if(!target&&heading){const re=new RegExp('^#{1,6}\\s+'+heading.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\s*$','m');target=mds.find(x=>{const t=readLocal(x);return t!=null&&re.test(t);});}
+  if(!target&&pdfPage){let best=null;for(const md of mds){const t=readLocal(md);if(t==null)continue;for(const a of anchorsOf(t))if(a.pdf<=pdfPage&&(!best||a.pdf>best.pdf))best={md,pdf:a.pdf};}target=best?.md;heading=null;}
+  if(!target)return false;pending={id:target.id,heading:heading||'',pdf:heading?0:pdfPage};openOther(target);return true;
+ }
  const wrapped=markdownReader;
  markdownReader=function(b){
   last=null;wrapped(b);const page=$('mdPage'),p=last;if(!page||!p)return;
@@ -81,14 +90,13 @@ window.DSMdAnchors=(()=>{
    if(!target){toast('「'+l.file+'」が同じフォルダに見つかりません');return;}pending={id:target.id,heading:l.heading};openOther(target);});
   const els=[...page.querySelectorAll('.fo-anchor')];
   if(els.length){
-   const meta=settings(b,p.meta),pdf=pdfFor(b,meta);
+   const meta=settings(b,p.meta);
    const btn=document.createElement('button');btn.className='tool-btn md-original';btn.id='mdOriginal';btn.title='原文（PDF）のこのページを開く';
    document.querySelector('.reader-top')?.appendChild(btn);
    const at=()=>{const el=current(viewport,els);return {pdf:Number(el.dataset.pdf),print:el.dataset.print||''};};
    let raf=0;const update=()=>{raf=0;btn.textContent='原文 '+label(at(),meta);};
    viewport.addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(update);},{passive:true});
-   btn.onclick=()=>{const a=at();if(!pdf){toast('原文のPDF'+(meta.pdf_file?'「'+base(meta.pdf_file)+'」':'')+'が同じフォルダに見つかりません');return;}
-    pdf.currentPage=Math.max(0,a.pdf-1);saveCatalog();back={md:b.id,pdf:pdf.id};openOther(pdf);};
+   btn.onclick=()=>{if(!openPdfPage(b,meta,at().pdf))toast('原文のPDF'+(meta.pdf_file?'「'+base(meta.pdf_file)+'」':'')+'が同じフォルダに見つかりません');};
    update();
   }
   // Arrived from the PDF ("本文へ") or a wikilink: go to that page / heading.
@@ -116,5 +124,5 @@ window.DSMdAnchors=(()=>{
    pending={id:best.md.id,pdf:n};back={md:best.md.id,pdf:b.id};openLocalBook(best.md);};
  };
 
- return {prepare,html,anchorsOf,frontMatter,label,get pending(){return pending;}};
+ return {prepare,html,anchorsOf,frontMatter,label,settings,pdfFor,siblings,fileOf,stem,base,dir,local,readLocal,openOther,openPdfPage,openMd,get pending(){return pending;}};
 })();

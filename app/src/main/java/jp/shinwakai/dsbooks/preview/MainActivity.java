@@ -505,6 +505,26 @@ public final class MainActivity extends Activity {
             new Thread(() -> renderPdf(localName, pageIndex, token)).start();
         }
 
+        /** A text the app made itself (e.g. an AI digest) saved as a local book; returns {localName,bookId,size} or null. Never touches NAS files. */
+        @JavascriptInterface public String saveLocalText(String prefix, String text) {
+            try {
+                if (text == null || text.isEmpty() || text.length() > 4 * 1024 * 1024) return null;
+                byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+                StringBuilder hash = new StringBuilder();
+                for (byte x : MessageDigest.getInstance("SHA-256").digest(bytes)) hash.append(String.format(Locale.ROOT, "%02x", x & 255));
+                String safe = prefix == null || !prefix.matches("[a-z]{1,16}") ? "text" : prefix;
+                String storageId = BookStorage.selected(MainActivity.this);
+                File root = BookStorage.directory(MainActivity.this, storageId, true);
+                String local = safe + "-" + hash + ".md";
+                File target = new File(root, local);
+                if (!target.isFile()) {
+                    File tmp = new File(root, local + ".part");
+                    try (FileOutputStream out = new FileOutputStream(tmp)) { out.write(bytes); }
+                    if (!tmp.renameTo(target)) { tmp.delete(); return null; }
+                }
+                return new JSONObject().put("localName", BookLocation.encode(storageId, local)).put("bookId", "sha256:" + hash).put("size", bytes.length).toString();
+            } catch (Exception e) { return null; }
+        }
         @JavascriptInterface public String readText(String localName) {
             try {
                 File f = localFile(localName);

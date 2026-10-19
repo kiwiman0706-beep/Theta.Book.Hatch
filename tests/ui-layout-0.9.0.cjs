@@ -41,7 +41,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  await page.evaluate(()=>closeModal());
  // Settings: shortcuts + groups; every original control is still present and wired.
  await page.locator('#mobileSettings').click();await page.waitForTimeout(50);
- assert.deepEqual(await page.locator('.settings-group').evaluateAll(xs=>xs.map(x=>x.dataset.group)),['display','sync','storage','devices','about']);
+ assert.deepEqual(await page.locator('.settings-group').evaluateAll(xs=>xs.map(x=>x.dataset.group)),['display','sync','storage','devices','ai','about']);
  assert.equal(await page.locator('.feature-sheet > :not(h2):not(.close):not(.settings-quick):not(details):not([hidden])').count(),0,'nothing left ungrouped');
  for(const id of ['importBooks','launchTailscale','keepAwake','seriesStacks','exportReading','importReading','settingsSleep','groupSameFiles','selfTest','downloadStorageSelect','nasAutoSync','runNasSync','pinCoverWidget','systemCast'])assert.equal(await page.locator('#modal #'+id).count(),1,id);
  assert.equal(await page.locator('details[data-group=display] #keepAwake').count(),1);assert.equal(await page.locator('details[data-group=display] #groupSameFiles').count(),1);

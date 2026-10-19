@@ -4,6 +4,7 @@
 
 |版|versionCode（確認値）|主要変更/確認できる範囲|根拠・留保|
 |---|---|---|---|
+|0.9.6-claude|71|Theta ダイジェスト（`theta-digest-1`）：FullOCR／このアプリの `_digest.md` を要約・マインドマップ・一問一答のタブで表示し、各項目から原文PDFのページ・本文の見出しへ移動。FullOCRの本の読書画面に「✦ AI要約」：利用者の Gemini API キーで節ごとに要約を作成し（同意画面の後だけ送信、ページはアプリ側の値）、端末に保存して同じフォルダの本棚へ。設定に「AI要約」グループ（キー・モデル）。ネイティブに `saveLocalText`（アプリが作ったテキストを端末の保存先へ）。|ソース/docs/THETA_DIGEST.md/CHECKLIST_DEVICE_0.9.6.md/tests/digest-0.9.6.cjs|
 |0.9.5-claude|70|FullOCR ページアンカー（`fullocr-1`）対応：Markdown内の `<!-- fullocr:page pdf=N print="…" -->` を非表示にし、読書画面に「原文 p.15」（印刷ページ→`page_offset`計算→PDF通し）。押すと同じフォルダの原PDF（`00_index.md` の `pdf_file`、なければ `*_text.pdf`／唯一のPDF）をそのページで開く。PDFから「本文へ」で章ファイルをまたいで同じページの本文へ。Markdown全般：front-matter・HTMLコメント・`%%`コメントを非表示、`[[wikilink]]` で同じフォルダの章へ移動。|ソース/docs/FULLOCR_PAGE_ANCHORS.md/CHECKLIST_DEVICE_0.9.5.md/tests/md-anchors-0.9.5.cjs|
 |desktop 0.2.1（Mac）|—|Mac 版の最初の配布（Apple Silicon、.dmg／.zip、未署名・未公証、ad-hoc署名）。ログイン情報を macOS キーチェーンに保存（失敗時は権限600のファイル）。Dock クリック・Finder からの再起動で本棚を前面に、⌘Q で終了（バックグラウンド時も）、⌘[ で戻る、⌘W で本のウインドウを閉じる。表紙ツールの .pyw を Windows 以外でも読み込めるように。Info.plist にローカルネットワーク利用の説明。Windows 版はこの版では配布しない。|ソース/CHECKLIST_DESKTOP_MAC_0.2.1.md/desktop/test_credentials.py/.github/workflows/release-desktop-mac.yml|
 |0.9.4-claude|69|NASに一度も接続していない新しい状態で「端末の本を追加」が失敗する不具合を修正（`remoteMode` 未宣言）。Windows版と共通の画面の更新（PC専用メニュー項目はAndroidでは表示しない）。|ソース/CHECKLIST_DEVICE_0.9.4.md|

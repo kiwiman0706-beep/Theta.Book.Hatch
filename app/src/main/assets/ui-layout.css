@@ -143,3 +143,25 @@ body.app-menu-open{overflow:hidden}
 .tool-btn.md-original,.tool-btn.md-back{flex:0 0 auto;font-size:12px;font-weight:700;color:#1f3a2c;background:#e7efe5;border:1px solid #c9d8c6;border-radius:999px;padding:5px 10px;white-space:nowrap;max-width:46vw;overflow:hidden;text-overflow:ellipsis}
 .md-wikilink{color:#2d6a4f;text-decoration:underline;text-underline-offset:2px}
 .reader-top:has(.md-original) #mdFontFace{min-width:0;max-width:30vw}
+
+/* 0.9.6 Theta digest view: tabs, cards with page/heading chips, mind-map tree, Q&A flash cards. */
+.digest-tabs{display:flex;gap:6px;padding:8px 12px;border-bottom:1px solid #e2e0d7;overflow-x:auto}
+.digest-tabs button{flex:0 0 auto;border:1px solid #c9d8c6;background:#fff;border-radius:999px;padding:6px 12px;font-size:13px;color:#1f3a2c}
+.digest-tabs button[aria-selected="true"]{background:#1f3a2c;color:#fff;border-color:#1f3a2c}
+.digest-page{max-width:760px}
+.digest-note{font-size:11px;color:#6b6e66}
+.digest-card{border:1px solid #e2e0d7;border-radius:12px;padding:10px 14px;margin:10px 0;background:#fffefa}
+.digest-card h3{margin:2px 0 6px;font-size:16px}
+.digest-card ul{margin:6px 0 0;padding-left:1.2em}
+.digest-chips{display:flex;flex-wrap:wrap;gap:6px}
+.digest-chip{border:1px solid #c9d8c6;background:#e7efe5;color:#1f3a2c;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700}
+.digest-chip.small{padding:1px 7px;font-size:11px}
+.digest-map,.digest-map ul{list-style:none;margin:0;padding-left:14px;border-left:2px solid #c9d8c6}
+.digest-map{border-left:0;padding-left:0}
+.digest-map li{margin:6px 0}
+.map-node{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.map-node.d0{font-size:18px;font-weight:800}.map-node.d1{font-weight:700}
+.qa{border-top:1px dashed #e2e0d7;padding:8px 0}
+.qa .q{font-weight:700;margin:0 0 6px}.qa .a{margin:6px 0 0;color:#234}
+.qa-reveal{border:1px solid #c9d8c6;background:#fff;border-radius:8px;padding:4px 10px;font-size:12px}
+.digest-warn{color:#8a4b0f}
