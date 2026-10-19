@@ -4,6 +4,7 @@
 
 |版|versionCode（確認値）|主要変更/確認できる範囲|根拠・留保|
 |---|---|---|---|
+|desktop 0.2.1（Mac）|—|Mac 版の最初の配布（Apple Silicon、.dmg／.zip、未署名・未公証、ad-hoc署名）。ログイン情報を macOS キーチェーンに保存（失敗時は権限600のファイル）。Dock クリック・Finder からの再起動で本棚を前面に、⌘Q で終了（バックグラウンド時も）、⌘[ で戻る、⌘W で本のウインドウを閉じる。表紙ツールの .pyw を Windows 以外でも読み込めるように。Info.plist にローカルネットワーク利用の説明。Windows 版はこの版では配布しない。|ソース/CHECKLIST_DESKTOP_MAC_0.2.1.md/desktop/test_credentials.py/.github/workflows/release-desktop-mac.yml|
 |0.9.4-claude|69|NASに一度も接続していない新しい状態で「端末の本を追加」が失敗する不具合を修正（`remoteMode` 未宣言）。Windows版と共通の画面の更新（PC専用メニュー項目はAndroidでは表示しない）。|ソース/CHECKLIST_DEVICE_0.9.4.md|
 |desktop 0.2.0|—|本ごとの別ウインドウ（同じ本は既存ウインドウを前面に）、DeskHatchドロワー対応（`http://127.0.0.1:47817/`、本は別ウインドウで開く）、本棚・読書位置をアプリ側で一元管理しウインドウ間・ドロワーで即時共有、ページごとの応答振り分け、バックグラウンド起動（起動時オプション、2回目の起動で本棚を前面に、☰から終了）、Shuei TimesをCIで最新Android版APKから取り出して同梱（SHA-256照合）、朗読の速度変更を修正、ダウンロード記録（download.log）。|ソース/CHECKLIST_DESKTOP_0.2.0.md/tests/desktop-0.2.0.cjs|
 |desktop 0.1.0|—|Windows版の最初の配布。Android版と同じ画面をWebView2で表示し、Pythonでブリッジ（NAS中継・ダウンロード待ち・EPUB移植・PDF/CBZ・表紙・DPAPI保存）を実装。表紙キャッシュ作成ツールを同じexeに統合。共通画面の不具合修正：NAS未接続の新規状態で「端末の本を追加」が `remoteMode` 未定義で失敗していた（Android版も次の版で反映）。|ソース/CHECKLIST_DESKTOP_0.1.0.md/tests/desktop-0.1.0.cjs/.github/workflows/release-desktop.yml|

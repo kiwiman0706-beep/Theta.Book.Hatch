@@ -15,7 +15,7 @@
 |音声|LibVLC Android 3.7.1、Android TTS、MediaSession|
 |CPU|arm64-v8a / armeabi-v7a / x86 / x86_64|
 |接続|DSM File Station API。Tailscaleは外部アプリ|
-|PC管理|Python GUI/CLI 0.3.0相当。閲覧用PC/Macアプリはまだない|
+|PC管理|Python GUI/CLI 0.3.1。閲覧用は Windows版 desktop 0.2.0 と Mac版 desktop 0.2.1（`desktop/`、表紙ツールを内蔵）|
 
 ## 機能表
 
@@ -50,7 +50,8 @@
 |Android TV|P|Leanback起動・十字キー操作の試験対応。専用の完成UIではない|
 |Android Auto|P|MediaBrowserServiceで保存済み音声本を公開。最大5,000件／100件単位。未保存NAS音声は対象外。実車未確認|
 |Chromecast|P|0.8.0から保存済み音声の直接Cast。端末の限定HTTP配信。同一Wi-Fiと受信側コーデック対応が必要。1倍速。NAS未保存音声、TTS、書籍画面、Cast中の速度／スリープ／表紙は未対応|
-|PC/Mac閲覧・iOS・NAS常駐|N|PC管理ツールと混同しない。iOS/IPAは検討要望のみ。QuickConnectも未対応|
+|PC/Mac閲覧|I|Windows 0.2.0／Mac 0.2.1（Apple Silicon、未署名）。実機確認はCHECKLIST_DESKTOP_*|
+|iOS・NAS常駐|N|iOS/IPAは検討要望のみ。QuickConnectも未対応|
 
 ## 確認できた実機報告
 

@@ -147,9 +147,11 @@
   }
  })();
 
- /* ---- keyboard and mouse "Back": Escape / browser back button / Alt+Left ---- */
+ /* ---- keyboard and mouse "Back": Escape / browser back button / Alt+Left / ⌘[ ---- */
  const back=()=>{try{return window.dsbooksHandleBack?.();}catch(e){return false;}};
- addEventListener('keydown',e=>{if(e.defaultPrevented)return;if(e.key==='Escape'||(e.altKey&&e.key==='ArrowLeft')){if(back())e.preventDefault();}},false);
+ addEventListener('keydown',e=>{if(e.defaultPrevented)return;if(e.key==='Escape'||(e.altKey&&e.key==='ArrowLeft')||(e.metaKey&&(e.key==='['||e.key==='ArrowLeft'))){if(back())e.preventDefault();}
+  // macOS: ⌘W closes a book window, as in other Mac apps.
+  else if(e.metaKey&&!e.shiftKey&&e.key.toLowerCase()==='w'&&WIN){e.preventDefault();call('closeWindow',[WIN]);}},false);
  addEventListener('mouseup',e=>{if(e.button===3){e.preventDefault();back();}});
  /* ---- keyboard page turning in readers: PageDown/Space/↓ next, PageUp/↑ previous;
     ←/→ follow the page direction (vertical text and right-opening comics: ← is next) ---- */

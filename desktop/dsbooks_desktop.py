@@ -52,9 +52,51 @@ def already_running() -> bool:
         return False
 
 
+def mac_app_events(show_main, quitting):
+    """macOS: clicking the Dock icon (or opening the app again from Finder, which macOS turns into the same
+    event instead of a second process) shows the shelf; ⌘Q / Dock "Quit" really quits even in background mode."""
+    if sys.platform != "darwin":
+        return
+    try:
+        import objc
+        from webview.platforms.cocoa import BrowserView
+    except Exception:
+        return
+
+    def reopen(self, app, flag):
+        show_main()
+        return True
+
+    def terminate(self, app):
+        quitting["now"] = True
+        return 1  # NSTerminateNow
+
+    for func, sel, sig in ((reopen, b"applicationShouldHandleReopen:hasVisibleWindows:", b"Z@:@Z"),
+                           (terminate, b"applicationShouldTerminate:", b"Q@:@")):
+        try:
+            objc.classAddMethods(BrowserView.AppDelegate, [objc.selector(func, selector=sel, signature=sig)])
+        except Exception:
+            pass  # without these the app still works; only the Dock conveniences are missing
+
+
+def library_tools_module():
+    try:
+        import dsbooks_thumbnail_gui
+    except ImportError:
+        # Only Windows imports a .pyw by name; elsewhere load the helper's GUI from its file.
+        import importlib.machinery
+        import importlib.util
+        gui = resource(HERE / "helper" / "dsbooks_thumbnail_gui.pyw", REPO / "thumbnail-helper-release" / "dsbooks_thumbnail_gui.pyw")
+        loader = importlib.machinery.SourceFileLoader("dsbooks_thumbnail_gui", str(gui))
+        spec = importlib.util.spec_from_loader("dsbooks_thumbnail_gui", loader)
+        dsbooks_thumbnail_gui = importlib.util.module_from_spec(spec)
+        sys.modules["dsbooks_thumbnail_gui"] = dsbooks_thumbnail_gui
+        loader.exec_module(dsbooks_thumbnail_gui)
+    return dsbooks_thumbnail_gui
+
+
 def library_tools():
-    import dsbooks_thumbnail_gui
-    dsbooks_thumbnail_gui.main()
+    library_tools_module().main()
 
 
 def main() -> int:
@@ -118,6 +160,8 @@ def main() -> int:
                 pass
     bridge.quit_app = quit_app
     bridge.background = args.background
+
+    mac_app_events(show_main, quitting)
 
     if args.background:
         # In background mode closing the shelf only hides it, so drawers and reader windows keep working.

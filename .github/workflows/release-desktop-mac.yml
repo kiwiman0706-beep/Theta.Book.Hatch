@@ -1,0 +1,103 @@
+name: Build and publish DSBooks for Mac
+# Push a temporary branch release-desktop-mac/v<version> at the commit to release.
+# Builds on macos-latest (Apple Silicon): tests the source, freezes DSBooks.app with PyInstaller, adds the
+# local-network usage text to Info.plist, signs ad hoc (not notarized), smoke-tests the built app, makes a
+# .dmg, publishes "desktop-mac-v<version>", deletes the branch.
+on:
+  push:
+    branches: ['release-desktop-mac/**']
+permissions:
+  contents: write
+jobs:
+  macos:
+    runs-on: macos-latest
+    env:
+      PYTHONUTF8: '1'
+      DSBOOKS_REQUIRE_FONT: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install
+        run: python -m pip install -r desktop/requirements.txt pyinstaller
+      - name: Version
+        id: v
+        run: |
+          VERSION="${GITHUB_REF_NAME#release-desktop-mac/v}"
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "bad version $VERSION"; exit 1; }
+          grep -q "APP_VERSION = \"$VERSION-desktop\"" desktop/bridge.py || { echo "bridge.py APP_VERSION does not match $VERSION"; exit 1; }
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "arch=$(uname -m)" >> "$GITHUB_OUTPUT"
+      - name: Bundle the user's Shuei Times font from the latest Android release (private repo; never committed)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG=$(gh release list --limit 30 --json tagName -q '.[].tagName' | grep -E '^v[0-9.]+-claude$' | head -1)
+          [ -n "$TAG" ] || { echo "no Android release found"; exit 1; }
+          gh release download "$TAG" -p '*.apk' -D apkdl
+          mkdir -p app/src/main/assets/fonts
+          unzip -p apkdl/*.apk assets/fonts/ShueiTimes.ttf > app/src/main/assets/fonts/ShueiTimes.ttf
+          echo "c1349e4b7f32c98b7b761ad1524e32831b61b1d3fbe345f89633c8c841ee6cbb  app/src/main/assets/fonts/ShueiTimes.ttf" | shasum -a 256 -c -
+          rm -rf apkdl
+      - name: Smoke test (source, Keychain, cover tool module)
+        run: |
+          set -euo pipefail
+          python desktop/smoke_test.py
+          python desktop/test_credentials.py
+          python -c "import sys;sys.path.insert(0,'desktop');import dsbooks_desktop as d;m=d.library_tools_module();print('library tools', m.APP_VERSION)"
+      - name: Freeze
+        run: |
+          set -euo pipefail
+          # macOS does not import a .pyw by name, so give PyInstaller the cover tool's GUI as a .py module.
+          mkdir -p build-mac && cp thumbnail-helper-release/dsbooks_thumbnail_gui.pyw build-mac/dsbooks_thumbnail_gui.py
+          python -m PyInstaller --noconfirm --clean --windowed --name DSBooks \
+            --osx-bundle-identifier jp.shinwakai.dsbooks.desktop \
+            --paths desktop --paths thumbnail-helper-release --paths build-mac \
+            --hidden-import dsbooks_thumbnail_gui --hidden-import dsbooks_thumbnails --hidden-import dsbooks_metadata --hidden-import bridge --hidden-import server --hidden-import epub_content \
+            --hidden-import keyring.backends.macOS \
+            --add-data "app/src/main/assets:assets" --add-data "desktop/web:web" \
+            --collect-all webview --collect-all fitz --collect-all pymupdf --collect-all mutagen --collect-all PIL --collect-submodules keyring \
+            desktop/dsbooks_desktop.py
+          test -x dist/DSBooks.app/Contents/MacOS/DSBooks
+      - name: Info.plist and ad-hoc signature
+        run: |
+          set -euo pipefail
+          P=dist/DSBooks.app/Contents/Info.plist
+          V="${{ steps.v.outputs.version }}"
+          plutil -replace CFBundleDisplayName -string "DSBooks" "$P"
+          plutil -replace CFBundleShortVersionString -string "$V" "$P"
+          plutil -replace CFBundleVersion -string "$V" "$P"
+          plutil -replace LSMinimumSystemVersion -string "12.0" "$P"
+          plutil -replace NSLocalNetworkUsageDescription -string "NAS（同じネットワーク内のSynology）に接続して本棚を読み込むために使います。" "$P"
+          plutil -replace NSAppTransportSecurity -json '{"NSAllowsLocalNetworking":true}' "$P"
+          plutil -lint "$P"
+          # Editing Info.plist breaks PyInstaller's signature; Apple Silicon refuses unsigned code, so re-sign ad hoc.
+          codesign --force --deep --sign - dist/DSBooks.app
+          codesign --verify --deep --strict --verbose=2 dist/DSBooks.app
+      - name: Smoke test (built app)
+        run: python desktop/smoke_test.py dist/DSBooks.app/Contents/MacOS/DSBooks
+      - name: Smoke test (built app, real window)
+        run: python desktop/smoke_test.py dist/DSBooks.app/Contents/MacOS/DSBooks --window
+      - name: Disk image
+        run: |
+          set -euo pipefail
+          V="${{ steps.v.outputs.version }}"; A="${{ steps.v.outputs.arch }}"
+          mkdir -p dmgroot out
+          ditto dist/DSBooks.app dmgroot/DSBooks.app
+          ln -s /Applications dmgroot/Applications
+          hdiutil create -volname "DSBooks $V" -srcfolder dmgroot -ov -format UDZO "out/DSBooks-$V-macOS-$A.dmg"
+          hdiutil verify "out/DSBooks-$V-macOS-$A.dmg"
+          ditto -c -k --keepParent dist/DSBooks.app "out/DSBooks-$V-macOS-$A.zip"
+          (cd out && shasum -a 256 * > SHA256SUMS.txt && cat SHA256SUMS.txt)
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          { cat desktop/RELEASE_NOTES_MAC.md; echo; echo '```'; cat out/SHA256SUMS.txt; echo '```'; } > notes.md
+          gh release create "desktop-mac-v${{ steps.v.outputs.version }}" out/* --target "$GITHUB_SHA" --title "DSBooks for Mac ${{ steps.v.outputs.version }}" --notes-file notes.md --prerelease
+      - name: Remove temporary branch
+        if: always()
+        run: git push origin --delete "${GITHUB_REF_NAME}" || true

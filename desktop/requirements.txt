@@ -3,3 +3,4 @@ Pillow>=10.0
 PyMuPDF>=1.23
 mutagen>=1.47
 PyYAML>=6.0
+keyring>=24; sys_platform == "darwin"

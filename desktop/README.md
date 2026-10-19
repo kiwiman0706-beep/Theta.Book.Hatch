@@ -1,4 +1,4 @@
-# DSBooks for Windows（デスクトップ版）
+# DSBooks for Windows / Mac（デスクトップ版）
 
 Android版と同じ画面（`app/src/main/assets`）を pywebview（Windowsでは WebView2）で表示し、Androidの `DSBooksNative` ブリッジを Python で実装したもの。表紙キャッシュ作成ツール（`thumbnail-helper-release/`）は `--library-tools` で同じ exe から起動する。計画は `docs/DESKTOP_PLAN.md`。
 
@@ -10,6 +10,8 @@ Android版と同じ画面（`app/src/main/assets`）を pywebview（Windowsで�
 |`epub_content.py`|`EpubContent.java` の移植。報告本21章で Java と完全一致を確認済み|
 |`web/desktop-bridge.js`|画面側の `DSBooksNative`。localStorage の `dsbooks.*` をアプリ側と同期（ドロワーは別のブラウザ保存領域のため）。`?reader=<id>&w=<n>` で本のウインドウ表示。音声（HTML audio）・朗読（speechSynthesis）はここで実装し、Android と同じ `onPlaybackState` 形式で通知|
 |`DSBooks.iss`／`smoke_test.py`|インストーラー、CIの起動確認|
+
+Mac（0.2.1〜）：同じコード。保存先 `~/Library/Application Support/DSBooks`、ログイン情報はキーチェーン（`jp.shinwakai.dsbooks.desktop`、失敗時は権限600のファイル）。Dock の再オープンと ⌘Q は `mac_app_events()` が pywebview の AppDelegate にメソッドを足して対応。表紙ツールの `.pyw` は Windows 以外では名前で import できないため、ソース実行ではファイルから読み込み、ビルドでは `.py` に複製して同梱。配布：一時ブランチ `release-desktop-mac/v<版>` → `.github/workflows/release-desktop-mac.yml`（macos-latest、Info.plist にローカルネットワーク説明、ad-hoc署名、.dmg／.zip、タグ `desktop-mac-v<版>`）。資格情報テスト：`python desktop/test_credentials.py`。
 
 開発時：`pip install -r desktop/requirements.txt` → `python desktop/dsbooks_desktop.py`。テスト：`DESKTOP_PYTHON=<python> node tests/desktop-0.1.0.cjs`（模擬NAS付き）。配布：一時ブランチ `release-desktop/v<版>` を push すると `.github/workflows/release-desktop.yml` が Windows でビルド・確認・公開する。`bridge.py` の `APP_VERSION` を `<版>-desktop` に合わせる。
 

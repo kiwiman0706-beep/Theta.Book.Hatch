@@ -49,8 +49,13 @@ const boot=p=>p.waitForFunction(()=>window.DSBoot&&DSBoot.readyMs!==undefined);
  await reader.evaluate(()=>DSBooksNative.stopSpeech());
  // Closing the reader closes its window.
  await reader.evaluate(()=>closeModal());opened=JSON.parse(await main.evaluate(()=>DSBooksNative.testOpened()));assert(opened.some(q=>q.startsWith('closed ?reader=')));
+ // macOS ⌘W closes a book window too (0.2.1); in the shelf it does nothing.
+ await main.keyboard.press('Meta+KeyW');assert.equal(JSON.parse(await main.evaluate(()=>DSBooksNative.testOpened())).filter(q=>q.startsWith('closed')).length,1);
+ await main.evaluate(id=>openLocalBook(books.find(b=>b.id===id)),epubId);opened=JSON.parse(await main.evaluate(()=>DSBooksNative.testOpened()));
+ const reader2=await ctx();await reader2.goto(URL0+opened.filter(q=>q.startsWith('?reader')).pop());await boot(reader2);await reader2.waitForSelector('#epubPage');
+ await reader2.keyboard.press('Meta+KeyW');assert.equal(JSON.parse(await main.evaluate(()=>DSBooksNative.testOpened())).filter(q=>q.startsWith('closed')).length,2,'⌘W closes the book window');
  // Survives an app restart: the store is on disk.
  assert(fs.existsSync(path.join(home,'storage.json')));assert(JSON.parse(fs.readFileSync(path.join(home,'storage.json'),'utf8'))['dsbooks.catalog'].includes('import-'));
- assert.deepEqual(errors,[]);console.log('PASS desktop 0.2: shared library main/drawer/book window, live position sync, book windows (open/focus/close), per-page events, read-aloud speed, store on disk');
+ assert.deepEqual(errors,[]);console.log('PASS desktop 0.2: shared library main/drawer/book window, live position sync, book windows (open/focus/close, ⌘W), per-page events, read-aloud speed, store on disk');
  await browser.close();server.kill();
 })().catch(e=>{console.error(e);server.kill();process.exit(1)});

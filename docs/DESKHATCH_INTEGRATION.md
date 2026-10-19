@@ -14,7 +14,7 @@ DSBooks for Windows 0.2.0 以降が DeskHatch 側に提供する約束事と、D
 |二重起動|起動済みなら新しいプロセスはすぐ終了し、既存の本棚を前面に出す|
 |本を開く|ドロワー内で本を選ぶと、DSBooks がネイティブの別ウインドウで開く（ドロワー側の対応不要）|
 |保存|本棚・読書位置・設定は DSBooks 本体が保持。ドロワーの webview の保存領域（partition）が別でも同じ本棚が見える|
-|Mac|未提供（DeskHatch では Windows のみ表示でよい）|
+|Mac|0.2.1 から提供（Apple Silicon）。実行ファイル `/Applications/DSBooks.app/Contents/MacOS/DSBooks`、引数は Windows と同じ。Dock から開き直しても2つ目は起動せず本棚が前に出る|
 
 ---
 

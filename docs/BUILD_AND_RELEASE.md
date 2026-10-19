@@ -52,6 +52,15 @@ sha256sum DSBooks-0.8.6-preview.apk
 
 配布時はビルド終了後に一意の完成ファイルへコピーし、コピー先のサイズ/ZIP CRC/署名を再確認する。保存やアップロードがtimeoutした場合はリンクを成功扱いにしない。配布先から取得した実バイトも比較する。過去にリンク認証エラーや不完全APKが出ており、ビルド成功だけでは配布成功の証拠にならない。
 
+## デスクトップ版（Windows / Mac）
+
+一時ブランチを push すると GitHub Actions がビルド・起動確認・公開し、ブランチを削除する。`desktop/bridge.py` の `APP_VERSION` を `<版>-desktop` に合わせておく。秀英体は最新の `v*-claude` APK から取り出して SHA-256 照合して同梱する（リポジトリには入れない）。
+
+|対象|ブランチ|ワークフロー|タグ／成果物|
+|---|---|---|---|
+|Windows|`release-desktop/v<版>`|`release-desktop.yml`|`desktop-v<版>`：Setup.exe、portable.zip|
+|Mac（Apple Silicon）|`release-desktop-mac/v<版>`|`release-desktop-mac.yml`|`desktop-mac-v<版>`：.dmg、.zip（ad-hoc署名、未公証）|
+
 ## PCヘルパー
 
 `thumbnail-helper-release/README.md`を参照。Python 3.10+ / Tkinter、Pillow、PyMuPDF、mutagen、PyYAMLを使用。Windows `setup.bat` とショートカット作成はある。PyInstaller + Inno Setup 6でSetup.exeを作るためのスクリプトがあるが、完成インストーラーの実機検証は未実施。現行ヘルパーは0.3.0相当で、旧READMEの0.1.0表記は履歴由来。

@@ -26,7 +26,7 @@ from pathlib import Path
 
 import epub_content
 
-APP_VERSION = "0.2.0-desktop"
+APP_VERSION = "0.2.1-desktop"
 SUPPORTED_IMPORT = ("pdf", "epub", "md", "m4a", "m4b", "cbz", "cbr")
 IMAGE_EXT = (".jpg", ".jpeg", ".png", ".webp", ".gif")
 
@@ -70,7 +70,21 @@ def natural_key(name: str):
     return [(0, int(t), "") if t.isdigit() else (1, 0, t.lower()) for t in re.split(r"(\d+)", name) if t]
 
 
-# ---------- credentials: Windows DPAPI (per-user), elsewhere a private file ----------
+# ---------- credentials: Windows DPAPI (per-user), macOS Keychain, elsewhere a private file ----------
+KEYCHAIN_SERVICE = "jp.shinwakai.dsbooks.desktop"
+KEYCHAIN_ACCOUNT = "nas"
+
+
+def _keychain():
+    """The macOS Keychain (keyring's macOS backend, used directly so no entry-point discovery is needed)."""
+    if sys.platform != "darwin":
+        return None
+    try:
+        from keyring.backends import macOS
+        return macOS.Keyring()
+    except Exception:
+        return None
+
 def _dpapi(data: bytes, protect: bool) -> bytes:
     import ctypes
     from ctypes import wintypes
@@ -281,6 +295,14 @@ class Bridge:
     def n_saveCredentials(self, base, account, password, sid):
         raw = json.dumps({"base": base, "account": account, "password": password, "sid": sid}).encode("utf-8")
         target = self.home / "credentials.bin"
+        kc = _keychain()
+        if kc is not None:
+            try:
+                kc.set_password(KEYCHAIN_SERVICE, KEYCHAIN_ACCOUNT, base64.b64encode(raw).decode("ascii"))
+                target.unlink(missing_ok=True)
+                return ""
+            except Exception:
+                pass  # Keychain refused (e.g. locked): fall back to the private file below
         if sys.platform == "win32":
             target.write_bytes(_dpapi(raw, True))
         else:
@@ -290,6 +312,14 @@ class Bridge:
 
     def n_loadCredentials(self):
         target = self.home / "credentials.bin"
+        kc = _keychain()
+        if kc is not None:
+            try:
+                value = kc.get_password(KEYCHAIN_SERVICE, KEYCHAIN_ACCOUNT)
+                if value:
+                    return base64.b64decode(value).decode("utf-8")
+            except Exception:
+                pass
         try:
             data = target.read_bytes()
             raw = _dpapi(data, False) if sys.platform == "win32" else base64.b64decode(data)
@@ -298,6 +328,12 @@ class Bridge:
             return None
 
     def n_clearCredentials(self):
+        kc = _keychain()
+        if kc is not None:
+            try:
+                kc.delete_password(KEYCHAIN_SERVICE, KEYCHAIN_ACCOUNT)
+            except Exception:
+                pass
         try:
             (self.home / "credentials.bin").unlink()
         except FileNotFoundError:

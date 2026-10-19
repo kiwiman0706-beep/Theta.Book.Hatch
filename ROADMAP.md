@@ -7,6 +7,11 @@
 0.9.4：端末の本の追加の修正
 - NAS未接続の新規状態で「端末の本を追加」がエラーになり本が入らなかった不具合を修正。Windows版の作業中に発見。
 
+Mac版 desktop 0.2.1（初版）
+- Windows版0.2.0と同じ本棚・別ウインドウ読書・DeskHatch用サーバーを Mac（Apple Silicon）で。.dmg／.zip を macOS の CI でビルド・起動確認して公開。未署名・未公証（ad-hoc署名）。
+- ログイン情報は macOS キーチェーン。Dock クリック／Finder からの再起動で本棚を前面に、⌘Q で終了、⌘[ 戻る、⌘W で本のウインドウを閉じる。
+- 未対応：Intel Mac、ログイン時の自動起動、メニューバー常駐。実機確認は CHECKLIST_DESKTOP_MAC_0.2.1.md。Theta.Book.Hatch への改名は docs/THETA_BOOK_HATCH_PLAN.md。
+
 Windows版 desktop 0.2.0
 - 本ごとの別ウインドウ、DeskHatchのドロワー（本は別ウインドウで開く）、全ウインドウ・ドロワーで同じ本棚と読書位置（アプリ側の保存領域で一元管理）、バックグラウンド起動、Shuei Times同梱、朗読速度の修正。
 - 「複数ダウンロードで前がキャンセルされる」は模擬NASで再現せず（待ち行列は正常）。download.logで実機の状況を確認する。

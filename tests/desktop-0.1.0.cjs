@@ -60,8 +60,10 @@ fs.writeFileSync(path.join(fx,'bad.txt'),'x');
  await page.locator('#appMenuBtn').click();assert.equal(await page.locator('[data-menu="libraryTools"]').count(),1);assert.equal(await page.locator('[data-menu="dataFolder"]').count(),1);await page.keyboard.press('Escape');
  // Escape works as Android Back on dialogs.
  await page.evaluate(()=>openBook(books[0].id));await page.keyboard.press('Escape');assert.equal(await page.locator('#modalBg.open').count(),0);
+ // macOS: ⌘[ is Back as well (0.2.1).
+ await page.evaluate(()=>openBook(books[0].id));await page.keyboard.press('Meta+BracketLeft');assert.equal(await page.locator('#modalBg.open').count(),0,'⌘[ closes the dialog');
  // Library survives a reload (fixed origin + localStorage).
  await page.reload();await page.waitForFunction(()=>window.DSBoot&&DSBoot.readyMs!==undefined);assert.equal(await page.evaluate(()=>books.filter(b=>b.localName?.startsWith('import-')).length),3);
- assert.deepEqual(errors,[]);console.log('PASS desktop: keyboard paging, token guard, import dialog, EPUB(port)/PDF/CBZ, thumbnail, NAS relay GET/POST/error, download queue + session error, media Range, NAS stream Range, credentials, PC menu, Escape=Back, persistence');
+ assert.deepEqual(errors,[]);console.log('PASS desktop: keyboard paging, token guard, import dialog, EPUB(port)/PDF/CBZ, thumbnail, NAS relay GET/POST/error, download queue + session error, media Range, NAS stream Range, credentials, PC menu, Escape/⌘[=Back, persistence');
  await browser.close();server.kill();
 })().catch(e=>{console.error(e);server.kill();process.exit(1)});
