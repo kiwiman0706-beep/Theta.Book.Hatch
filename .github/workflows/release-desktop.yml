@@ -54,6 +54,11 @@ jobs:
             --collect-all webview --collect-all fitz --collect-all pymupdf --collect-all mutagen --collect-all PIL \
             desktop/dsbooks_desktop.py
           test -f dist/DSBooks/DSBooks.exe
+      - name: Size report (largest bundled parts)
+        if: always()
+        run: |
+          du -sh dist/* 2>/dev/null || true
+          find dist -maxdepth 4 -mindepth 2 \( -type d -o -type f \) -exec du -sk {} + 2>/dev/null | sort -rn | head -25 || true
       - name: Smoke test (built exe)
         run: python desktop/smoke_test.py dist/DSBooks/DSBooks.exe
       - name: Smoke test (built exe, real window)

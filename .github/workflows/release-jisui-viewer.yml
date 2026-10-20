@@ -71,6 +71,11 @@ jobs:
             --exclude-module dsbooks_thumbnail_gui \
             --collect-all webview --collect-all fitz --collect-all pymupdf --collect-all mutagen --collect-all PIL \
             desktop/dsbooks_desktop.py
+      - name: Size report (largest bundled parts)
+        if: always()
+        run: |
+          du -sh dist/* 2>/dev/null || true
+          find dist -maxdepth 4 -mindepth 2 \( -type d -o -type f \) -exec du -sk {} + 2>/dev/null | sort -rn | head -25 || true
       - name: Windows — smoke test, installer, portable ZIP
         if: runner.os == 'Windows'
         run: |

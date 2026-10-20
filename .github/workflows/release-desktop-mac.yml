@@ -61,6 +61,11 @@ jobs:
             --collect-all webview --collect-all fitz --collect-all pymupdf --collect-all mutagen --collect-all PIL --collect-submodules keyring \
             desktop/dsbooks_desktop.py
           test -x dist/DSBooks.app/Contents/MacOS/DSBooks
+      - name: Size report (largest bundled parts)
+        if: always()
+        run: |
+          du -sh dist/* 2>/dev/null || true
+          find dist -maxdepth 4 -mindepth 2 \( -type d -o -type f \) -exec du -sk {} + 2>/dev/null | sort -rn | head -25 || true
       - name: Info.plist and ad-hoc signature
         run: |
           set -euo pipefail
