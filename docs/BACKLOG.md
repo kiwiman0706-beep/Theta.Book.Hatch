@@ -25,6 +25,7 @@
 |B19|P3|全文検索・目次・組方向自動判定|EPUB階層目次、全書籍検索、著者メタデータ、縦中横。作者のフォルダ横断ジャンプは低優先|
 |B20|P3|QuickConnect・VPN連携|公式に利用できる方式を調べ、Tailscale外部アプリ連携を優先。勝手なVPNオン／オフを前提にしない|
 |B21|P1|PC/Mac版を Theta.Book.Hatch へ改名し Theta.xxx.Hatch 要件を満たす（`docs/THETA_BOOK_HATCH_PLAN.md`）|旧DSBooksから上書きで本棚・読書位置・資格情報が残る、トレイ常駐、/ping拡張、DeskHatchプリセット差し替え、Mac版|
+|B22|P1|Theta.Jisui.Viewer（PC/Mac/Android のビューアー単体版、FullOCR に同梱）と `.jisui` 形式の読み取り|**FullOCR 側の `.jisui` 書き出しと仕様（`theta-jisui-1`、正本は FullOCR）を待つ（利用者指示 2026-10-20）**。決定済み：秀英体は入れない／名前 Theta.Jisui.Viewer／FullOCR に同梱（FullOCR のビルドがこちらのリリースを取り込む）／AI要約（Gemini）は残す／拡張子 `.jisui`（ZIP。先頭に mimetype、目録 theta-book.json、MD 一式、PDF は無圧縮で同梱するか、同じフォルダの同名 .pdf）。ファイルへは書き込まず、位置・メモ・生成ダイジェストはアプリ側に保存。Android で外部の PDF を読む時は、初回にフォルダのアクセス許可が必要。|
 
 P0は現在の利用を阻む問題・配布、P1は重要な体験とデータ保持、P2は機能の完成度、P3は将来拡張。
 
