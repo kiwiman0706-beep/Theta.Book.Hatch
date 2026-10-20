@@ -61,6 +61,13 @@
 - 822.1MBの「21 Lessons」：外部VLCで再生できた報告あり。これはDSBooks内蔵版成功の証拠ではない。
 - 最新0.8.5／0.8.6の全機能について、実機完了の包括的報告はまだない。
 
+## 0.9.8／desktop 0.2.3／Theta.Jisui.Viewer 0.2.3 のリリース証拠（コミット `c131ba6`）
+
+- `DSBooks-0.9.8-claude.apk`：109,855,377 bytes、SHA-256 `e34e57abb7fa5e02cd2b4097cb0a9036ace5288099731c70c57ff4c89d83b2b4`（GitHub側のdigestと一致）。ZIP CRC正常、versionCode 73、assets 37件がソースと一致、v2/v3署名、同じ証明書。
+- `desktop-v0.2.3`、`desktop-mac-v0.2.3`（dmg `b7c63520…f8033a`）。
+- `jisui-viewer-v0.2.3`：Setup `cd3fb4c1…5d3329`、portable `878b8c3b…a091c2`、dmg `575778e2…7d1742`、zip `aa75814c…a9ad9c`。
+- 内容は jisui-1 改訂への対応（`theta-book.json`、`mimetype`、目録の `page_offset`）。全部、実機未確認。
+
 ## 0.9.7／desktop 0.2.2／Theta.Jisui.Viewer 0.2.2 のリリース証拠（コミット `1c8675e`）
 
 - `DSBooks-0.9.7-claude.apk`：109,855,377 bytes、SHA-256 `ec1b132ea8294fa0bca2f4529e6bb354a8aa5dbbe21ff5ecca267612010b9d1a`（GitHub側のdigestと一致）。ZIP CRC正常、versionCode 72、assets 37件がソースと一致（`jisui.js` を含む）、dexに `JisuiFiles` を含む、マニフェストに `.jisui` 用の VIEW フィルター、v2/v3署名、同じ証明書。
