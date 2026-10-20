@@ -26,8 +26,9 @@ from pathlib import Path
 
 import epub_content
 
-APP_VERSION = "0.2.1-desktop"
-SUPPORTED_IMPORT = ("pdf", "epub", "md", "m4a", "m4b", "cbz", "cbr")
+APP_VERSION = "0.2.2-desktop"
+SUPPORTED_IMPORT = ("pdf", "epub", "md", "m4a", "m4b", "cbz", "cbr", "jisui")
+KIND = {"pdf": "PDF", "epub": "ePub", "md": "Markdown", "cbz": "Comic", "cbr": "Comic", "jisui": "Jisui"}
 IMAGE_EXT = (".jpg", ".jpeg", ".png", ".webp", ".gif")
 
 
@@ -138,6 +139,11 @@ class Bridge:
         self.weights: dict[str, list[int]] = {}
         self.media_tokens: dict[str, Path] = {}
         self.current: dict = {}
+        # Files opened where they are (a .jisui and its sidecar PDF): "ext-<id>" -> absolute path. Read only;
+        # "delete" only forgets them, the user's file is never removed.
+        self.external: dict[str, str] = self._load_json("external.json", {})
+        self.pending_open: list[dict] = []
+        self.viewer = False  # Theta.Jisui.Viewer: the same app without the NAS parts
 
     # ---------- plumbing ----------
     def _client(self) -> str | None:
@@ -188,6 +194,8 @@ class Bridge:
             pass
 
     def local(self, name: str) -> Path:
+        if name.startswith("ext-") and name in self.external:
+            return Path(self.external[name])
         path = (self.books / valid_leaf(name)).resolve()
         if path.parent != self.books.resolve():
             raise ValueError("保存先の範囲外です")
@@ -343,12 +351,21 @@ class Bridge:
     # ---------- storage ----------
     def n_hasBook(self, name):
         try:
+            if "\n" in name:
+                container, entry = self._member(name)
+                with zipfile.ZipFile(container) as z:
+                    return self._zip_entry(z, entry) is not None
             return self.local(name).is_file()
         except Exception:
             return False
 
     def n_deleteBook(self, name):
         try:
+            if name.startswith("ext-"):
+                # A file opened in place belongs to the user: only forget it.
+                self.external.pop(name, None)
+                self._save_json("external.json", self.external)
+                return True
             self.local(name).unlink()
             return True
         except Exception:
@@ -399,6 +416,13 @@ class Bridge:
 
     def n_readText(self, name):
         try:
+            if "\n" in name:
+                container, entry = self._member(name)
+                with zipfile.ZipFile(container) as z:
+                    info = self._zip_entry(z, entry)
+                    if info is None or info.file_size > 4 * 1024 * 1024:
+                        return None
+                    return z.read(info).decode("utf-8", "replace")
             path = self.local(name)
             if path.stat().st_size > 4 * 1024 * 1024:
                 return None
@@ -413,7 +437,7 @@ class Bridge:
             try:
                 import fitz
                 from PIL import Image
-                with fitz.open(str(self.local(name))) as doc:
+                with fitz.open(str(self._file_for(name))) as doc:
                     if doc.page_count < 1:
                         raise ValueError("PDFにページがありません")
                     index = max(0, min(int(page_index), doc.page_count - 1))
@@ -710,6 +734,107 @@ class Bridge:
             return None
         return [result] if isinstance(result, str) else list(result)
 
+    # ---------- jisui-1 (.jisui = ZIP of a FullOCR vault); a member is "<container>\n<entry>" ----------
+    def _member(self, name: str):
+        container, entry = name.split("\n", 1)
+        return self.local(container), entry
+
+    @staticmethod
+    def _zip_entry(z, entry: str):
+        if not entry or entry.startswith("/") or "/../" in "/" + entry + "/":
+            return None
+        try:
+            info = z.getinfo(entry)
+        except KeyError:
+            return None
+        return None if info.is_dir() else info
+
+    def _file_for(self, name: str) -> Path:
+        """A real file for `name`: members (a PDF inside a .jisui) are streamed out to a small cache once."""
+        if "\n" not in name:
+            return self.local(name)
+        container, entry = self._member(name)
+        st = container.stat()
+        key = hashlib.sha256(("%s|%s|%s|%s" % (container.resolve(), st.st_size, st.st_mtime, entry)).encode("utf-8")).hexdigest()
+        cache = self.home / "cache" / "jisui"
+        cache.mkdir(parents=True, exist_ok=True)
+        target = cache / (key + Path(entry).suffix.lower())
+        if not target.is_file():
+            old = sorted(cache.glob("*"), key=lambda p: p.stat().st_mtime)
+            for p in old[:-6]:
+                p.unlink(missing_ok=True)
+            with zipfile.ZipFile(container) as z:
+                info = self._zip_entry(z, entry)
+                if info is None:
+                    raise ValueError("PDFが.jisuiの中に見つかりません")
+                tmp = target.with_suffix(".part")
+                with z.open(info) as src, open(tmp, "wb") as out:
+                    shutil.copyfileobj(src, out, 1024 * 1024)
+                tmp.replace(target)
+        return target
+
+    def n_jisuiEntries(self, name):
+        try:
+            with zipfile.ZipFile(self.local(name)) as z:
+                return json.dumps([{"name": i.filename, "size": i.file_size} for i in z.infolist() if not i.is_dir()], ensure_ascii=False)
+        except Exception:
+            return None
+
+    def n_jisuiImage(self, name):
+        try:
+            container, entry = self._member(name)
+            with zipfile.ZipFile(container) as z:
+                info = self._zip_entry(z, entry)
+                if info is None or info.file_size > 8 * 1024 * 1024:
+                    return None
+                ext = Path(entry).suffix.lower()
+                mime = {".png": "image/png", ".gif": "image/gif", ".webp": "image/webp", ".svg": "image/svg+xml"}.get(ext, "image/jpeg")
+                return "data:%s;base64,%s" % (mime, base64.b64encode(z.read(info)).decode("ascii"))
+        except Exception:
+            return None
+
+    def n_jisuiSidecar(self, name, sidecar):
+        """sidecar mode: the PDF beside a .jisui opened in place (same folder). Returns its localName or None."""
+        try:
+            if not name.startswith("ext-") or not sidecar or "/" in sidecar or "\\" in sidecar:
+                return None
+            path = Path(self.external[name]).with_name(sidecar)
+            return self._register_external(path)["localName"] if path.is_file() else None
+        except Exception:
+            return None
+
+    def _register_external(self, path: Path) -> dict:
+        path = path.resolve()
+        ext = path.suffix.lower().lstrip(".")
+        if ext not in SUPPORTED_IMPORT or not path.is_file():
+            raise ValueError(path.name + "：対応形式ではありません")
+        key = "ext-" + hashlib.sha256(str(path).encode("utf-8")).hexdigest()[:20]
+        if self.external.get(key) != str(path):
+            self.external[key] = str(path)
+            self._save_json("external.json", self.external)
+        return {"id": "file:" + key, "bookId": "file:" + key, "localName": key, "title": path.stem, "importName": path.name,
+                "fileExt": ext.upper(), "size": path.stat().st_size, "type": KIND.get(ext, "Audio"), "offline": True,
+                "folder": path.parent.name or "開いたファイル", "author": "", "cover": "c5", "progress": 0, "inPlace": True}
+
+    def open_file(self, path: str) -> bool:
+        """A file given on the command line / double-clicked / sent by a second launch: open it where it is."""
+        try:
+            book = self._register_external(Path(path)) if Path(path).suffix.lower() == ".jisui" else self._import(Path(path))
+        except Exception as e:
+            self.emit("onDataExchange", {"error": str(e) or "開けませんでした"})
+            return False
+        with self.cv:
+            self.pending_open.append(book)
+        self.emit("dsOpenPending")
+        return True
+
+    def n_takePendingOpen(self):
+        with self.cv:
+            books, self.pending_open = self.pending_open, []
+        return json.dumps(books, ensure_ascii=False)
+
+    def n_isViewer(self): return bool(self.viewer)
+
     def _import(self, source: Path) -> dict:
         ext = source.suffix.lower().lstrip(".")
         if ext not in SUPPORTED_IMPORT:
@@ -725,20 +850,22 @@ class Bridge:
             tmp = self.books / (local + ".part")
             shutil.copyfile(source, tmp)
             tmp.replace(target)
-        kind = {"pdf": "PDF", "epub": "ePub", "md": "Markdown", "cbz": "Comic", "cbr": "Comic"}.get(ext, "Audio")
+        kind = KIND.get(ext, "Audio")
         return {"id": "local:%s:%s" % (hx, ext), "bookId": "sha256:" + hx, "localName": local, "title": source.stem, "importName": source.name,
                 "fileExt": ext.upper(), "size": target.stat().st_size, "type": kind, "offline": True, "folder": "端末から取り込み", "author": "", "cover": "c5", "progress": 0}
 
     def n_chooseBooks(self):
         to = self._client()
         def run():
-            paths = self._dialog("open", allow_multiple=True, file_types=("本 (*.epub;*.pdf;*.md;*.m4a;*.m4b;*.cbz;*.cbr)", "すべて (*.*)"))
+            types = ("自炊本 (*.jisui)", "本 (*.jisui;*.epub;*.pdf;*.md;*.m4a;*.m4b;*.cbz;*.cbr)", "すべて (*.*)") if self.viewer else ("本 (*.epub;*.pdf;*.md;*.m4a;*.m4b;*.cbz;*.cbr;*.jisui)", "すべて (*.*)")
+            paths = self._dialog("open", allow_multiple=True, file_types=types)
             if not paths:
                 return
             books, errors = [], []
             for p in paths:
                 try:
-                    books.append(self._import(Path(p)))
+                    # A .jisui stays where it is (its sidecar PDF sits next to it); other books are copied in.
+                    books.append(self._register_external(Path(p)) if Path(p).suffix.lower() == ".jisui" else self._import(Path(p)))
                 except Exception as e:
                     errors.append(str(e) or "取り込み失敗")
             self.emit("onDataExchange", {"kind": "books", "books": books, "errors": errors}, to=to)

@@ -2,7 +2,12 @@
 
 ## 現在
 
-**Claude版 0.9.6（versionCode 71、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
+**Claude版 0.9.7（versionCode 72、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
+
+0.9.7 / desktop 0.2.2 / Theta.Jisui.Viewer 0.2.2：`.jisui`（自炊本）
+- FullOCR が作る `.jisui`（Vault一式のZIP、原典PDFは同梱／隣／なし）を開いて、目次・章リンク・挿絵・「原文 p.N」・ダイジェストをそのまま使う。仕様と実装は docs/JISUI_FORMAT.md。
+- Theta.Jisui.Viewer：NAS 機能なしのビューア（Windows/Mac）。`.jisui` をダブルクリックで開く。FullOCR に同梱（docs/FULLOCR_BUNDLING.md）。Android版のビューア単体APKは鍵の方針が決まってから。
+- 実機確認は CHECKLIST_DEVICE_0.9.7.md、CHECKLIST_VIEWER_0.2.2.md。
 
 0.9.6：Theta ダイジェスト（AI要約・マインドマップ・一問一答）
 - FullOCR が作る `_digest.md` を3タブで表示し、各項目から原文PDFのページや本文の見出しへ移動。

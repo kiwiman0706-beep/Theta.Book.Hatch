@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="jp.shinwakai.dsbooks.preview" android:versionCode="71" android:versionName="0.9.6-claude">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="jp.shinwakai.dsbooks.preview" android:versionCode="72" android:versionName="0.9.7-claude">
   <queries><package android:name="com.google.android.gms" /><package android:name="com.google.android.gms.policy_cast_dynamite" /><package android:name="org.videolan.vlc" /><package android:name="com.tailscale.ipn" /><intent><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent><intent><action android:name="android.intent.action.VIEW" /><data android:scheme="market" /></intent></queries>
   <uses-feature android:name="android.software.leanback" android:required="false" />
   <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
@@ -18,6 +18,18 @@
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
         <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+      </intent-filter>
+      <!-- jisui-1: open .jisui from a file manager ("open with"). Content URIs rarely show the extension, so the
+           ZIP / unknown types are offered too; the page checks the file is really a .jisui. -->
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="content" />
+        <data android:scheme="file" />
+        <data android:mimeType="application/x-jisui" />
+        <data android:mimeType="application/zip" />
+        <data android:mimeType="application/octet-stream" />
       </intent-filter>
     </activity>
     <receiver android:name=".ReadingWidgetProvider" android:exported="true">

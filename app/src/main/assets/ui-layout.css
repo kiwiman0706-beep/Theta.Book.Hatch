@@ -165,3 +165,9 @@ body.app-menu-open{overflow:hidden}
 .qa .q{font-weight:700;margin:0 0 6px}.qa .a{margin:6px 0 0;color:#234}
 .qa-reveal{border:1px solid #c9d8c6;background:#fff;border-radius:8px;padding:4px 10px;font-size:12px}
 .digest-warn{color:#8a4b0f}
+
+/* 0.9.7 jisui-1: pictures inside a .jisui; Theta.Jisui.Viewer hides everything about the NAS. */
+.md-figure{display:block;max-width:100%;height:auto;margin:10px auto;border-radius:6px}
+.viewer-mode #connectBtn,.viewer-mode #syncBtn,.viewer-mode #downloadChip,.viewer-mode #quickSync,.viewer-mode #quickDownloads,
+.viewer-mode #quickTailscale,.viewer-mode #quickSecureSignIn,.viewer-mode #nasState,.viewer-mode #nasSub,
+.viewer-mode details.settings-group[data-group=sync],.viewer-mode details.settings-group[data-group=devices]{display:none!important}

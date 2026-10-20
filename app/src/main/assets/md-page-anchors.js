@@ -9,6 +9,7 @@ window.DSMdAnchors=(()=>{
  const MARKER=/<!--\s*fullocr:page\s+pdf=(\d+)(?:\s+print="([^"]*)")?\s*-->/g;
  const $=id=>document.getElementById(id);
  let last=null,pending=null,back=null;
+ const pdfResolvers=[];  // e.g. jisui-1: the PDF of a .jisui (embedded / sidecar) for its members
  const textCache=new Map();
 
  /* ---------- parsing ---------- */
@@ -25,23 +26,27 @@ window.DSMdAnchors=(()=>{
   // Obsidian %%comments%% (FullOCR hides the printed table of contents this way): hidden, but their page markers stay.
   text=text.replace(/%%[\s\S]*?%%/g,s=>(s.match(/⟦FO:\d+⟧/g)||[]).join('\n\n'));
   text=text.replace(/<!--[\s\S]*?-->/g,'');
-  text=text.replace(/!\[\[([^\]|]+)(?:\|[^\]]*)?\]\]/g,(_,t)=>'［画像：'+t.trim()+'］');
+  // Pictures: kept as tokens with their vault path; a container that can read them (jisui-1) shows them, others show the name.
+  const images=[];const img=(src,alt)=>'⟦IM:'+(images.push({src:src.trim(),alt:(alt||src).trim()})-1)+'⟧';
+  text=text.replace(/!\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g,(_,t,alt)=>img(t,alt&&!/^\d+(x\d+)?$/.test(alt)?alt:t.split('/').pop()));
+  text=text.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g,(_,alt,src)=>/^[a-z]+:/i.test(src)?'［画像：'+(alt||src)+'］':img(decodeURIComponent(src),alt||src.split('/').pop()));
   text=text.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g,(_,target,alias)=>{const [file,heading]=target.split('#');return '⟦WL:'+(links.push({file:file.trim(),heading:(heading||'').trim(),label:(alias||heading||file).trim()})-1)+'⟧';});
   text=text.replace(/\n{3,}/g,'\n\n');
-  return last={text,meta,anchors,links};
+  return last={text,meta,anchors,links,images};
  }
  function html(markup){
   const p=last;if(!p)return markup;
   const anchor=i=>{const a=p.anchors[i];return a?`<span class="fo-anchor" data-pdf="${a.pdf}" data-print="${escapeHtml(a.print)}"></span>`:'';};
   return markup.replace(/<p>((?:\s|<br>)*⟦FO:\d+⟧(?:\s|<br>)*)+<\/p>/g,s=>(s.match(/⟦FO:(\d+)⟧/g)||[]).map(t=>anchor(Number(t.slice(4,-1)))).join(''))
    .replace(/⟦FO:(\d+)⟧/g,(_,i)=>anchor(Number(i)))
+   .replace(/⟦IM:(\d+)⟧/g,(_,i)=>{const m=(p.images||[])[Number(i)];return m?`<span class="md-image" data-src="${escapeHtml(m.src)}">［画像：${escapeHtml(m.alt)}］</span>`:'';})
    .replace(/⟦WL:(\d+)⟧/g,(_,i)=>{const l=p.links[Number(i)];return l?`<a class="md-wikilink" href="#" data-wl="${i}">${escapeHtml(l.label)}</a>`:'';});
  }
 
  /* ---------- books of the same folder ---------- */
  const dir=b=>{if(b?.digestDir)return b.digestDir;const s=String(b?.path||'');const i=s.lastIndexOf('/');return i>0?s.slice(0,i):null;};
  const base=s=>{s=String(s||'');return s.slice(s.lastIndexOf('/')+1);};
- const fileOf=b=>base(b.path)||base(b.localName)||(b.title||'')+'.'+String(b.fileExt||'').toLowerCase();
+ const fileOf=b=>b.fileName||base(b.path)||base(b.localName)||(b.title||'')+'.'+String(b.fileExt||'').toLowerCase();
  const stem=s=>base(s).replace(/\.[^.]+$/,'');
  const local=b=>!!(b&&b.localName&&window.DSBooksNative&&DSBooksNative.hasBook(b.localName));
  function siblings(b){const d=dir(b);return d?books.filter(x=>x!==b&&dir(x)===d):[];}
@@ -53,6 +58,7 @@ window.DSMdAnchors=(()=>{
   const t=idx&&readLocal(idx);return t?frontMatter(t).meta:{};
  }
  function pdfFor(b,meta){
+  for(const r of pdfResolvers){const hit=r(b,meta);if(hit!==undefined)return hit;}
   const name=meta.pdf_file?base(meta.pdf_file):'';const pdfs=siblings(b).filter(x=>x.type==='PDF');
   if(name){const hit=pdfs.find(x=>fileOf(x)===name)||books.find(x=>x.type==='PDF'&&fileOf(x)===name);if(hit)return hit;}
   return pdfs.find(x=>/_text\.pdf$/i.test(fileOf(x)))||(pdfs.length===1?pdfs[0]:null);
@@ -96,7 +102,7 @@ window.DSMdAnchors=(()=>{
    const at=()=>{const el=current(viewport,els);return {pdf:Number(el.dataset.pdf),print:el.dataset.print||''};};
    let raf=0;const update=()=>{raf=0;btn.textContent='原文 '+label(at(),meta);};
    viewport.addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(update);},{passive:true});
-   btn.onclick=()=>{if(!openPdfPage(b,meta,at().pdf))toast('原文のPDF'+(meta.pdf_file?'「'+base(meta.pdf_file)+'」':'')+'が同じフォルダに見つかりません');};
+   btn.onclick=()=>{if(!openPdfPage(b,meta,at().pdf))toast(window.DSJisui?.pdfMissing?.(b)||'原文のPDF'+(meta.pdf_file?'「'+base(meta.pdf_file)+'」':'')+'が同じフォルダに見つかりません');};
    update();
   }
   // Arrived from the PDF ("本文へ") or a wikilink: go to that page / heading.
@@ -124,5 +130,5 @@ window.DSMdAnchors=(()=>{
    pending={id:best.md.id,pdf:n};back={md:best.md.id,pdf:b.id};openLocalBook(best.md);};
  };
 
- return {prepare,html,anchorsOf,frontMatter,label,settings,pdfFor,siblings,fileOf,stem,base,dir,local,readLocal,openOther,openPdfPage,openMd,get pending(){return pending;}};
+ return {pdfResolvers,prepare,html,anchorsOf,frontMatter,label,settings,pdfFor,siblings,fileOf,stem,base,dir,local,readLocal,openOther,openPdfPage,openMd,get pending(){return pending;}};
 })();

@@ -130,6 +130,7 @@ public final class MainActivity extends Activity {
         settings.setAllowUniversalAccessFromFileURLs(true);
         webView.addJavascriptInterface(new NativeBridge(), "DSBooksNative");
         pendingWidgetBookId = getIntent().getStringExtra("dsbooks.widget.book_id");
+        pendingView = viewUri(getIntent());
         webView.setWebViewClient(new WebViewClient() {
             @Override public boolean onRenderProcessGone(WebView view, android.webkit.RenderProcessGoneDetail detail) {
                 pageReady=false;webView=null;shell.removeView(view);view.destroy();
@@ -138,6 +139,7 @@ public final class MainActivity extends Activity {
             @Override public void onPageFinished(WebView view, String url) {
                 pageReady = true;
                 dispatchWidgetBook();
+                dispatchView();
                 deliverDownloadState();
                 deliverPlaybackState();
             }
@@ -205,6 +207,17 @@ public final class MainActivity extends Activity {
         setIntent(intent);
         pendingWidgetBookId = intent.getStringExtra("dsbooks.widget.book_id");
         dispatchWidgetBook();
+        pendingView = viewUri(intent);
+        dispatchView();
+    }
+
+    private Uri pendingView;
+    private static Uri viewUri(Intent intent) { return intent != null && Intent.ACTION_VIEW.equals(intent.getAction()) ? intent.getData() : null; }
+    /** A .jisui opened from a file manager: copied into the app's storage like an import, then opened (jisui-1). */
+    private void dispatchView() {
+        if (!pageReady || webView == null || pendingView == null || exchange == null) return;
+        Uri uri = pendingView; pendingView = null;
+        exchange.importView(uri);
     }
 
     private void dispatchWidgetBook() {
@@ -449,7 +462,13 @@ public final class MainActivity extends Activity {
             }
         }
 
-        @JavascriptInterface public boolean hasBook(String name) { return BookStorage.exists(MainActivity.this,name); }
+        @JavascriptInterface public boolean hasBook(String name) {
+            if (JisuiFiles.isMember(name)) { try { return JisuiFiles.has(localFile(JisuiFiles.container(name)), JisuiFiles.entry(name)); } catch (Exception e) { return false; } }
+            return BookStorage.exists(MainActivity.this,name);
+        }
+        /** jisui-1: entries of a .jisui, and a picture inside it as a data URL. */
+        @JavascriptInterface public String jisuiEntries(String name) { try { return JisuiFiles.entries(localFile(name)); } catch (Exception e) { return null; } }
+        @JavascriptInterface public String jisuiImage(String name) { try { return JisuiFiles.isMember(name) ? JisuiFiles.dataUrl(localFile(JisuiFiles.container(name)), JisuiFiles.entry(name)) : null; } catch (Exception e) { return null; } }
         @JavascriptInterface public boolean deleteBook(String name) { return BookStorage.delete(MainActivity.this,name); }
         @JavascriptInterface public String getStorageInfo() { return BookStorage.info(MainActivity.this).toString(); }
         @JavascriptInterface public String setDownloadStorage(String id) {
@@ -526,6 +545,7 @@ public final class MainActivity extends Activity {
             } catch (Exception e) { return null; }
         }
         @JavascriptInterface public String readText(String localName) {
+            if (JisuiFiles.isMember(localName)) { try { return JisuiFiles.readText(localFile(JisuiFiles.container(localName)), JisuiFiles.entry(localName)); } catch (Exception e) { return null; } }
             try {
                 File f = localFile(localName);
                 if (!f.isFile() || f.length() > 4L * 1024 * 1024) return null;
@@ -819,7 +839,7 @@ public final class MainActivity extends Activity {
     private void renderPdf(String localName, int pageIndex, String token) {
         JSONObject result = new JSONObject();
         try {
-            File file = localFile(localName);
+            File file = JisuiFiles.isMember(localName) ? JisuiFiles.extract(this, localFile(JisuiFiles.container(localName)), JisuiFiles.entry(localName)) : localFile(localName);
             try (ParcelFileDescriptor descriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
                  PdfRenderer renderer = new PdfRenderer(descriptor)) {
                 int count = renderer.getPageCount();

@@ -1,0 +1,140 @@
+name: Build and publish Theta.Jisui.Viewer
+# Push a temporary branch release-jisui-viewer/v<version> at the commit to release (version = desktop APP_VERSION).
+# Theta.Jisui.Viewer = the desktop app in viewer mode (no NAS), opening .jisui (jisui-1) by double-click.
+# It is bundled with FullOCR, so the user's Shuei Times font is never included (checked).
+# Windows: one-folder exe + Inno Setup installer registering .jisui, portable ZIP.
+# macOS (Apple Silicon): .app with the .jisui document type (UTI com.theta.jisui), ad-hoc signed, .dmg + .zip.
+on:
+  push:
+    branches: ['release-jisui-viewer/**']
+permissions:
+  contents: write
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      PYTHONUTF8: '1'
+      DSBOOKS_EXPECT_APP: jisuiviewer
+      DSBOOKS_FORBID_FONT: '1'
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install
+        run: python -m pip install -r desktop/requirements.txt pyinstaller
+      - name: Version
+        id: v
+        run: |
+          VERSION="${GITHUB_REF_NAME#release-jisui-viewer/v}"
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "bad version $VERSION"; exit 1; }
+          grep -q "APP_VERSION = \"$VERSION-desktop\"" desktop/bridge.py || { echo "bridge.py APP_VERSION does not match $VERSION"; exit 1; }
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "arch=$(uname -m)" >> "$GITHUB_OUTPUT"
+      - name: No bundled user font
+        run: test ! -e app/src/main/assets/fonts/ShueiTimes.ttf
+      - name: Smoke test (source, viewer mode, real .jisui)
+        run: |
+          set -euo pipefail
+          python desktop/smoke_test.py python desktop/dsbooks_desktop.py --viewer
+          python tests/desktop/make_jisui.py jisui-fixtures
+          python - <<'PY'
+          import json, sys, tempfile
+          from pathlib import Path
+          sys.path.insert(0, "desktop")
+          from bridge import Bridge
+          b = Bridge(home=Path(tempfile.mkdtemp()))
+          book = b._register_external(Path("jisui-fixtures/ねころん.jisui"))
+          names = [e["name"] for e in json.loads(b.n_jisuiEntries(book["localName"]))]
+          assert "jisui.json" in names and "ねころん_text.pdf" in names, names
+          assert json.loads(b.n_readText(book["localName"] + "\njisui.json"))["format"] == "jisui-1"
+          assert b._file_for(book["localName"] + "\nねころん_text.pdf").stat().st_size > 0
+          side = b._register_external(Path("jisui-fixtures/side.jisui"))
+          assert b.n_jisuiSidecar(side["localName"], "side.pdf")
+          print("jisui bridge OK")
+          PY
+      - name: Freeze
+        run: |
+          set -euo pipefail
+          SEP=';'; [ "$RUNNER_OS" = macOS ] && SEP=':'
+          EXTRA=(); [ "$RUNNER_OS" = macOS ] && EXTRA=(--osx-bundle-identifier com.theta.jisuiviewer --argv-emulation --hidden-import keyring.backends.macOS --collect-submodules keyring)
+          python -m PyInstaller --noconfirm --clean --windowed --name ThetaJisuiViewer "${EXTRA[@]}" \
+            --paths desktop --hidden-import bridge --hidden-import server --hidden-import epub_content \
+            --add-data "app/src/main/assets${SEP}assets" --add-data "desktop/web${SEP}web" \
+            --exclude-module dsbooks_thumbnail_gui \
+            --collect-all webview --collect-all fitz --collect-all pymupdf --collect-all mutagen --collect-all PIL \
+            desktop/dsbooks_desktop.py
+      - name: Windows — smoke test, installer, portable ZIP
+        if: runner.os == 'Windows'
+        run: |
+          set -euo pipefail
+          test -f dist/ThetaJisuiViewer/ThetaJisuiViewer.exe
+          # No --viewer here: the exe name alone must select viewer mode.
+          python desktop/smoke_test.py dist/ThetaJisuiViewer/ThetaJisuiViewer.exe
+          python desktop/smoke_test.py dist/ThetaJisuiViewer/ThetaJisuiViewer.exe --window
+          if [ ! -f "/c/Program Files (x86)/Inno Setup 6/ISCC.exe" ]; then choco install innosetup -y --no-progress; fi
+          cp desktop/ThetaJisuiViewer.iss ThetaJisuiViewer.iss
+          MSYS_NO_PATHCONV=1 "/c/Program Files (x86)/Inno Setup 6/ISCC.exe" "/DMyAppVersion=${{ steps.v.outputs.version }}" ThetaJisuiViewer.iss
+          mkdir -p out && cp dist-installer/*.exe out/
+          (cd dist && 7z a -tzip "../out/ThetaJisuiViewer-${{ steps.v.outputs.version }}-windows-portable.zip" ThetaJisuiViewer >/dev/null)
+      - name: macOS — document type, signature, smoke test, dmg
+        if: runner.os == 'macOS'
+        run: |
+          set -euo pipefail
+          V="${{ steps.v.outputs.version }}"; A="${{ steps.v.outputs.arch }}"
+          mv dist/ThetaJisuiViewer.app "dist/Theta.Jisui.Viewer.app"
+          APP="dist/Theta.Jisui.Viewer.app"; P="$APP/Contents/Info.plist"
+          plutil -replace CFBundleDisplayName -string "Theta.Jisui.Viewer" "$P"
+          plutil -replace CFBundleName -string "Theta.Jisui.Viewer" "$P"
+          plutil -replace CFBundleShortVersionString -string "$V" "$P"
+          plutil -replace CFBundleVersion -string "$V" "$P"
+          plutil -replace LSMinimumSystemVersion -string "12.0" "$P"
+          plutil -replace NSLocalNetworkUsageDescription -string "同じネットワーク内のファイルを開くために使います。" "$P"
+          plutil -replace NSAppTransportSecurity -json '{"NSAllowsLocalNetworking":true}' "$P"
+          plutil -replace UTExportedTypeDeclarations -json '[{"UTTypeIdentifier":"com.theta.jisui","UTTypeDescription":"自炊本（.jisui）","UTTypeConformsTo":["public.zip-archive","public.data"],"UTTypeTagSpecification":{"public.filename-extension":["jisui"],"public.mime-type":["application/x-jisui"]}}]' "$P"
+          plutil -replace CFBundleDocumentTypes -json '[{"CFBundleTypeName":"自炊本（.jisui）","CFBundleTypeRole":"Viewer","LSHandlerRank":"Owner","LSItemContentTypes":["com.theta.jisui"]}]' "$P"
+          plutil -lint "$P"
+          codesign --force --deep --sign - "$APP"
+          codesign --verify --deep --strict --verbose=2 "$APP"
+          python desktop/smoke_test.py "$APP/Contents/MacOS/ThetaJisuiViewer"
+          python desktop/smoke_test.py "$APP/Contents/MacOS/ThetaJisuiViewer" --window
+          mkdir -p dmgroot out
+          ditto "$APP" "dmgroot/Theta.Jisui.Viewer.app"
+          ln -s /Applications dmgroot/Applications
+          hdiutil create -volname "Theta.Jisui.Viewer $V" -srcfolder dmgroot -ov -format UDZO "out/ThetaJisuiViewer-$V-macOS-$A.dmg"
+          hdiutil verify "out/ThetaJisuiViewer-$V-macOS-$A.dmg"
+          ditto -c -k --keepParent "$APP" "out/ThetaJisuiViewer-$V-macOS-$A.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: viewer-${{ runner.os }}
+          path: out/*
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#release-jisui-viewer/v}"
+          (cd artifacts && sha256sum * > SHA256SUMS.txt && cat SHA256SUMS.txt)
+          { cat desktop/RELEASE_NOTES_VIEWER.md; echo; echo '```'; cat artifacts/SHA256SUMS.txt; echo '```'; } > notes.md
+          gh release create "jisui-viewer-v$VERSION" artifacts/* --target "$GITHUB_SHA" --title "Theta.Jisui.Viewer $VERSION" --notes-file notes.md --prerelease
+      - name: Remove temporary branch
+        if: always()
+        run: git push origin --delete "${GITHUB_REF_NAME}" || true

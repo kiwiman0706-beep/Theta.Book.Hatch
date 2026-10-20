@@ -6,6 +6,7 @@ Serves the shared Android UI (app/src/main/assets) plus desktop-bridge.js, and o
   POST /proxy            relays the UI's NAS (DSM) requests; the webview would block them cross-origin
   GET  /media/<token>    a saved book file with Range support (audio)
   GET  /nas-stream       NAS audio relayed with Range (play while not saved)
+  GET  /open?path=       a second launch passes a double-clicked file to the running app
 Every API request must carry the per-run token embedded in the page, so other local pages can't use it.
 """
 from __future__ import annotations
@@ -34,7 +35,7 @@ class _NoRedirect(urllib.request.HTTPRedirectHandler):
 _opener = urllib.request.build_opener(_NoRedirect)
 
 
-def make_server(bridge, assets: Path, web: Path, port: int):
+def make_server(bridge, assets: Path, web: Path, port: int, app_id: str = "dsbooks"):
     token = secrets.token_urlsafe(24)
 
     class Handler(BaseHTTPRequestHandler):
@@ -69,7 +70,7 @@ def make_server(bridge, assets: Path, web: Path, port: int):
             url = urlparse(self.path)
             path = unquote(url.path)
             if path == "/ping":
-                return self._send(200, b'{"app":"dsbooks"}')
+                return self._send(200, json.dumps({"app": app_id}).encode("utf-8"))
             if path == "/events":
                 if not self._authorized():
                     return self._send(403, b"{}")
@@ -80,6 +81,13 @@ def make_server(bridge, assets: Path, web: Path, port: int):
                 if bridge.show_main:
                     bridge.show_main()
                 return self._send(200, b'{"shown":true}')
+            if path == "/open":
+                # A second launch (double-clicked .jisui) hands its file to the running app. Opening is read only.
+                target = parse_qs(url.query).get("path", [""])[0]
+                ok = bool(target) and Path(target).is_file() and bridge.open_file(target)
+                if ok and bridge.show_main:
+                    bridge.show_main()
+                return self._send(200 if ok else 400, json.dumps({"opened": bool(ok)}).encode("utf-8"))
             if path.startswith("/media/"):
                 return self._media(bridge.media_tokens.get(path[7:]))
             if path == "/nas-stream":
@@ -91,6 +99,9 @@ def make_server(bridge, assets: Path, web: Path, port: int):
                 inject = '<script>window.__DSBOOKS_TOKEN=%s;</script><script src="desktop-bridge.js"></script>' % json.dumps(token)
                 html = html.replace("<head>", "<head>" + inject, 1)
                 return self._send(200, html.encode("utf-8"), "text/html; charset=utf-8")
+            if getattr(bridge, "viewer", False) and path.lower().startswith("/fonts/shuei"):
+                # Theta.Jisui.Viewer is distributed with FullOCR: never serve the user's own font, even if present.
+                return self._send(404, b"not found", "text/plain")
             base = web if path == "/desktop-bridge.js" else assets
             target = (base / path.lstrip("/")).resolve()
             if not str(target).startswith(str(base.resolve())) or not target.is_file():

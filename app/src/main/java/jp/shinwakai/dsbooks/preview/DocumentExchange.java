@@ -30,6 +30,15 @@ final class DocumentExchange {
             busy=true;owner.startActivityForResult(i,data?DATA:IMPORT);
         }catch(Exception e){busy=false;error("ファイル選択を開けませんでした");}
     }
+    /** "Open with" (ACTION_VIEW): import that one file and ask the page to open it. */
+    void importView(Uri uri){
+        new Thread(()->{
+            try{JSONArray books=new JSONArray(),errors=new JSONArray();
+                try{books.put(importBook(uri));}catch(Exception e){errors.put(e.getMessage()==null?"取り込み失敗":e.getMessage());}
+                emit(new JSONObject().put("kind","books").put("books",books).put("errors",errors).put("open",true));
+            }catch(Exception e){error("ファイルを開けませんでした");}
+        },"DSBooks-open-file").start();
+    }
     void exportText(String text,String name){
         if(busy){error("ファイル操作が完了してからお試しください");return;}
         if(text==null||text.length()>8*1024*1024){error("テキストが大きすぎます");return;}
@@ -64,7 +73,7 @@ final class DocumentExchange {
         String name="";long size=-1;
         try(Cursor c=owner.getContentResolver().query(uri,new String[]{OpenableColumns.DISPLAY_NAME,OpenableColumns.SIZE},null,null,null)){if(c!=null&&c.moveToFirst()){name=c.getString(0);if(!c.isNull(1))size=c.getLong(1);}}
         String ext=name.contains(".")?name.substring(name.lastIndexOf('.')+1).toLowerCase(Locale.ROOT):"";
-        if(!Arrays.asList("pdf","epub","md","m4a","m4b","cbz","cbr").contains(ext))throw new IOException(name+"：対応形式ではありません");
+        if(!Arrays.asList("pdf","epub","md","m4a","m4b","cbz","cbr","jisui").contains(ext))throw new IOException(name+"：対応形式ではありません");
         String storageId=BookStorage.selected(owner);File root=BookStorage.directory(owner,storageId,true);if(size>root.getUsableSpace()-8*1024*1024)throw new IOException("保存容量が足りません");
         File tmp=File.createTempFile("import-",".part",root);
         try{MessageDigest md=MessageDigest.getInstance("SHA-256");long total=0;
@@ -72,7 +81,7 @@ final class DocumentExchange {
             if(total==0||(size>=0&&total!=size))throw new IOException("ファイルの読み込みが完了しませんでした");
             StringBuilder hash=new StringBuilder();for(byte x:md.digest())hash.append(String.format(Locale.ROOT,"%02x",x&255));
             String local="import-"+hash+"."+ext;File target=new File(root,local);if(!target.isFile()&&!tmp.renameTo(target))throw new IOException("ファイルを保存できませんでした");
-            return new JSONObject().put("id","local:"+hash+":"+ext).put("bookId","sha256:"+hash).put("localName",BookLocation.encode(storageId,local)).put("title",name.substring(0,name.lastIndexOf('.'))).put("importName",name).put("fileExt",ext.toUpperCase(Locale.ROOT)).put("size",total).put("type",ext.equals("pdf")?"PDF":ext.equals("epub")?"ePub":ext.equals("md")?"Markdown":ext.equals("cbz")||ext.equals("cbr")?"Comic":"Audio").put("offline",true).put("folder","端末から取り込み").put("author","").put("cover","c5").put("progress",0);
+            return new JSONObject().put("id","local:"+hash+":"+ext).put("bookId","sha256:"+hash).put("localName",BookLocation.encode(storageId,local)).put("title",name.substring(0,name.lastIndexOf('.'))).put("importName",name).put("fileExt",ext.toUpperCase(Locale.ROOT)).put("size",total).put("type",ext.equals("pdf")?"PDF":ext.equals("epub")?"ePub":ext.equals("md")?"Markdown":ext.equals("jisui")?"Jisui":ext.equals("cbz")||ext.equals("cbr")?"Comic":"Audio").put("offline",true).put("folder","端末から取り込み").put("author","").put("cover","c5").put("progress",0);
         }finally{tmp.delete();}
     }
     private void emit(JSONObject o){handler.post(()->callback.accept(o.toString()));}

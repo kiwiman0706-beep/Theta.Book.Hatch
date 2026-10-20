@@ -60,6 +60,7 @@ sha256sum DSBooks-0.8.6-preview.apk
 |---|---|---|---|
 |Windows|`release-desktop/v<版>`|`release-desktop.yml`|`desktop-v<版>`：Setup.exe、portable.zip|
 |Mac（Apple Silicon）|`release-desktop-mac/v<版>`|`release-desktop-mac.yml`|`desktop-mac-v<版>`：.dmg、.zip（ad-hoc署名、未公証）|
+|Theta.Jisui.Viewer（Windows＋Mac）|`release-jisui-viewer/v<版>`|`release-jisui-viewer.yml`|`jisui-viewer-v<版>`：Setup.exe（`.jisui` 関連付け）、portable.zip、.dmg、.zip。秀英体は入れない（CIで確認）|
 
 ## PCヘルパー
 

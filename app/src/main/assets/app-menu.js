@@ -23,12 +23,14 @@ window.DSMenu=(()=>{
   ['本棚',[['home','▦','本棚ホーム'],['recent','◷','最近読んだ本'],['downloaded','↓','保存済みの本'],['audio','♫','音声本'],['downloads','⇣','ダウンロード一覧']]],
   ['NAS',[['reconnect','⟲','NASに再接続'],['rescan','⟳','蔵書を更新'],['sync','⇅','読書データを今すぐ同期'],['tailscale','⇄','Tailscaleを開く'],['securesignin','✔','Secure SignInを開く'],['connect','⚙','NASの接続設定']]],
   ['その他',[['import','＋','端末の本を追加'],['settings','⚙','設定']]]];
+ // Theta.Jisui.Viewer: no NAS, no downloads; "add" opens files where they are.
+ if(window.DSJisui?.viewer){items.splice(1,1);items[0][1]=items[0][1].filter(x=>!['downloaded','downloads'].includes(x[0]));items[1][1]=items[1][1].map(x=>x[0]==='import'?['import','📂','ファイルを開く（.jisui）']:x);}
  // PC/Mac: the cover-cache tool and the data folder live in the same app.
  let desktop=false;try{desktop=!!native().isDesktop?.();}catch(e){}
- if(desktop){const pc=[['libraryTools','▤','ライブラリ管理（表紙キャッシュ作成）'],['dataFolder','▣','データフォルダを開く']];let bg=false;try{bg=!!native().isBackground?.();}catch(e){}if(bg)pc.push(['quitApp','⏻','DSBooksを終了']);items.splice(2,0,['PC',pc]);}
+ if(desktop){const pc=[['libraryTools','▤','ライブラリ管理（表紙キャッシュ作成）'],['dataFolder','▣','データフォルダを開く']].filter(x=>!(window.DSJisui?.viewer&&x[0]==='libraryTools'));let bg=false;try{bg=!!native().isBackground?.();}catch(e){}if(bg)pc.push(['quitApp','⏻','DSBooksを終了']);items.splice(2,0,['PC',pc]);}
  function render(){
   const state=$('nasState')?.textContent?.trim()||'',version=$('versionLabel')?.textContent?.trim()||'';
-  drawer.innerHTML='<div class="app-menu-backdrop" data-close></div><nav class="app-menu-panel"><div class="app-menu-head"><strong>DSBooks</strong><small>'+escapeHtml(state)+'</small><button type="button" class="app-menu-close" data-close aria-label="閉じる">×</button></div>'
+  drawer.innerHTML='<div class="app-menu-backdrop" data-close></div><nav class="app-menu-panel"><div class="app-menu-head"><strong>'+(window.DSJisui?.viewer?'Theta.Jisui.Viewer':'DSBooks')+'</strong><small>'+escapeHtml(state)+'</small><button type="button" class="app-menu-close" data-close aria-label="閉じる">×</button></div>'
    +items.map(([title,list])=>'<h3>'+title+'</h3><ul>'+list.map(([k,i,t])=>`<li><button type="button" data-menu="${k}"><span aria-hidden="true">${i}</span>${t}</button></li>`).join('')+'</ul>').join('')
    +'<p class="app-menu-version">'+escapeHtml(version)+'</p></nav>';
  }

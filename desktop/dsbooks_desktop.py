@@ -5,6 +5,8 @@
   DSBooks.exe --background       run without showing the shelf (for a DeskHatch drawer at
                                  http://127.0.0.1:47817/); starting DSBooks again shows it
   python dsbooks_desktop.py --serve-only   development/test: serve the UI without a window
+  ... <file.jisui>               open that book (double-click); a running app receives it via /open
+  ... --viewer                   Theta.Jisui.Viewer: the same viewer without the NAS parts (own port, own data)
 """
 from __future__ import annotations
 
@@ -12,6 +14,7 @@ import argparse
 import json
 import os
 import sys
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -40,19 +43,27 @@ for helper in (HERE / "helper", REPO / "thumbnail-helper-release"):
         sys.path.insert(0, str(helper))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+# Theta.Jisui.Viewer is this program started with --viewer (its frozen build always passes it).
+VIEWER = "--viewer" in sys.argv or "jisuiviewer" in Path(sys.executable).stem.lower().replace(".", "").replace("_", "")
+APP_ID = "jisuiviewer" if VIEWER else "dsbooks"
+APP_NAME = "Theta.Jisui.Viewer" if VIEWER else "DSBooks"
 # A fixed port keeps the page origin (and so its saved library, positions and settings) stable.
-PORT = int(os.environ.get("DSBOOKS_DESKTOP_PORT", "47817"))
+PORT = int(os.environ.get("DSBOOKS_DESKTOP_PORT", "47818" if VIEWER else "47817"))
+if VIEWER and not os.environ.get("DSBOOKS_DESKTOP_HOME"):
+    base = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) if sys.platform == "win32" else (
+        Path.home() / "Library" / "Application Support" if sys.platform == "darwin" else Path(os.environ.get("XDG_DATA_HOME", str(Path.home() / ".local" / "share"))))
+    os.environ["DSBOOKS_DESKTOP_HOME"] = str(base / "Theta" / "JisuiViewer")
 
 
 def already_running() -> bool:
     try:
         with urllib.request.urlopen("http://127.0.0.1:%d/ping" % PORT, timeout=1) as r:
-            return json.loads(r.read()).get("app") == "dsbooks"
+            return json.loads(r.read()).get("app") == APP_ID
     except Exception:
         return False
 
 
-def mac_app_events(show_main, quitting):
+def mac_app_events(show_main, quitting, open_file=None):
     """macOS: clicking the Dock icon (or opening the app again from Finder, which macOS turns into the same
     event instead of a second process) shows the shelf; ⌘Q / Dock "Quit" really quits even in background mode."""
     if sys.platform != "darwin":
@@ -71,8 +82,16 @@ def mac_app_events(show_main, quitting):
         quitting["now"] = True
         return 1  # NSTerminateNow
 
+    def open_files(self, app, names):
+        # Finder double-click / "Open With" while running (the first launch also gets argv emulation).
+        for n in list(names or []):
+            if open_file:
+                open_file(str(n))
+        show_main()
+
     for func, sel, sig in ((reopen, b"applicationShouldHandleReopen:hasVisibleWindows:", b"Z@:@Z"),
-                           (terminate, b"applicationShouldTerminate:", b"Q@:@")):
+                           (terminate, b"applicationShouldTerminate:", b"Q@:@"),
+                           (open_files, b"application:openFiles:", b"v@:@@")):
         try:
             objc.classAddMethods(BrowserView.AppDelegate, [objc.selector(func, selector=sel, signature=sig)])
         except Exception:
@@ -104,7 +123,10 @@ def main() -> int:
     parser.add_argument("--library-tools", action="store_true")
     parser.add_argument("--serve-only", action="store_true")
     parser.add_argument("--background", action="store_true")
-    args, _ = parser.parse_known_args()
+    parser.add_argument("--viewer", action="store_true")
+    args, rest = parser.parse_known_args()
+    # A double-clicked file arrives as a plain argument (macOS: also via argv emulation / open events).
+    files = [str(Path(a).resolve()) for a in rest if not a.startswith("-") and Path(a).is_file()]
     if args.library_tools:
         library_tools()
         return 0
@@ -113,16 +135,23 @@ def main() -> int:
     from server import make_server
 
     if already_running():
-        # Already running (window, background or drawer server): bring its shelf forward instead.
+        # Already running (window, background or drawer server): hand over the file, or bring its shelf forward.
         try:
-            urllib.request.urlopen("http://127.0.0.1:%d/show" % PORT, timeout=2).read()
+            if files:
+                for f in files:
+                    urllib.request.urlopen("http://127.0.0.1:%d/open?%s" % (PORT, urllib.parse.urlencode({"path": f})), timeout=5).read()
+            else:
+                urllib.request.urlopen("http://127.0.0.1:%d/show" % PORT, timeout=2).read()
         except Exception:
             pass
         return 0
 
     window_ref = {}
     bridge = Bridge(window_provider=lambda: window_ref.get("w"))
-    server, _token = make_server(bridge, ASSETS, WEB, PORT)
+    bridge.viewer = VIEWER
+    server, _token = make_server(bridge, ASSETS, WEB, PORT, APP_ID)
+    for f in files:
+        bridge.open_file(f)
     url = "http://127.0.0.1:%d/" % PORT
     if args.serve_only:
         print(url, flush=True)
@@ -133,12 +162,12 @@ def main() -> int:
         return 0
 
     import webview
-    window = webview.create_window("DSBooks", url, width=1200, height=820, min_size=(380, 560), background_color="#101814", hidden=args.background)
+    window = webview.create_window(APP_NAME, url, width=1200, height=820, min_size=(380, 560), background_color="#101814", hidden=args.background)
     window_ref["w"] = window
 
     def open_reader(query, title):
         # Each book gets its own window; they share the library through the bridge's store.
-        return webview.create_window(title, url + query, width=900, height=1000, min_size=(360, 480), background_color="#101814")
+        return webview.create_window(title or APP_NAME, url + query, width=900, height=1000, min_size=(360, 480), background_color="#101814")
     bridge.open_window = open_reader
 
     def show_main():
@@ -161,7 +190,7 @@ def main() -> int:
     bridge.quit_app = quit_app
     bridge.background = args.background
 
-    mac_app_events(show_main, quitting)
+    mac_app_events(show_main, quitting, bridge.open_file)
 
     if args.background:
         # In background mode closing the shelf only hides it, so drawers and reader windows keep working.
