@@ -53,9 +53,11 @@ window.DSMdAnchors=(()=>{
  function readLocal(b){if(!local(b))return null;const key=b.localName+'|'+(b.modifiedAt||b.size||'');if(textCache.has(key))return textCache.get(key);const t=DSBooksNative.readText(b.localName);if(t==null)return null;if(textCache.size>40)textCache.clear();textCache.set(key,t);return t;}
  // The book (folder) settings live in 00_index.md; the current file may be it.
  function settings(b,own){
-  if(own.page_anchors)return own;
+  // A container (jisui-1 manifest) gives defaults; the book's own front matter wins.
+  const base=window.DSJisui?.settingsFor?.(b)||{},clean=o=>Object.fromEntries(Object.entries(o).filter(([,v])=>v!==''&&v!==undefined));
+  if(own.page_anchors)return {...clean(base),...own};
   const idx=siblings(b).find(x=>x.type==='Markdown'&&/^00_index\.md$/i.test(fileOf(x)));
-  const t=idx&&readLocal(idx);return t?frontMatter(t).meta:{};
+  const t=idx&&readLocal(idx);return {...clean(base),...(t?frontMatter(t).meta:{})};
  }
  function pdfFor(b,meta){
   for(const r of pdfResolvers){const hit=r(b,meta);if(hit!==undefined)return hit;}

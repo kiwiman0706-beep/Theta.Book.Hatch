@@ -1,3 +1,7 @@
+**0.2.3** — FullOCR の `.jisui` 仕様の改訂に対応（目録 `theta-book.json`、先頭の `mimetype`、目録の `page_offset`）。以前の形式（`jisui.json`）も開けます。
+
+---
+
 **Theta.Jisui.Viewer** — FullOCR の `.jisui`（jisui-1）をダブルクリックで開くビューアです（DSBooks の読書機能から NAS 機能を除いたもの）。
 
 - `.jisui` を開くと目次（00_index.md）から読めます。章リンク、挿絵、読み上げ、文字サイズ・フォント（OS の明朝・ゴシック）、栞・メモが使えます

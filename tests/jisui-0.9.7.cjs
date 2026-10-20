@@ -9,18 +9,18 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
    localStorage.clear();window.calls=[];
    const filler=n=>Array.from({length:n},(_,i)=>'段落'+i+'。発作の分類と診断。').join('\n\n');
    const vault=(pdf)=>({
-    'jisui.json':JSON.stringify({format:'jisui-1',title:'ねころんで読めるてんかん診療',author:'中里 信和',entry:'00_index.md',pdf,page_anchors:'fullocr-1',digest:'theta-digest-1'}),
-    '00_index.md':'---\ntitle: ねころんで読めるてんかん診療\npage_anchors: fullocr-1\npdf_file: ねころん_text.pdf\npage_offset: 8\n---\n# ねころんで読めるてんかん診療\n\n- [[01_第1章#第1章 発作|第1章]]\n',
+    mimetype:'application/x-jisui','theta-book.json':JSON.stringify({format:'jisui-1',title:'ねころんで読めるてんかん診療',author:'中里 信和',entry:'00_index.md',pdf,page_anchors:'fullocr-1',page_offset:8,digest:'theta-digest-1'}),
+    '00_index.md':'---\ntitle: ねころんで読めるてんかん診療\npage_anchors: fullocr-1\n---\n# ねころんで読めるてんかん診療\n\n- [[01_第1章#第1章 発作|第1章]]\n',
     '01_第1章.md':'<!-- fullocr:page pdf=9 print="1" -->\n\n# 第1章 発作\n\n![[p0009_fig1.png]]\n\n'+filler(20)+'\n\n<!-- fullocr:page pdf=10 print="2" -->\n\n![図2](attachments/p0010_fig2.png)\n\n'+filler(20)+'\n',
     '_digest.md':'<!-- theta:digest scheme="theta-digest-1" generator="fullocr" pdf="ねころん_text.pdf" -->\n# ねころんで読めるてんかん診療 — ダイジェスト\n\n## 📖 構造化要約\n### 第1章 発作  [[ねころん_text.pdf#page=9|📄p.1]]\n- 発作は焦点性と全般性に分ける\n',
     'attachments/p0009_fig1.png':'PNG1','attachments/p0010_fig2.png':'PNG2'});
    window.zips={'emb.jisui':{...vault({mode:'embedded',name:'ねころん_text.pdf'}),'ねころん_text.pdf':'%PDF'},
-    'side.jisui':vault({mode:'sidecar',name:'ねころん_text.pdf',sidecar:'ねころん.pdf'}),'none.jisui':vault({mode:'none'}),'bad.jisui':{'readme.txt':'x'}};
+    'side.jisui':vault({mode:'sidecar',name:'ねころん_text.pdf',sidecar:'ねころん.pdf'}),'old.jisui':(()=>{const v=vault({mode:'none'});v['jisui.json']=v['theta-book.json'];delete v['theta-book.json'];delete v.mimetype;return v;})(),'none.jisui':vault({mode:'none'}),'bad.jisui':{'readme.txt':'x'}};
    const member=n=>{const i=n.indexOf('\n');return i<0?null:[n.slice(0,i),n.slice(i+1)];};
    const mk=(id,file,localName,extra)=>({id,title:file.replace(/\.[^.]+$/,''),type:'Jisui',fileExt:'JISUI',localName,offline:true,cover:'c1',size:1,folder:'自炊',...extra});
    localStorage.setItem('dsbooks.catalog',JSON.stringify([mk('E','ねころん.jisui','emb.jisui'),mk('S','ねころん.jisui','side.jisui',{path:'/N/自炊/ねころん.jisui',remote:true}),
     {id:'SP',title:'ねころん',type:'PDF',fileExt:'PDF',path:'/N/自炊/ねころん.pdf',remote:true,localName:'side.pdf',offline:true,cover:'c1',size:1,folder:'自炊'},
-    mk('Z','none.jisui','none.jisui'),mk('B','bad.jisui','bad.jisui')]));
+    mk('Z','none.jisui','none.jisui'),mk('O','old.jisui','old.jisui'),mk('B','bad.jisui','bad.jisui')]));
    window.DSBooksNative=new Proxy({getAppVersion:()=> '0.9.7-claude',isViewer:()=>viewer,loadCredentials:()=> 'null',getPlaybackState:()=>'{"active":false}',getDownloadState:()=> '{}',
     hasBook:n=>{const m=member(n);return m?!!zips[m[0]]?.[m[1]]:!!n;},
     readText:n=>{const m=member(n);calls.push(['read',n]);return m?(zips[m[0]]?.[m[1]]??null):null;},
@@ -59,8 +59,12 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  await open(page,'Z');await page.waitForSelector('#mdPage');await page.evaluate(()=>openLocalBook(books.find(b=>b.id==='Z!01_第1章.md')));await page.waitForSelector('#mdOriginal');
  const before=(await page.evaluate(()=>calls.filter(c=>c[0]==='pdf').length));await page.locator('#mdOriginal').click();
  assert.match(await page.locator('#toast').textContent(),/原文PDFが入っていません/);assert.equal(await page.evaluate(()=>calls.filter(c=>c[0]==='pdf').length),before);
+ // page_offset comes from theta-book.json when 00_index.md does not say it.
+ assert.equal(await page.evaluate(()=>DSMdAnchors.settings(books.find(b=>b.id==='E!01_第1章.md'),{}).page_offset),'8');
+ // The first draft's manifest name (jisui.json) still opens.
+ await open(page,'O');await page.waitForSelector('#mdPage');assert.match(await page.locator('.reader-top strong').textContent(),/00_index/);await page.evaluate(()=>closeModal());
  // Not a jisui-1 container.
- await page.evaluate(()=>closeModal());await open(page,'B');assert.match(await page.locator('#toast').textContent(),/jisui\.json/);
+ await page.evaluate(()=>closeModal());await open(page,'B');assert.match(await page.locator('#toast').textContent(),/theta-book\.json/);
  // "Open with" (Android): the imported .jisui opens at once.
  await page.evaluate(()=>{zips['new.jisui']=zips['emb.jisui'];onDataExchange({kind:'books',open:true,books:[{id:'local:n:jisui',bookId:'sha256:n',localName:'new.jisui',title:'ねころん',type:'Jisui',fileExt:'JISUI',size:9,offline:true,folder:'端末から取り込み'}],errors:[]});});
  await page.waitForSelector('#mdPage');assert.equal(await page.evaluate(()=>books.some(b=>b.jisuiOf==='local:n:jisui')),true);

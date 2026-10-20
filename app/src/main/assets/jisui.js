@@ -16,7 +16,8 @@ window.DSJisui=(()=>{
 
  function manifest(c){
   if(manifests.has(c.localName))return manifests.get(c.localName);
-  let m=null;try{m=JSON.parse(N().readText(c.localName+SEP+'jisui.json')||'null');}catch(e){}
+  // jisui-1 names the manifest theta-book.json (the first draft called it jisui.json; both are read).
+  let m=null;for(const name of ['theta-book.json','jisui.json']){try{m=JSON.parse(N().readText(c.localName+SEP+name)||'null');}catch(e){m=null;}if(m)break;}
   if(!m||!/^jisui-\d+$/.test(String(m.format||'')))m=null;
   manifests.set(c.localName,m);return m;
  }
@@ -24,7 +25,7 @@ window.DSJisui=(()=>{
  function upsert(fields){let b=books.find(x=>String(x.id)===String(fields.id));if(!b){b={progress:0,cover:'c5',author:'',genre:'自炊',label:'',offline:true,...fields};books.push(b);}else Object.assign(b,fields);return b;}
  // Make (or refresh) the hidden member books of a container. Returns the entry member, or null with a message.
  function members(c){
-  const m=manifest(c);if(!m)return {error:'.jisui の目録（jisui.json）を読めません。FullOCR の jisui-1 形式か確認してください'};
+  const m=manifest(c);if(!m)return {error:'.jisui の目録（theta-book.json）を読めません。FullOCR の jisui-1 形式か確認してください'};
   let entries=[];try{entries=JSON.parse(N().jisuiEntries?.(c.localName)||'[]');}catch(e){}
   const key=folderKey(c),common={jisuiOf:c.id,digestDir:key,folder:c.folder,offline:true};let entry=null;
   for(const e of entries){const name=String(e.name||'');if(!/\.md$/i.test(name))continue;
@@ -109,5 +110,7 @@ window.DSJisui=(()=>{
    const brand=document.querySelector('.mobile-brand');if(brand)brand.innerHTML='<span>▤</span> Jisui Viewer';
   });
  }
- return {open,manifest,members,pdfOf,pdfMissing,viewer};
+ // Book settings from the manifest (pdf name, page_offset) fill in what 00_index.md's front matter does not say.
+ function settingsFor(b){const c=isMember(b)?containerOf(b):b?.type==='Jisui'?b:null,m=c&&manifest(c);if(!m)return null;const out={page_anchors:m.page_anchors||'',title:m.title||''};if(m.page_offset!==undefined&&m.page_offset!==null)out.page_offset=String(m.page_offset);if(m.pdf?.name)out.pdf_file=m.pdf.name;return out;}
+ return {open,manifest,members,pdfOf,pdfMissing,settingsFor,viewer};
 })();

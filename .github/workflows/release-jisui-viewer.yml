@@ -53,8 +53,8 @@ jobs:
           b = Bridge(home=Path(tempfile.mkdtemp()))
           book = b._register_external(Path("jisui-fixtures/ねころん.jisui"))
           names = [e["name"] for e in json.loads(b.n_jisuiEntries(book["localName"]))]
-          assert "jisui.json" in names and "ねころん_text.pdf" in names, names
-          assert json.loads(b.n_readText(book["localName"] + "\njisui.json"))["format"] == "jisui-1"
+          assert names[0] == "mimetype" and "theta-book.json" in names and "ねころん_text.pdf" in names, names
+          assert json.loads(b.n_readText(book["localName"] + "\ntheta-book.json"))["format"] == "jisui-1"
           assert b._file_for(book["localName"] + "\nねころん_text.pdf").stat().st_size > 0
           side = b._register_external(Path("jisui-fixtures/side.jisui"))
           assert b.n_jisuiSidecar(side["localName"], "side.pdf")

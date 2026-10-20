@@ -3,7 +3,7 @@
 ;   ThetaJisuiViewer-Setup-<ver>.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART
 #define MyAppName "Theta.Jisui.Viewer"
 #ifndef MyAppVersion
-  #define MyAppVersion "0.2.2"
+  #define MyAppVersion "0.2.3"
 #endif
 #define MyAppExeName "ThetaJisuiViewer.exe"
 

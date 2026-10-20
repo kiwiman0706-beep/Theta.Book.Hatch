@@ -7,7 +7,7 @@
 |項目|値|
 |---|---|
 |Android package|`jp.shinwakai.dsbooks.claude`（0.9.0〜Claude版。ChatGPT版 `jp.shinwakai.dsbooks.preview` と共存）|
-|versionName / versionCode|`0.9.7-claude` / `72`（ChatGPT版最終は0.8.6-preview / 64）|
+|versionName / versionCode|`0.9.8-claude` / `73`（ChatGPT版最終は0.8.6-preview / 64）|
 |署名|Claude版の新しい鍵 alias `dsbooks-claude`、証明書SHA-256 `27c01a801b8ad5b4c229bf5061b6fd377031ba65f4443f4bc7faafe712d16490`|
 |min / target / compile SDK|26 / 34 / 35|
 |ビルド|Bash、JDK、aapt、D8 8.9.35、zipalign、apksigner。Gradleなし|

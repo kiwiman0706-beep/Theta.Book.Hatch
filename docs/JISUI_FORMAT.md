@@ -4,7 +4,9 @@ FullOCR の Vault（複数の MD・画像・任意でダイジェストと原典
 
 ## 仕様の要点
 
-- 中身は ZIP。ルートに `jisui.json`（`format: "jisui-1"`、`entry`、`pdf`、任意で `title` / `author` / `page_anchors` / `digest` / `isbn` など）を置き、Vault 一式（`00_index.md`、章MD、`attachments/`、`_digest.md` ほか）は相対パスのまま入る。
+- 中身は ZIP。先頭のエントリは `mimetype`（無圧縮、内容は `application/x-jisui`）。ルートの目録は `theta-book.json`（`format: "jisui-1"`、`entry`、`pdf`、任意で `title` / `author` / `page_anchors` / `page_offset` / `digest` / `isbn` など）。Vault 一式（`00_index.md`、章MD、`attachments/`、`_digest.md` ほか）は相対パスのまま入る。
+- 圧縮はエントリごとに変える。テキストは DEFLATE、PDF・画像など圧縮済みのものは STORED。
+- 改訂の経緯（2026-10-20）：最初の草案では目録の名前が `jisui.json` で、`mimetype` も無かった。0.9.8／0.2.3 からは `theta-book.json` を読み、無ければ `jisui.json` も読む。
 - `pdf.mode` は3種類。
   - `embedded`：ZIP内の `pdf.name`。
   - `sidecar`：`.jisui` と同じフォルダの `pdf.sidecar`（= 同じベース名＋`.pdf`）。`pdf.name` は MD リンクが参照する論理名。
@@ -21,7 +23,8 @@ FullOCR の Vault（複数の MD・画像・任意でダイジェストと原典
 |---|---|
 |メンバーの指定|`<.jisui の localName>\n<ZIP内パス>`。ネイティブの `readText` / `hasBook` / `renderPdfPage` がこの形を受け付ける。追加したのは `jisuiEntries`（一覧）と `jisuiImage`（画像のdata URL、8MBまで）。`..` や絶対パスは拒否する|
 |PDF|埋め込みPDFは、キャッシュに一度だけストリームで書き出してから描画する（Android は PdfRenderer、PC は PyMuPDF）。丸ごとメモリに読まない。キャッシュは最近の数冊分だけ残す|
-|開く（JS `jisui.js`）|`jisui.json` を確認し、MD・PDFを本棚に出ない「メンバー」として登録する（`jisuiOf`、同じ `digestDir`）。`entry` を開き、次からは最後に読んだ章を開く。書名・著者は目録から取る|
+|開く（JS `jisui.js`）|`theta-book.json`（無ければ `jisui.json`）の `format` を確認し、MD・PDFを本棚に出ない「メンバー」として登録する（`jisuiOf`、同じ `digestDir`）。`entry` を開き、次からは最後に読んだ章を開く。書名・著者は目録から取る|
+|ページの設定|`page_offset` と `pdf.name`（論理名）は目録から既定値として取る。`00_index.md` の front-matter に書いてあれば、そちらを優先する|
 |章リンク・ページ・ダイジェスト|メンバーは1つのフォルダの本として扱うので、`[[章#見出し]]`、「原文 p.N」、PDF→本文、`_digest.md` の表示がそのまま動く。メンバーは `fileName` で論理名を持つ|
 |原典PDFの解決|`embedded` はZIP内。`sidecar` は次の順に探す。①PC：`.jisui` を開いた場所の隣（`jisuiSidecar`）、②NAS：同じフォルダの `pdf.sidecar`、③端末に取り込んだ同名PDF。`none` は「原文PDFが入っていません」と表示する|
 |画像|`![[名前]]`（Vault 内のどこにあってもよい）と `![](相対パス)` を、ZIP内から読んで表示する|

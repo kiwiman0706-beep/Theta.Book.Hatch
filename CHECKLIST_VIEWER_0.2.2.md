@@ -1,5 +1,7 @@
 # Theta.Jisui.Viewer 0.2.2／DSBooks desktop 0.2.2 実機チェックリスト
 
+0.9.8／0.2.3 でも同じ項目を確認する。FullOCR の新しい形式（`theta-book.json`）と古い形式（`jisui.json`）の両方を試す。
+
 自動テストで確認済み：
 - `tests/desktop-jisui-0.9.7.cjs`（実際の ZIP、Python ブリッジ）
   - ビューアモード

@@ -26,7 +26,7 @@ from pathlib import Path
 
 import epub_content
 
-APP_VERSION = "0.2.2-desktop"
+APP_VERSION = "0.2.3-desktop"
 SUPPORTED_IMPORT = ("pdf", "epub", "md", "m4a", "m4b", "cbz", "cbr", "jisui")
 KIND = {"pdf": "PDF", "epub": "ePub", "md": "Markdown", "cbz": "Comic", "cbr": "Comic", "jisui": "Jisui"}
 IMAGE_EXT = (".jpg", ".jpeg", ".png", ".webp", ".gif")

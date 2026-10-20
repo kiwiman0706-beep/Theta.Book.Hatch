@@ -2,7 +2,9 @@
 
 ## 現在
 
-**Claude版 0.9.7（versionCode 72、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
+**Claude版 0.9.8（versionCode 73、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
+
+0.9.8 / desktop 0.2.3 / Theta.Jisui.Viewer 0.2.3：jisui-1 の改訂（目録 `theta-book.json`、先頭 `mimetype`、目録の `page_offset`）に対応。旧草案の `jisui.json` も読む。
 
 0.9.7 / desktop 0.2.2 / Theta.Jisui.Viewer 0.2.2：`.jisui`（自炊本）
 - FullOCR が作る `.jisui`（Vault一式のZIP、原典PDFは同梱／隣／なし）を開いて、目次・章リンク・挿絵・「原文 p.N」・ダイジェストをそのまま使う。仕様と実装は docs/JISUI_FORMAT.md。
