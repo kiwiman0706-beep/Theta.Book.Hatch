@@ -61,6 +61,20 @@
 - 822.1MBの「21 Lessons」：外部VLCで再生できた報告あり。これはDSBooks内蔵版成功の証拠ではない。
 - 最新0.8.5／0.8.6の全機能について、実機完了の包括的報告はまだない。
 
+## 0.9.7／desktop 0.2.2／Theta.Jisui.Viewer 0.2.2 のリリース証拠（コミット `1c8675e`）
+
+- `DSBooks-0.9.7-claude.apk`：109,855,377 bytes、SHA-256 `ec1b132ea8294fa0bca2f4529e6bb354a8aa5dbbe21ff5ecca267612010b9d1a`（GitHub側のdigestと一致）。ZIP CRC正常、versionCode 72、assets 37件がソースと一致（`jisui.js` を含む）、dexに `JisuiFiles` を含む、マニフェストに `.jisui` 用の VIEW フィルター、v2/v3署名、同じ証明書。
+- `desktop-v0.2.2`：Setup 99,992,398 bytes（`0456c2a1…19d0a8a`）、portable 126,379,282 bytes（`4ebb4af7…5d29f07`）。
+- `desktop-mac-v0.2.2`：dmg 141,910,973 bytes（`eeb87c1e…4d519e67`）、zip（`ec7f36a6…4599d36`）。
+- `jisui-viewer-v0.2.2`：
+  - Setup 87,820,195 bytes（`4d215679…5874022`）
+  - portable（`e13fc504…4f16a3`）
+  - dmg 122,414,565 bytes（`74013927…b80470`）
+  - zip（`9a352226…56ea232`）
+  - CIで、秀英体を同梱していないこと、exe名だけでビューアモードになること、実際の `.jisui` の読み取りを確認。Mac のジョブは実行環境の割り当て待ちで1回取り消され、再実行で成功した。
+- **未解決**：デスクトップ版の配布物が 0.2.0／0.2.1 の約2倍になった（Windows Setup 45→100MB、Mac dmg 68→142MB）。フォントを入れないビューアも同程度なので、依存パッケージ側の増加とみられる。原因を調べるため、CIに同梱物のサイズ一覧を出す手順を追加した（次のビルドから）。
+- 全部、実機未確認。
+
 ## Claude版 0.9.6 のリリース証拠
 
 `DSBooks-0.9.6-claude.apk`：109,847,124 bytes、SHA-256 `388722b9352a5fbf66084beffc169f1928ed3d69d93eec7983d6709212232336`（GitHub側のdigestと一致）。ZIP CRC正常、versionCode 71／versionName 0.9.6-claude、assets 36件がソースと一致（`digest.js` を含む）、v2/v3署名、同じ証明書。Javaに `saveLocalText` を追加。リリースノートの表の「SHA-256」の見出しが置換ミスでハッシュ値に化けている（APKには影響なし）。実機未確認。
