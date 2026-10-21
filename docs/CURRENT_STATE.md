@@ -61,6 +61,12 @@
 - 822.1MBの「21 Lessons」：外部VLCで再生できた報告あり。これはDSBooks内蔵版成功の証拠ではない。
 - 最新0.8.5／0.8.6の全機能について、実機完了の包括的報告はまだない。
 
+## 0.9.9／desktop 0.2.4／Theta.Jisui.Viewer 0.2.4 のリリース証拠（コミット `5291ee0`）
+
+- `DSBooks-0.9.9-claude.apk`：109,855,377 bytes、SHA-256 `7ab560f385639cf012a6ad1eec4b1cbbd1fc4053150e45c754a5d192cd0772dd`（GitHub側のdigestと一致）。ZIP CRC正常、versionCode 74、assets 37件がソースと一致、v2/v3署名、同じ証明書。
+- `desktop-v0.2.4`・`desktop-mac-v0.2.4`・`jisui-viewer-v0.2.4` は CI で作成・公開した。
+- 内容は、ピンチ拡大の中心を指（PC・Macはカーソル）の位置にする変更。実機未確認。
+
 ## 0.9.8／desktop 0.2.3／Theta.Jisui.Viewer 0.2.3 のリリース証拠（コミット `c131ba6`）
 
 - `DSBooks-0.9.8-claude.apk`：109,855,377 bytes、SHA-256 `e34e57abb7fa5e02cd2b4097cb0a9036ace5288099731c70c57ff4c89d83b2b4`（GitHub側のdigestと一致）。ZIP CRC正常、versionCode 73、assets 37件がソースと一致、v2/v3署名、同じ証明書。
