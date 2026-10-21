@@ -356,6 +356,8 @@ public final class MainActivity extends Activity {
             catch(Exception e) { evaluate("toast('Tailscaleアプリが見つかりません。端末のアプリ一覧から開いてください')"); }
         }); }
 
+        /** Theta.Jisui.Viewer (built with DSBOOKS_VARIANT=viewer): the same app without the NAS parts. */
+        @JavascriptInterface public boolean isViewer() { return getPackageName().startsWith("com.theta.jisui"); }
         @JavascriptInterface public boolean isTelevision() { return (getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_TYPE_MASK)==android.content.res.Configuration.UI_MODE_TYPE_TELEVISION; }
         @JavascriptInterface public void publishAudioLibrary(String json) { CarLibrary.publish(MainActivity.this,json); }
         @JavascriptInterface public String getAudioPositions() { return CarLibrary.positions(MainActivity.this).toString(); }

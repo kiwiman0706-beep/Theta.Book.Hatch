@@ -8,6 +8,7 @@ GitHub Release `jisui-viewer-v<版>`（リポジトリ kiwiman0706-beep/dsbooks�
 - Windows：`ThetaJisuiViewer-Setup-<版>.exe`（`.jisui` を関連付けるインストーラー）、`ThetaJisuiViewer-<版>-windows-portable.zip`
 - macOS（Apple Silicon）：`ThetaJisuiViewer-<版>-macOS-arm64.dmg` と `.zip`。中身は `Theta.Jisui.Viewer.app` で、`com.theta.jisui` を開ける
 - `SHA256SUMS.txt`
+- Android：Release `v<版>-jisui-viewer-android` の `ThetaJisuiViewer-<版>.apk`（`com.theta.jisuiviewer`）。ファイルアプリで `.jisui` を「アプリで開く」と、取り込んで開く。Android では PDF を `.jisui` に同梱する形式（`embedded`）を推奨する
 
 FullOCR のビルドでこれをダウンロードし、ハッシュを照合して同梱してください。ソースを取り込む必要はありません。
 

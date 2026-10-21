@@ -4,6 +4,8 @@
 
 **Claude版 0.9.9（versionCode 74、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
 
+Theta.Jisui.Viewer for Android 0.2.4：Android版ビューアの単体APK（`com.theta.jisuiviewer`、NAS機能なし、秀英体なし、DSBooks Claude と同じ鍵）。実機確認は CHECKLIST_VIEWER_ANDROID_0.2.4.md。
+
 0.9.9 / desktop 0.2.4 / Theta.Jisui.Viewer 0.2.4：ピンチでの拡大縮小を指の位置（PCはカーソル位置）を中心に。トラックパッドのピンチ（Ctrl＋ホイール、Macのジェスチャー）にも対応。実機確認は CHECKLIST_DEVICE_0.9.9.md。
 
 0.9.8 / desktop 0.2.3 / Theta.Jisui.Viewer 0.2.3：jisui-1 の改訂（目録 `theta-book.json`、先頭 `mimetype`、目録の `page_offset`）に対応。旧草案の `jisui.json` も読む。

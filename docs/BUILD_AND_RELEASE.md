@@ -6,6 +6,7 @@
 - 鍵：PKCS12、alias `dsbooks-claude`、RSA 4096、2059年まで有効。証明書SHA-256 `27c01a801b8ad5b4c229bf5061b6fd377031ba65f4443f4bc7faafe712d16490`。既定の場所は `build/dsbooks-claude.keystore`（`DSBOOKS_KEYSTORE`、`DSBOOKS_KEY_ALIAS` で変更可）。パスワードは `DSBOOKS_KEYSTORE_PASSWORD`（環境変数経由でapksignerへ渡し、コマンドラインに出さない）。
 - 鍵とパスワードはリポジトリに入れない。利用者が手元で保管する。失うと以後の上書き更新ができない。
 - 出力名は `DSBooks-<versionName>.apk`。
+- **Theta.Jisui.Viewer（Android）**：`DSBOOKS_VARIANT=viewer bash build.sh`。`tools/make-viewer-variant.py` が `build/viewer/` に別のマニフェストを作る（表示名、`com.theta.jisuiviewer`、`com.theta.jisuiviewer.files`、versionName は `desktop/bridge.py` のビューア版数、ウィジェット・Android Auto なし）。アセットも秀英体を除いたものを作る。versionCode は DSBooks と同じ値。署名は DSBooks Claude と同じ鍵（`dsbooks-claude`）。この鍵で配布した後に鍵を変えると、ビューアも上書き更新できなくなる。出力は `ThetaJisuiViewer-<版>.apk`。配布は同じ `release-upload.yml` で、タグ `v<版>-jisui-viewer-android`。
 - SDKは `cmdline-tools` の `sdkmanager "platforms;android-35" "build-tools;35.0.0"` で導入できる（dl.google.comへの接続が必要）。
 - `repo.maven.apache.org` に届かない環境では `DSBOOKS_MAVEN_CENTRAL=https://repo1.maven.org/maven2` で同じMaven Centralから取得できる。固定SHA-256で照合するので内容は変わらない。
 - 配布：`.github/workflows/release-upload.yml`。完成APKを分割して一時ブランチ `release-upload/<tag>` に置くと、Actionsが結合・SHA-256照合・ZIP検査をしてGitHub Releaseを作り、一時ブランチを削除する。署名はローカルで済ませ、CIに鍵を渡さない。
