@@ -61,6 +61,15 @@
 - 822.1MBの「21 Lessons」：外部VLCで再生できた報告あり。これはDSBooks内蔵版成功の証拠ではない。
 - 最新0.8.5／0.8.6の全機能について、実機完了の包括的報告はまだない。
 
+## Theta.Jisui.Viewer for Android 0.2.4 のリリース証拠（コミット `1ecb3d2`）
+
+- `ThetaJisuiViewer-0.2.4.apk`：96,752,200 bytes、SHA-256 `1993e2f90acb945ad7d2125598a38b380d6ced9cfdb2f2b75ad891e8eaf2f606`（GitHub側のdigestと一致）。
+- ZIP CRC正常、package `com.theta.jisuiviewer`、versionCode 74 / versionName 0.2.4、表示名 Theta.Jisui.Viewer、provider `com.theta.jisuiviewer.files`。
+- assets 36件が、秀英体を除いたソースと一致する（秀英体なし）。ウィジェット・Android Auto なし、`.jisui` の VIEW フィルターあり、dexに `isViewer` を含む。
+- v2/v3署名で、DSBooks Claude と同じ証明書。
+- 変更後の build.sh で通常の DSBooks を作っても、パッケージ・表示名・秀英体の同梱が変わらないことを確認した。
+- 実機未確認。
+
 ## 0.9.9／desktop 0.2.4／Theta.Jisui.Viewer 0.2.4 のリリース証拠（コミット `5291ee0`）
 
 - `DSBooks-0.9.9-claude.apk`：109,855,377 bytes、SHA-256 `7ab560f385639cf012a6ad1eec4b1cbbd1fc4053150e45c754a5d192cd0772dd`（GitHub側のdigestと一致）。ZIP CRC正常、versionCode 74、assets 37件がソースと一致、v2/v3署名、同じ証明書。
