@@ -61,6 +61,13 @@
 - 822.1MBの「21 Lessons」：外部VLCで再生できた報告あり。これはDSBooks内蔵版成功の証拠ではない。
 - 最新0.8.5／0.8.6の全機能について、実機完了の包括的報告はまだない。
 
+## 1.0.0／desktop 0.2.5／Theta.Jisui.Viewer 0.2.5 のリリース証拠（コミット `3e67d6f`）
+
+- `DSBooks-1.0.0-claude.apk`：109,863,703 bytes、SHA-256 `79963d4c15f9f56633d7eb184160a0062a6b587435e9bec96a900623290e5d1c`（GitHub側のdigestと一致）。ZIP CRC正常、versionCode 75、assets 39件がソースと一致（`page-view.js`・`reader-chrome.js` を含む）、同じ証明書。
+- `ThetaJisuiViewer-0.2.5.apk`：96,760,526 bytes、SHA-256 `ea4d48c9bb89ba7bd71cf98d569b553b0f8b4053b25e6653748cc3e664cf6eab`（一致）。`com.theta.jisuiviewer`、versionCode 75 / 0.2.5、assets 38件（秀英体なし）がソースと一致、同じ証明書。
+- `desktop-v0.2.5`・`desktop-mac-v0.2.5`・`jisui-viewer-v0.2.5` は CI で作成・公開した。
+- 実機未確認。
+
 ## Theta.Jisui.Viewer for Android 0.2.4 のリリース証拠（コミット `1ecb3d2`）
 
 - `ThetaJisuiViewer-0.2.4.apk`：96,752,200 bytes、SHA-256 `1993e2f90acb945ad7d2125598a38b380d6ced9cfdb2f2b75ad891e8eaf2f606`（GitHub側のdigestと一致）。
