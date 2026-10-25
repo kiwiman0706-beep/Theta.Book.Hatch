@@ -10,10 +10,10 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  await page.goto('file://'+process.cwd()+'/app/src/main/assets/dsbooks-prototype.html');await page.waitForFunction(()=>calls.some(c=>c[0]==='library'));
  assert.equal(await page.evaluate(()=>calls.find(c=>c[0]==='library')[1].length),1);
  await page.evaluate(()=>epubReader(books[0],0));await page.waitForTimeout(300);
- await page.locator('#epubChapter').click();await page.locator('#jumpPage').fill('72');await page.locator('#jumpReader').click();
+ await page.locator('#epubChapter').click();await page.locator('#jumpPage').fill('60');await page.locator('#jumpReader').click();
  // Independent character scan establishes the first non-whitespace glyph on screen.
  const visible=()=>page.evaluate(()=>{const root=document.getElementById('epubPage'),vp=document.getElementById('epubViewport').getBoundingClientRect(),w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);while(w.nextNode()){const n=w.currentNode;if(n.parentElement.closest('rt,rp,script,style'))continue;for(let i=0;i<n.length;i++){if(!n.data[i].trim())continue;const r=document.createRange();r.setStart(n,i);r.setEnd(n,i+1);if([...r.getClientRects()].some(t=>t.right>vp.left+1&&t.left<vp.right-1&&t.bottom>vp.top+1&&t.top<vp.bottom-1)){return n.data.slice(i,i+40);}}}return '';});
- assert.match(await page.locator('#epubCount').textContent(),/72\//);const expected=await visible();assert(expected);assert(!expected.startsWith('W0000'));
+ assert.match(await page.locator('#epubCount').textContent(),/60\//);const expected=await visible();assert(expected);assert(!expected.startsWith('W0000'));
  await page.locator('#epubSpeak').click();let spoken=await page.evaluate(()=>calls.filter(c=>c[0]==='speak').at(-1)[1]);assert(spoken.startsWith(expected),{expected,actual:spoken.slice(0,40)});assert(spoken.endsWith('ENDING'));
  await page.locator('#epubSpeak').click();assert.equal(await page.evaluate(()=>calls.at(-1)[1]),'pause');
  await page.locator('#epubNext').click();const next=await visible();await page.locator('#epubSpeak').click();assert.equal(await page.evaluate(()=>calls.filter(c=>c[0]==='speak').length),2);assert((await page.evaluate(()=>calls.filter(c=>c[0]==='speak').at(-1)[1])).startsWith(next));

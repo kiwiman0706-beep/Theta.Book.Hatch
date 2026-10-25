@@ -33,7 +33,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
   return {page,errors};
  };
  const open=(page,id)=>page.evaluate(id=>openLocalBook(books.find(b=>b.id===id)),id);
- const lastPdf=page=>page.evaluate(()=>calls.filter(c=>c[0]==='pdf').pop());
+ const lastPdf=page=>page.evaluate(()=>calls.filter(c=>c[0]==='pdf'&&c[2]===Number(document.getElementById('pdfImage')?.dataset.page)).pop());
 
  const {page,errors}=await run(false);
  // Embedded: opens 00_index.md; members hidden from the shelf; the chapter link, pictures and 原文 work.

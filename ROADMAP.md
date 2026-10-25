@@ -2,7 +2,12 @@
 
 ## 現在
 
-**Claude版 0.9.9（versionCode 74、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
+**Claude版 1.0.0（versionCode 75、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
+
+1.0.0 / desktop 0.2.5 / Theta.Jisui.Viewer 0.2.5：全画面の読書と、見開き・縦スクロール・幅に合わせる
+- 読書中はページだけを表示し、操作ボタンはページの中央をタップした時だけ重ねて表示（数秒で隠れる）。設定 → 表示と読書 で常時表示にも戻せる。
+- PDF とコミック：1ページ／見開き（右開き・左開き、表紙を単独に）／縦スクロール、ページ全体／幅に合わせる、端のタップでページ送り。本ごとに覚え、他の本の初期設定にもできる。
+- 実機確認は CHECKLIST_DEVICE_1.0.0.md。
 
 Theta.Jisui.Viewer for Android 0.2.4：Android版ビューアの単体APK（`com.theta.jisuiviewer`、NAS機能なし、秀英体なし、DSBooks Claude と同じ鍵）。実機確認は CHECKLIST_VIEWER_ANDROID_0.2.4.md。
 

@@ -20,17 +20,19 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  // Where the content point that was under (cx,cy) is now, in viewport coordinates.
  const probe=sel=>page.evaluate(sel=>{const el=document.querySelector(sel);return {l:el.scrollLeft,t:el.scrollTop,r:el.getBoundingClientRect()};},sel);
 
- // PDF: content point under the fingers stays under them (scroll = point × (k−1)).
+ // PDF: the spot of the page under the fingers / cursor stays under them (pages are centred, so compare fractions).
  await page.evaluate(()=>openLocalBook(books.find(b=>b.id==='P')));await page.waitForFunction(()=>document.getElementById('pdfImage')?.naturalWidth>0);
- const v0=await probe('#pdfViewport');const cx=v0.r.left+200,cy=v0.r.top+120;
- await pinch('#pdfViewport',cx,cy,100,200);const v1=await probe('#pdfViewport');
- assert(Math.abs(v1.l-200)<=3&&Math.abs(v1.t-120)<=3,'pinch about the fingers (got '+v1.l+','+v1.t+')');
+ const spot=([x,y])=>page.evaluate(([x,y])=>{const r=document.getElementById('pdfImage').getBoundingClientRect();return {fx:(x-r.left)/r.width,fy:(y-r.top)/r.height,w:r.width};},[x,y]);
+ const ir=await page.evaluate(()=>{const r=document.getElementById('pdfImage').getBoundingClientRect();return {x:r.left+r.width*.6,y:r.top+r.height*.5};});
+ const cx=ir.x,cy=ir.y,s0=await spot([cx,cy]);
+ await pinch('#pdfViewport',cx,cy,100,200);const s1=await spot([cx,cy]);
+ assert(s1.w>s0.w*1.9,'zoomed in');assert(Math.abs(s1.fx-s0.fx)<.01&&Math.abs(s1.fy-s0.fy)<.01,'pinch keeps the spot under the fingers '+JSON.stringify([s0,s1]));
  // Trackpad pinch (Ctrl+wheel) about the cursor, here zooming back out.
  await page.evaluate(([x,y])=>document.getElementById('pdfViewport').dispatchEvent(new WheelEvent('wheel',{ctrlKey:true,deltaY:Math.log(2)*100,clientX:x,clientY:y,bubbles:true,cancelable:true})),[cx,cy]);
- const v2=await probe('#pdfViewport');assert(Math.abs(v2.l)<=3&&Math.abs(v2.t)<=3,'ctrl+wheel back to 1× about the cursor (got '+v2.l+','+v2.t+')');
+ const s2=await spot([cx,cy]);assert(Math.abs(s2.w-s0.w)<3,'ctrl+wheel back to 1×');
  // macOS WebKit trackpad pinch (GestureEvent with scale), simulated with plain Events carrying the same fields.
  await page.evaluate(([x,y])=>{const v=document.getElementById('pdfViewport');const ev=(type,scale)=>{const e=new Event(type,{bubbles:true,cancelable:true});Object.assign(e,{scale,clientX:x,clientY:y});v.dispatchEvent(e);};ev('gesturestart',1);ev('gesturechange',1.5);ev('gesturechange',2);ev('gestureend',2);},[cx,cy]);
- const v3=await probe('#pdfViewport');assert(Math.abs(v3.l-200)<=3&&Math.abs(v3.t-120)<=3,'Mac gesture pinch about the cursor (got '+v3.l+','+v3.t+')');
+ const s3=await spot([cx,cy]);assert(s3.w>s0.w*1.9&&Math.abs(s3.fx-s0.fx)<.01&&Math.abs(s3.fy-s0.fy)<.01,'Mac gesture pinch about the cursor '+JSON.stringify(s3));
  // Markdown (CSS zoom): the paragraph under the fingers stays there.
  await page.evaluate(()=>openLocalBook(books.find(b=>b.id==='M')));await page.waitForSelector('#mdPage');
  await page.evaluate(()=>{document.querySelector('.reader-viewport').scrollTop=800;});

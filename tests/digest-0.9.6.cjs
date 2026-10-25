@@ -30,7 +30,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  });
  await page.goto('file://'+process.cwd()+'/app/src/main/assets/dsbooks-prototype.html');await page.waitForFunction(()=>DSBoot.readyMs!==undefined);
  const open=id=>page.evaluate(id=>openLocalBook(books.find(b=>b.id===id)),id);
- const lastPdf=()=>page.evaluate(()=>calls.filter(c=>c[0]==='pdf').pop());
+ const lastPdf=()=>page.evaluate(()=>calls.filter(c=>c[0]==='pdf'&&c[2]===Number(document.getElementById('pdfImage')?.dataset.page)).pop());
 
  // ① FullOCR digest: parsed model.
  const model=await page.evaluate(()=>DSDigest.parse(texts['dg.md']));

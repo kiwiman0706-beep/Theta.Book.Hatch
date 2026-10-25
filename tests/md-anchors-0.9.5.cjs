@@ -35,7 +35,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  await scrollToAnchor(11);assert.equal(await label(),'原文 p.3','no print: pdf - page_offset (from 00_index.md)');
  // 原文: opens the declared PDF (not the scan) at physical page 11 (0-based 10).
  await page.locator('#mdOriginal').click();await page.waitForSelector('#pdfImage');await page.waitForTimeout(50);
- assert.deepEqual(await page.evaluate(()=>calls.filter(c=>c[0]==='pdf').pop()),['pdf','book.pdf',10]);
+ assert.deepEqual(await page.evaluate(()=>calls.filter(c=>c[0]==='pdf'&&c[2]===Number(document.getElementById('pdfImage')?.dataset.page)).pop()),['pdf','book.pdf',10]);
  // PDF → Markdown: page 23 lives in chapter 2 (anchor pdf=22).
  await page.evaluate(()=>{const b=books.find(x=>x.id==='pdf');pdfReader(b,22);});await page.waitForTimeout(50);
  assert.equal(await page.locator('#pdfToMd').count(),1);await page.locator('#pdfToMd').click();await page.waitForSelector('#mdPage');await page.waitForTimeout(80);

@@ -123,7 +123,7 @@ window.DSMdAnchors=(()=>{
  }
  const wrappedPdf=pdfReader;
  pdfReader=function(b,start){
-  wrappedPdf(b,start);const files=mdFilesFor(b);if(!files.length||!$('pdfImage'))return;
+  wrappedPdf(b,start);const files=mdFilesFor(b);if(!files.length||!$('pdfViewport'))return;
   const btn=document.createElement('button');btn.className='tool-btn md-back';btn.id='pdfToMd';btn.textContent='本文へ';btn.title='このページの本文（Markdown）へ';
   document.querySelector('.reader-top')?.appendChild(btn);
   btn.onclick=()=>{const n=(Number(b.currentPage)||0)+1;let best=null,missing=0;

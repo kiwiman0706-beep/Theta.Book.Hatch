@@ -4,6 +4,7 @@
 
 |版|versionCode（確認値）|主要変更/確認できる範囲|根拠・留保|
 |---|---|---|---|
+|1.0.0-claude / desktop 0.2.5 / Theta.Jisui.Viewer 0.2.5（PC・Mac・Android）|75|全画面の読書：読書画面のバーをページの上に重ね、ページ中央のタップ（PCはマウスを上下の端へ）で表示、数秒で自動的に隠れる（キーボードでのページ送りが効くよう、消さずに透明にする）。設定で常時表示に戻せる。PDF とコミックを共通のページ表示（`page-view.js`）に：1ページ／見開き（表紙を単独にするか選択、右開き・左開き）／縦スクロール、ページ全体／幅に合わせる、端のタップでめくる、本ごとに保存、初期設定にもできる。縦スクロールは画面の近くのページだけ画像を持つ。コミックはネイティブが最新の依頼だけに答えるため、ページを1枚ずつ依頼する。|ソース/tests/reader-view-1.0.0.cjs/CHECKLIST_DEVICE_1.0.0.md|
 |Theta.Jisui.Viewer for Android 0.2.4|74|Android版ビューア（`com.theta.jisuiviewer`）。同じコードを `DSBOOKS_VARIANT=viewer` でビルドし、名前・ID・ファイル提供元を分け、ウィジェットと Android Auto を外し、秀英体を入れない（`tools/make-viewer-variant.py`）。ネイティブの `isViewer`（パッケージ名で判定）で NAS 部分を隠す。署名は DSBooks Claude と同じ鍵。|ソース/build.sh/tools/make-viewer-variant.py/CHECKLIST_VIEWER_ANDROID_0.2.4.md|
 |0.9.9-claude / desktop 0.2.4 / Theta.Jisui.Viewer 0.2.4|74|ピンチでの拡大縮小を、指の位置を中心に行うように（従来は左上が起点）。拡大前に指の下にあった要素とその中の位置を覚え、拡大後も同じ所が指の下に来るようにスクロールする（文章が折り返し直されても段落がずれない）。PCのトラックパッドのピンチ（Ctrl＋ホイール）と、Macのジェスチャーにも対応し、カーソルの位置を中心にする。PDF・Markdown・コミック・EPUBの画像表示で共通。|ソース/tests/pinch-zoom-0.9.9.cjs/CHECKLIST_DEVICE_0.9.9.md|
 |0.9.8-claude / desktop 0.2.3 / Theta.Jisui.Viewer 0.2.3|73|jisui-1 の改訂に対応：目録名 `theta-book.json`（旧草案の `jisui.json` も読む）、先頭の `mimetype`、目録の `page_offset`（00_index.md の front-matter に無い時の既定値）。テスト用の ZIP を規則どおり（mimetype を先頭・無圧縮、PDF・画像は無圧縮）に作るように変更。|ソース/docs/JISUI_FORMAT.md/tests/jisui-0.9.7.cjs/tests/desktop-jisui-0.9.7.cjs|
