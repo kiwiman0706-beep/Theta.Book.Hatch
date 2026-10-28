@@ -128,6 +128,7 @@ public final class MainActivity extends Activity {
         settings.setAllowUniversalAccessFromFileURLs(true);
         webView.addJavascriptInterface(new NativeBridge(), "DSBooksNative");
         pendingWidgetBookId = getIntent().getStringExtra("dsbooks.widget.book_id");
+        pendingExternalBook = externalBook(getIntent());
         webView.setWebViewClient(new WebViewClient() {
             @Override public boolean onRenderProcessGone(WebView view, android.webkit.RenderProcessGoneDetail detail) {
                 pageReady=false;webView=null;shell.removeView(view);view.destroy();
@@ -136,6 +137,7 @@ public final class MainActivity extends Activity {
             @Override public void onPageFinished(WebView view, String url) {
                 pageReady = true;
                 dispatchWidgetBook();
+                dispatchExternalBook();
                 deliverDownloadState();
                 deliverPlaybackState();
             }
@@ -203,6 +205,29 @@ public final class MainActivity extends Activity {
         setIntent(intent);
         pendingWidgetBookId = intent.getStringExtra("dsbooks.widget.book_id");
         dispatchWidgetBook();
+        pendingExternalBook = externalBook(intent);
+        dispatchExternalBook();
+    }
+
+    /** 他のアプリから「開く」（ACTION_VIEW）・「共有」（ACTION_SEND）で渡された本。 */
+    private Uri pendingExternalBook;
+
+    private static Uri externalBook(Intent intent) {
+        if (intent == null) return null;
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) return intent.getData();
+        if (Intent.ACTION_SEND.equals(intent.getAction())) {
+            Uri stream = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            if (stream != null) return stream;
+            if (intent.getClipData() != null && intent.getClipData().getItemCount() > 0) return intent.getClipData().getItemAt(0).getUri();
+        }
+        return null;
+    }
+
+    private void dispatchExternalBook() {
+        if (!pageReady || webView == null || pendingExternalBook == null || exchange == null) return;
+        Uri uri = pendingExternalBook;
+        pendingExternalBook = null;
+        exchange.openExternal(uri);
     }
 
     private void dispatchWidgetBook() {

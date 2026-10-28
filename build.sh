@@ -33,5 +33,5 @@ mapfile -t CLASS_FILES < <(find "$BUILD/classes" -name '*.class' -type f | sort)
 python3 "$ROOT/tools/package-apk.py" "$BUILD"
 "$ZIPALIGN" -f 4 "$BUILD/aligned-unsigned.apk" "$BUILD/aligned.apk"
 if [[ -z "${DSBOOKS_KEYSTORE_PASSWORD:-}" ]]; then read -rsp 'Keystore password: ' DSBOOKS_KEYSTORE_PASSWORD; echo; fi
-"$APKSIGNER" sign --ks "$BUILD/dsbooks-0.2.0.keystore" --ks-key-alias dsbooks --ks-pass "pass:$DSBOOKS_KEYSTORE_PASSWORD" --key-pass "pass:$DSBOOKS_KEYSTORE_PASSWORD" --out "$ROOT/DSBooks-0.8.6-preview.apk" "$BUILD/aligned.apk"
-"$APKSIGNER" verify --verbose "$ROOT/DSBooks-0.8.6-preview.apk"
+"$APKSIGNER" sign --ks "$BUILD/dsbooks-0.2.0.keystore" --ks-key-alias dsbooks --ks-pass "pass:$DSBOOKS_KEYSTORE_PASSWORD" --key-pass "pass:$DSBOOKS_KEYSTORE_PASSWORD" --out "$ROOT/DSBooks-0.8.7-preview.apk" "$BUILD/aligned.apk"
+"$APKSIGNER" verify --verbose "$ROOT/DSBooks-0.8.7-preview.apk"

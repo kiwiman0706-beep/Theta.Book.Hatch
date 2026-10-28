@@ -44,6 +44,15 @@ final class DocumentExchange {
                 .setType("application/json").putExtra(Intent.EXTRA_TITLE,"DSBooks-reading-"+System.currentTimeMillis()+".json"),EXPORT);
         }catch(Exception e){busy=false;pendingExport=null;error("データを書き出せませんでした");}
     }
+    /** 他のアプリ（Theta Home Hatchなど）から「開く」で渡された本を取り込み、取り込んだら開く。原本は変更しない。 */
+    void openExternal(Uri uri){
+        new Thread(()->{
+            try{JSONArray books=new JSONArray(),errors=new JSONArray();
+                try{books.put(importBook(uri));}catch(Exception e){errors.put(e.getMessage()==null?"取り込み失敗":e.getMessage());}
+                emit(new JSONObject().put("kind","books").put("books",books).put("errors",errors).put("open",true));
+            }catch(Exception e){error(e.getMessage()==null?"ファイルを開けませんでした":e.getMessage());}
+        },"DSBooks-open-external").start();
+    }
     boolean result(int code,int result,Intent data){
         if(code!=IMPORT&&code!=DATA&&code!=EXPORT)return false;
         if(result!=Activity.RESULT_OK||data==null){busy=false;pendingExport=null;return true;}
@@ -63,6 +72,7 @@ final class DocumentExchange {
     private JSONObject importBook(Uri uri)throws Exception{
         String name="";long size=-1;
         try(Cursor c=owner.getContentResolver().query(uri,new String[]{OpenableColumns.DISPLAY_NAME,OpenableColumns.SIZE},null,null,null)){if(c!=null&&c.moveToFirst()){name=c.getString(0);if(!c.isNull(1))size=c.getLong(1);}}
+        if(name==null||name.isEmpty()){String last=uri.getLastPathSegment();name=last==null?"":last.substring(last.lastIndexOf('/')+1);}
         String ext=name.contains(".")?name.substring(name.lastIndexOf('.')+1).toLowerCase(Locale.ROOT):"";
         if(!Arrays.asList("pdf","epub","md","m4a","m4b","cbz","cbr").contains(ext))throw new IOException(name+"：対応形式ではありません");
         String storageId=BookStorage.selected(owner);File root=BookStorage.directory(owner,storageId,true);if(size>root.getUsableSpace()-8*1024*1024)throw new IOException("保存容量が足りません");

@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="jp.shinwakai.dsbooks.preview" android:versionCode="64" android:versionName="0.8.6-preview">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="jp.shinwakai.dsbooks.preview" android:versionCode="65" android:versionName="0.8.7-preview">
   <queries><package android:name="com.google.android.gms" /><package android:name="com.google.android.gms.policy_cast_dynamite" /><package android:name="org.videolan.vlc" /><package android:name="com.tailscale.ipn" /></queries>
   <uses-feature android:name="android.software.leanback" android:required="false" />
   <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
@@ -18,6 +18,18 @@
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
         <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+      </intent-filter>
+      <!-- 他のアプリ（Theta Home Hatchなど）から本を開く・共有する。取り込んでから開く（原本は変えない） -->
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:scheme="content" />
+        <data android:mimeType="application/epub+zip" /><data android:mimeType="application/pdf" /><data android:mimeType="application/vnd.comicbook+zip" /><data android:mimeType="application/vnd.comicbook-rar" /><data android:mimeType="application/x-cbz" /><data android:mimeType="application/x-cbr" /><data android:mimeType="application/x-cbz-compressed" /><data android:mimeType="audio/x-m4b" /><data android:mimeType="audio/mp4" /><data android:mimeType="text/markdown" />
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.SEND" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="application/epub+zip" /><data android:mimeType="application/pdf" /><data android:mimeType="application/vnd.comicbook+zip" /><data android:mimeType="application/vnd.comicbook-rar" /><data android:mimeType="application/x-cbz" /><data android:mimeType="application/x-cbr" /><data android:mimeType="application/x-cbz-compressed" /><data android:mimeType="audio/x-m4b" /><data android:mimeType="audio/mp4" /><data android:mimeType="text/markdown" />
       </intent-filter>
     </activity>
     <receiver android:name=".ReadingWidgetProvider" android:exported="true">
