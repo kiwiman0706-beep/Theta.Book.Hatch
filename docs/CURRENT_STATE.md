@@ -61,6 +61,19 @@
 - 822.1MBの「21 Lessons」：外部VLCで再生できた報告あり。これはDSBooks内蔵版成功の証拠ではない。
 - 最新0.8.5／0.8.6の全機能について、実機完了の包括的報告はまだない。
 
+## Theta Book Hatch 1.1.0／DSBooks 1.0.1（橋渡し版）のリリース証拠
+
+- `v1.0.1`（通常の Release）：`ThetaBookHatch-1.0.1.apk` 96,768,781 bytes、SHA-256 `0fd1cb36983f216506261a5eb1019e1c0bc59e9dd6fd7a0a36a718c0a1fae9fd`（GitHub側のdigestと一致）。手元でビルドして確認した：
+  - package `jp.shinwakai.dsbooks.claude`、versionCode 76 / 1.0.1、Claude 版の鍵（`27c01a80…d16490`）
+  - EXPORT／IMPORT の intent-filter、ハブの queries、インストール権限なし
+  - 秀英体なし、assets 39件がソース（フォントを除く）と一致
+- `v1.1.0`（通常の Release、CI `release.yml` run 42325803313）：`ThetaBookHatch-1.1.0.apk` 96,764,685 bytes、SHA-256 `e46b1c11c013cae723f6eeddf0e5175b0392e110a7f7cf4f82b14f30f4672002`（digestと一致）。CI で確認した：
+  - package `app.thetahatch.book` / 1.1.0
+  - 署名がシリーズ共通の鍵（SHA-256 `f47740d8…012a23`）
+  - インストール権限なし、秀英体なし
+  - 手元ではこの APK を開いて確かめていない（非公開の Release 資産を取得できないため）
+- 全部、実機未確認。
+
 ## 1.0.0／desktop 0.2.5／Theta.Jisui.Viewer 0.2.5 のリリース証拠（コミット `3e67d6f`）
 
 - `DSBooks-1.0.0-claude.apk`：109,863,703 bytes、SHA-256 `79963d4c15f9f56633d7eb184160a0062a6b587435e9bec96a900623290e5d1c`（GitHub側のdigestと一致）。ZIP CRC正常、versionCode 75、assets 39件がソースと一致（`page-view.js`・`reader-chrome.js` を含む）、同じ証明書。
