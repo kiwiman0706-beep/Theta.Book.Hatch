@@ -1,5 +1,7 @@
 name: Release Theta Book Hatch (Android)
-# Theta Hatch series release (Theta.Hatch.Series spec §6, secrets/README.md): push a tag v<version> (e.g. v1.1.0).
+# Theta Hatch series release (Theta.Hatch.Series spec §6, secrets/README.md): push a tag v<version> (e.g. v1.1.0),
+# or (where tags cannot be pushed) a temporary branch release-android/v<version>: the tag is created at that commit
+# and the branch is deleted afterwards.
 # Builds app.thetahatch.book with the series key from the four Secrets (the alias comes from ANDROID_KEY_ALIAS),
 # checks package, version, signer (series SHA-256) and that the user's own font is not inside, then publishes a normal
 # (not pre-) Release v<version> with exactly one APK: ThetaBookHatch-<version>.apk. The hub (Home / KidsHome) updates
@@ -7,6 +9,7 @@ name: Release Theta Book Hatch (Android)
 on:
   push:
     tags: ['v[0-9]+.[0-9]+.[0-9]+']
+    branches: ['release-android/v*']
 permissions:
   contents: write
 jobs:
@@ -23,7 +26,8 @@ jobs:
       - name: Version
         id: v
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
+          REF="${GITHUB_REF_NAME#release-android/}"; VERSION="${REF#v}"
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "bad version $VERSION"; exit 1; }
           grep -q "android:versionName=\"$VERSION\"" app/src/main/AndroidManifest.xml || { echo "AndroidManifest versionName is not $VERSION"; exit 1; }
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
       - name: Android SDK (build-tools 35, platform 35)
@@ -61,4 +65,8 @@ jobs:
           set -euo pipefail
           V="${{ steps.v.outputs.version }}"
           { awk -v v="$V" '$0 ~ "^## "v"( |$)"{f=1;next} /^## /{if(f)exit} f' RELEASE_NOTES.md; echo; echo '```'; cat SHA256SUMS.txt; echo '```'; } > notes.md
-          gh release create "$GITHUB_REF_NAME" "ThetaBookHatch-$V.apk" --title "Theta Book Hatch $V" --notes-file notes.md --verify-tag
+          if [[ "$GITHUB_REF_TYPE" == tag ]]; then gh release create "v$V" "ThetaBookHatch-$V.apk" --title "Theta Book Hatch $V" --notes-file notes.md --verify-tag
+          else gh release create "v$V" "ThetaBookHatch-$V.apk" --title "Theta Book Hatch $V" --notes-file notes.md --target "$GITHUB_SHA"; fi
+      - name: Remove temporary branch
+        if: always() && github.ref_type == 'branch'
+        run: git push origin --delete "${GITHUB_REF_NAME}" || true
