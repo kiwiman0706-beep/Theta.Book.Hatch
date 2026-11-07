@@ -85,6 +85,13 @@ public final class MainActivity extends Activity {
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private volatile boolean webModalOpen = false;
     private static final int CREATE_DOCUMENT_REQUEST = 8124;
+    // Theta Hatch migration (Theta.Hatch.Series docs/MIGRATION.md §3): Home opens the bridge version's export and the new app's import.
+    static final String ACTION_EXPORT = "app.thetahatch.action.EXPORT", ACTION_IMPORT = "app.thetahatch.action.IMPORT", ACTION_UPDATE = "app.thetahatch.action.UPDATE";
+    private static final int MIGRATION_SAVE = 8131, MIGRATION_OPEN = 8132;
+    private String pendingMigration;      // JSON for window.DSMigrate.start once the page is ready
+    private boolean migrationForResult;   // started by a hub with startActivityForResult: answer with setResult and finish
+    private boolean exportToHub;          // the caller is a Theta hub: hand it the zip
+    private File pendingMigrationFile;
     private String pendingExportName;
     private String pendingWidgetBookId;
     private boolean pageReady;
@@ -131,6 +138,7 @@ public final class MainActivity extends Activity {
         webView.addJavascriptInterface(new NativeBridge(), "DSBooksNative");
         pendingWidgetBookId = getIntent().getStringExtra("dsbooks.widget.book_id");
         pendingView = viewUri(getIntent());
+        takeMigration(getIntent(), true);
         webView.setWebViewClient(new WebViewClient() {
             @Override public boolean onRenderProcessGone(WebView view, android.webkit.RenderProcessGoneDetail detail) {
                 pageReady=false;webView=null;shell.removeView(view);view.destroy();
@@ -140,6 +148,7 @@ public final class MainActivity extends Activity {
                 pageReady = true;
                 dispatchWidgetBook();
                 dispatchView();
+                dispatchMigration();
                 deliverDownloadState();
                 deliverPlaybackState();
             }
@@ -209,7 +218,37 @@ public final class MainActivity extends Activity {
         dispatchWidgetBook();
         pendingView = viewUri(intent);
         dispatchView();
+        takeMigration(intent, false);
+        dispatchMigration();
     }
+
+    /* ---------- Theta Hatch migration ---------- */
+    private void takeMigration(Intent intent, boolean created) {
+        String action = intent == null ? null : intent.getAction();
+        if (ACTION_EXPORT.equals(action)) {
+            // getCallingPackage() is only known when a hub started us for a result.
+            migrationForResult = created && getCallingActivity() != null;
+            exportToHub = migrationForResult && Migration.isHub(getCallingPackage());
+            try { pendingMigration = new JSONObject().put("mode", "export").put("hub", exportToHub).toString(); } catch (Exception ignored) {}
+        } else if (ACTION_IMPORT.equals(action) && intent.getData() != null) {
+            migrationForResult = created && getCallingActivity() != null;
+            final Uri uri = intent.getData();
+            new Thread(() -> deliverImport(uri), "DSBooks-migration-read").start();
+        }
+    }
+    private void deliverImport(Uri uri) {
+        String json;
+        try { json = new JSONObject().put("mode", "import").put("payload", Migration.read(this, uri)).toString(); }
+        catch (Exception e) { try { json = new JSONObject().put("mode", "import").put("error", e.getMessage() == null ? "読み込めませんでした" : e.getMessage()).toString(); } catch (Exception x) { return; } }
+        final String j = json;
+        mainHandler.post(() -> { pendingMigration = j; dispatchMigration(); });
+    }
+    private void dispatchMigration() {
+        if (!pageReady || webView == null || pendingMigration == null) return;
+        String j = pendingMigration; pendingMigration = null;
+        evaluate("(function w(){if(window.DSMigrate&&window.DSBoot&&DSBoot.readyMs!==undefined)DSMigrate.start(" + j + ");else setTimeout(w,80);})()");
+    }
+    private void finishMigration(int code, Intent data) { setResult(code, data); finish(); }
 
     private Uri pendingView;
     private static Uri viewUri(Intent intent) { return intent != null && Intent.ACTION_VIEW.equals(intent.getAction()) ? intent.getData() : null; }
@@ -252,6 +291,23 @@ public final class MainActivity extends Activity {
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(exchange != null && exchange.result(requestCode, resultCode, data)) return;
+        if (requestCode == MIGRATION_SAVE) {
+            final File zip = pendingMigrationFile; pendingMigrationFile = null;
+            if (resultCode != RESULT_OK || data == null || data.getData() == null || zip == null) return;
+            final Uri dest = data.getData();
+            new Thread(() -> {
+                boolean ok = false;
+                try (java.io.InputStream in = new java.io.FileInputStream(zip); java.io.OutputStream out = getContentResolver().openOutputStream(dest, "wt")) {
+                    byte[] b = new byte[65536]; int n; while ((n = in.read(b)) > 0) out.write(b, 0, n); ok = true;
+                } catch (Exception ignored) {}
+                evaluate("window.DSMigrate&&DSMigrate.saved(" + ok + ")");
+            }, "DSBooks-migration-save").start();
+            return;
+        }
+        if (requestCode == MIGRATION_OPEN) {
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) { final Uri u = data.getData(); new Thread(() -> deliverImport(u), "DSBooks-migration-read").start(); }
+            return;
+        }
         if (requestCode != CREATE_DOCUMENT_REQUEST) return;
         final String localName = pendingExportName;
         pendingExportName = null;
@@ -464,6 +520,55 @@ public final class MainActivity extends Activity {
             }
         }
 
+        /** Migration: the zip for the new app. A hub gets it as the result; otherwise the user picks where to save it. */
+        @JavascriptInterface public void migrationExport(String storageJson) {
+            new Thread(() -> {
+                try {
+                    JSONObject nas = new JSONObject();
+                    String c = loadCredentials();
+                    if (c != null) { JSONObject o = new JSONObject(c); nas.put("base", o.optString("base")).put("account", o.optString("account")); } // never password or SID
+                    String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+                    final File zip = Migration.write(MainActivity.this, getPackageName(), version, storageJson, nas.toString());
+                    final String sha = Migration.sha256(java.nio.file.Files.readAllBytes(zip.toPath()));
+                    mainHandler.post(() -> {
+                        if (exportToHub) {
+                            Uri uri = Uri.parse("content://" + getPackageName() + ".files/migration/" + zip.getName());
+                            Intent out = new Intent().setDataAndType(uri, "application/zip").addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                .putExtra("packageName", getPackageName()).putExtra("format", Migration.FORMAT).putExtra("versionName", version).putExtra("sha256", sha);
+                            out.setClipData(ClipData.newRawUri("theta-export", uri));
+                            finishMigration(RESULT_OK, out);
+                        } else {
+                            pendingMigrationFile = zip;
+                            try { startActivityForResult(new Intent(Intent.ACTION_CREATE_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("application/zip").putExtra(Intent.EXTRA_TITLE, "DSBooks-引っ越し.zip"), MIGRATION_SAVE); }
+                            catch (Exception e) { evaluate("window.DSMigrate&&DSMigrate.saved(false)"); }
+                        }
+                    });
+                } catch (Exception e) {
+                    final String m = e.getMessage() == null ? "書き出せませんでした" : e.getMessage();
+                    evaluate("window.DSMigrate&&DSMigrate.failed(" + JSONObject.quote(m) + ")");
+                }
+            }, "DSBooks-migration-write").start();
+        }
+        @JavascriptInterface public void migrationChooseImport() {
+            mainHandler.post(() -> { try { startActivityForResult(new Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("*/*"), MIGRATION_OPEN); } catch (Exception ignored) {} });
+        }
+        /** The page finished (or gave up) an import; answer the hub that asked for it. */
+        @JavascriptInterface public void migrationImportDone(boolean ok, String error) {
+            mainHandler.post(() -> { if (migrationForResult) finishMigration(ok ? RESULT_OK : RESULT_CANCELED, new Intent().putExtra("packageName", getPackageName()).putExtra("error", error == null ? "" : error)); });
+        }
+        @JavascriptInterface public void migrationCancel() { mainHandler.post(() -> { if (migrationForResult) finishMigration(RESULT_CANCELED, null); }); }
+        @JavascriptInterface public String appPackageName() { return getPackageName(); }
+        /** The user's own Shuei Times is only in local builds; public (CI) builds leave it out, so the menu hides it. */
+        @JavascriptInterface public boolean hasBundledFont() { try (java.io.InputStream i = getAssets().open("fonts/ShueiTimes.ttf")) { return true; } catch (Exception e) { return false; } }
+        /** spec §6.1: updates are installed by the hub (Home / KidsHome); without one, the Releases page opens. */
+        @JavascriptInterface public void requestUpdate() {
+            mainHandler.post(() -> {
+                for (String hub : new String[]{"app.thetahatch.home", "app.thetahatch.kidshome"}) {
+                    try { startActivity(new Intent(ACTION_UPDATE).setPackage(hub).putExtra("packageName", getPackageName()).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); return; } catch (Exception ignored) {}
+                }
+                try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kiwiman0706-beep/Theta.Book.Hatch/releases/latest")).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); } catch (Exception ignored) {}
+            });
+        }
         @JavascriptInterface public boolean hasBook(String name) {
             if (JisuiFiles.isMember(name)) { try { return JisuiFiles.has(localFile(JisuiFiles.container(name)), JisuiFiles.entry(name)); } catch (Exception e) { return false; } }
             return BookStorage.exists(MainActivity.this,name);

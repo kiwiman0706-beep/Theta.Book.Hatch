@@ -4,6 +4,10 @@
 
 **Claude版 1.0.0（versionCode 75、`jp.shinwakai.dsbooks.claude`）**。ChatGPT版0.8.6（`jp.shinwakai.dsbooks.preview`）とは別署名・別アプリとして並行インストールする。実機チェックを別紙に分けて開発を進めています。
 
+Theta Book Hatch 1.1.0（Theta Hatch シリーズ）
+- アプリ ID `app.thetahatch.book`、シリーズ共通の鍵、CI でビルド。DSBooks 1.0.1（橋渡し版）から Home の「移行」でデータを引き継ぐ。更新は Home／KidsHome が行う。
+- このあと：スキン（6 つ、スキンの時は木目もやめる）、共通設定をハブから受け取る、読書の記録を Theta Vault へ、デスクトップ版も 1.1.0 にそろえて同じ Release に、Theta.Jisui.Viewer を別リポジトリへ。計画は Theta.Hatch.Series の `progress/book.md`。
+
 1.0.0 / desktop 0.2.5 / Theta.Jisui.Viewer 0.2.5：全画面の読書と、見開き・縦スクロール・幅に合わせる
 - 読書中はページだけを表示し、操作ボタンはページの中央をタップした時だけ重ねて表示（数秒で隠れる）。設定 → 表示と読書 で常時表示にも戻せる。
 - PDF とコミック：1ページ／見開き（右開き・左開き、表紙を単独に）／縦スクロール、ページ全体／幅に合わせる、端のタップでページ送り。本ごとに覚え、他の本の初期設定にもできる。

@@ -149,6 +149,7 @@ def main() -> int:
     window_ref = {}
     bridge = Bridge(window_provider=lambda: window_ref.get("w"))
     bridge.viewer = VIEWER
+    bridge.assets = ASSETS
     server, _token = make_server(bridge, ASSETS, WEB, PORT, APP_ID)
     for f in files:
         bridge.open_file(f)

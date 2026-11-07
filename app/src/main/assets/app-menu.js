@@ -27,10 +27,10 @@ window.DSMenu=(()=>{
  if(window.DSJisui?.viewer){items.splice(1,1);items[0][1]=items[0][1].filter(x=>!['downloaded','downloads'].includes(x[0]));items[1][1]=items[1][1].map(x=>x[0]==='import'?['import','📂','ファイルを開く（.jisui）']:x);}
  // PC/Mac: the cover-cache tool and the data folder live in the same app.
  let desktop=false;try{desktop=!!native().isDesktop?.();}catch(e){}
- if(desktop){const pc=[['libraryTools','▤','ライブラリ管理（表紙キャッシュ作成）'],['dataFolder','▣','データフォルダを開く']].filter(x=>!(window.DSJisui?.viewer&&x[0]==='libraryTools'));let bg=false;try{bg=!!native().isBackground?.();}catch(e){}if(bg)pc.push(['quitApp','⏻','DSBooksを終了']);items.splice(2,0,['PC',pc]);}
+ if(desktop){const pc=[['libraryTools','▤','ライブラリ管理（表紙キャッシュ作成）'],['dataFolder','▣','データフォルダを開く']].filter(x=>!(window.DSJisui?.viewer&&x[0]==='libraryTools'));let bg=false;try{bg=!!native().isBackground?.();}catch(e){}if(bg)pc.push(['quitApp','⏻','終了する']);items.splice(2,0,['PC',pc]);}
  function render(){
   const state=$('nasState')?.textContent?.trim()||'',version=$('versionLabel')?.textContent?.trim()||'';
-  drawer.innerHTML='<div class="app-menu-backdrop" data-close></div><nav class="app-menu-panel"><div class="app-menu-head"><strong>'+(window.DSJisui?.viewer?'Theta.Jisui.Viewer':'DSBooks')+'</strong><small>'+escapeHtml(state)+'</small><button type="button" class="app-menu-close" data-close aria-label="閉じる">×</button></div>'
+  drawer.innerHTML='<div class="app-menu-backdrop" data-close></div><nav class="app-menu-panel"><div class="app-menu-head"><strong>'+(window.DSJisui?.viewer?'Theta.Jisui.Viewer':'Theta Book Hatch')+'</strong><small>'+escapeHtml(state)+'</small><button type="button" class="app-menu-close" data-close aria-label="閉じる">×</button></div>'
    +items.map(([title,list])=>'<h3>'+title+'</h3><ul>'+list.map(([k,i,t])=>`<li><button type="button" data-menu="${k}"><span aria-hidden="true">${i}</span>${t}</button></li>`).join('')+'</ul>').join('')
    +'<p class="app-menu-version">'+escapeHtml(version)+'</p></nav>';
  }

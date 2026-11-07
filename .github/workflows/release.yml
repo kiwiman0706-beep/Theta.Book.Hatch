@@ -1,0 +1,64 @@
+name: Release Theta Book Hatch (Android)
+# Theta Hatch series release (Theta.Hatch.Series spec §6, secrets/README.md): push a tag v<version> (e.g. v1.1.0).
+# Builds app.thetahatch.book with the series key from the four Secrets (the alias comes from ANDROID_KEY_ALIAS),
+# checks package, version, signer (series SHA-256) and that the user's own font is not inside, then publishes a normal
+# (not pre-) Release v<version> with exactly one APK: ThetaBookHatch-<version>.apk. The hub (Home / KidsHome) updates
+# from releases/latest and checks the same digest and signer.
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+permissions:
+  contents: write
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    env:
+      SERIES_CERT_SHA256: f47740d8549bc1c37feb00b18780d80b52758b60252ba0d2217d83ab3f012a23
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Version
+        id: v
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          grep -q "android:versionName=\"$VERSION\"" app/src/main/AndroidManifest.xml || { echo "AndroidManifest versionName is not $VERSION"; exit 1; }
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      - name: Android SDK (build-tools 35, platform 35)
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;35.0.0" "platforms;android-35" > /dev/null
+      - name: No bundled user font
+        run: test ! -e app/src/main/assets/fonts/ShueiTimes.ttf
+      - name: Build and sign with the series key
+        env:
+          ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          DSBOOKS_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          DSBOOKS_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          DSBOOKS_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          set -euo pipefail
+          [ -n "$ANDROID_KEYSTORE_B64" ] || { echo "Secret ANDROID_KEYSTORE_B64 is missing"; exit 1; }
+          export DSBOOKS_KEYSTORE="$RUNNER_TEMP/series.keystore"
+          printf '%s' "$ANDROID_KEYSTORE_B64" | base64 -d > "$DSBOOKS_KEYSTORE"
+          bash build.sh > build.log 2>&1 || { tail -40 build.log; exit 1; }
+          rm -f "$DSBOOKS_KEYSTORE"
+          test -f "ThetaBookHatch-${{ steps.v.outputs.version }}.apk"
+      - name: Verify APK
+        run: |
+          set -euo pipefail
+          A="ThetaBookHatch-${{ steps.v.outputs.version }}.apk"; BT="$ANDROID_HOME/build-tools/35.0.0"
+          python3 -m zipfile -t "$A" > /dev/null
+          "$BT/aapt" dump badging "$A" | grep -q "^package: name='app.thetahatch.book' .*versionName='${{ steps.v.outputs.version }}'" || { "$BT/aapt" dump badging "$A" | head -1; exit 1; }
+          ! "$BT/aapt" dump badging "$A" | grep -q "REQUEST_INSTALL_PACKAGES"
+          "$BT/apksigner" verify --print-certs "$A" | grep -i "certificate SHA-256 digest: $SERIES_CERT_SHA256" || { echo "not signed with the series key"; "$BT/apksigner" verify --print-certs "$A"; exit 1; }
+          ! unzip -l "$A" | grep -q ShueiTimes
+          sha256sum "$A" | tee SHA256SUMS.txt
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          V="${{ steps.v.outputs.version }}"
+          { awk -v v="$V" '$0 ~ "^## "v"( |$)"{f=1;next} /^## /{if(f)exit} f' RELEASE_NOTES.md; echo; echo '```'; cat SHA256SUMS.txt; echo '```'; } > notes.md
+          gh release create "$GITHUB_REF_NAME" "ThetaBookHatch-$V.apk" --title "Theta Book Hatch $V" --notes-file notes.md --verify-tag

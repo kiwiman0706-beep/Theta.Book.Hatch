@@ -43,7 +43,10 @@ public final class LocalBookProvider extends ContentProvider {
         return ParcelFileDescriptor.open(f, ParcelFileDescriptor.MODE_READ_ONLY);
     }
     private File resolve(Uri uri) {
-        try { return BookStorage.resolve(getContext(),uri.getLastPathSegment()); }
+        // Theta Hatch migration: the export zip lives in the cache, only names "migration-*.zip" (Migration.isExportName).
+        String last=uri.getLastPathSegment();
+        if(Migration.isExportName(last))return new File(Migration.dir(getContext()),last);
+        try { return BookStorage.resolve(getContext(),last); }
         catch(Exception e) { return new File(getContext().getFilesDir(),"invalid-book-reference"); }
     }
     @Override public Uri insert(Uri uri, ContentValues values) { return null; }

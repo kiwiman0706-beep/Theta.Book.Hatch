@@ -97,12 +97,15 @@ window.DSJisui=(()=>{
  window.dsOpenPending=()=>{if(reader)return;let list=[];try{list=JSON.parse(N().takePendingOpen?.()||'[]');}catch(e){}adopt(list,true);};
  ready(()=>window.dsOpenPending());
 
+ /* ---------- Shuei Times only where it is bundled: never in the viewer (shipped with FullOCR) or public builds ---------- */
+ if(viewer||(()=>{try{return N().hasBundledFont?.()===false;}catch(e){return false;}})()){
+  const F=DSFeatures,fontOptions=F.fontOptions;F.fontOptions=v=>fontOptions(v==='shuei'?'serif':v).replace(/<option value="shuei"[^>]*>[^<]*<\/option>/,'');
+  if(F.prefs().fontFace==='shuei')F.savePrefs({...F.prefs(),fontFace:'serif'});
+ }
  /* ---------- Theta.Jisui.Viewer: the viewer without NAS ---------- */
  if(viewer){
   document.documentElement.classList.add('viewer-mode');document.title='Theta.Jisui.Viewer';
-  // The viewer is distributed with FullOCR, so the user's own Shuei Times font is never bundled: offer only system fonts.
-  const F=DSFeatures,fontOptions=F.fontOptions;F.fontOptions=v=>fontOptions(v==='shuei'?'serif':v).replace(/<option value="shuei"[^>]*>[^<]*<\/option>/,'');
-  if(F.prefs().fontFace==='shuei')F.savePrefs({...F.prefs(),fontFace:'serif'});
+
   ready(()=>{
    if(!remoteMode){books=books.filter(b=>b.localName&&typeof b.id!=='number');remoteMode=true;saveCatalog();render();}
    const hero=document.querySelector('.hero');if(hero&&!$('openJisui')){hero.querySelector('h1')&&(hero.querySelector('h1').textContent='自炊本');const p=hero.querySelector('p');if(p)p.textContent='FullOCR で作った .jisui を開いて読む・聞く・調べる。';

@@ -10,7 +10,7 @@ from pathlib import Path
 root, out, app_id, version = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3], sys.argv[4]
 src = (root / "app/src/main/AndroidManifest.xml").read_text("utf-8")
 m = src
-m = m.replace('android:label="DSBooks Claude"', 'android:label="Theta.Jisui.Viewer"', 1)
+m = re.sub(r'(<application\b[^>]*?android:label=")[^"]*(")', lambda x: x.group(1) + "Theta.Jisui.Viewer" + x.group(2), m, count=1)
 m = re.sub(r'android:authorities="[^"]+\.files"', 'android:authorities="%s.files"' % app_id, m, count=1)
 m = re.sub(r'android:versionName="[^"]+"', 'android:versionName="%s"' % version, m, count=1)
 # Home-screen widgets and Android Auto belong to the NAS library app.

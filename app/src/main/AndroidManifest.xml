@@ -1,5 +1,8 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="jp.shinwakai.dsbooks.preview" android:versionCode="75" android:versionName="1.0.0-claude">
-  <queries><package android:name="com.google.android.gms" /><package android:name="com.google.android.gms.policy_cast_dynamite" /><package android:name="org.videolan.vlc" /><package android:name="com.tailscale.ipn" /><intent><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent><intent><action android:name="android.intent.action.VIEW" /><data android:scheme="market" /></intent></queries>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="jp.shinwakai.dsbooks.preview" android:versionCode="77" android:versionName="1.1.0">
+  <queries>
+    <!-- Theta Hatch hubs: updates (app.thetahatch.action.UPDATE) and, later, shared settings. -->
+    <package android:name="app.thetahatch.home" />
+    <package android:name="app.thetahatch.kidshome" /><package android:name="com.google.android.gms" /><package android:name="com.google.android.gms.policy_cast_dynamite" /><package android:name="org.videolan.vlc" /><package android:name="com.tailscale.ipn" /><intent><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent><intent><action android:name="android.intent.action.VIEW" /><data android:scheme="market" /></intent></queries>
   <uses-feature android:name="android.software.leanback" android:required="false" />
   <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
   <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="34" />
@@ -12,12 +15,24 @@
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
   <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-  <application android:extractNativeLibs="true" android:allowBackup="false" android:label="DSBooks Claude" android:banner="@drawable/tv_banner" android:icon="@drawable/ic_dsbooks" android:theme="@android:style/Theme.Material.Light.NoActionBar" android:supportsRtl="true" android:usesCleartextTraffic="true">
+  <application android:extractNativeLibs="true" android:allowBackup="false" android:label="Theta Book Hatch" android:banner="@drawable/tv_banner" android:icon="@drawable/ic_dsbooks" android:theme="@android:style/Theme.Material.Light.NoActionBar" android:supportsRtl="true" android:usesCleartextTraffic="true">
     <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop" android:screenOrientation="unspecified">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
         <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+      </intent-filter>
+      <!-- Theta Hatch migration (Theta.Hatch.Series docs/MIGRATION.md §3): Home opens the export of the bridge version
+           and the import of the new app. MainActivity checks the caller and asks the user before writing anything. -->
+      <intent-filter>
+        <action android:name="app.thetahatch.action.EXPORT" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+      <intent-filter>
+        <action android:name="app.thetahatch.action.IMPORT" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:scheme="content" />
+        <data android:mimeType="*/*" />
       </intent-filter>
       <!-- jisui-1: open .jisui from a file manager ("open with"). Content URIs rarely show the extension, so the
            ZIP / unknown types are offered too; the page checks the file is really a .jisui. -->
@@ -38,13 +53,13 @@
       </intent-filter>
       <meta-data android:name="android.appwidget.provider" android:resource="@xml/reading_widget_info" />
     </receiver>
-    <receiver android:name=".RichReadingWidgetProvider" android:label="DSBooks 表紙つき本棚" android:exported="true"><intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter><meta-data android:name="android.appwidget.provider" android:resource="@xml/reading_widget_rich_info" /></receiver>
+    <receiver android:name=".RichReadingWidgetProvider" android:label="Theta Book Hatch 表紙つき本棚" android:exported="true"><intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter><meta-data android:name="android.appwidget.provider" android:resource="@xml/reading_widget_rich_info" /></receiver>
     <service android:name=".ReadingWidgetService" android:exported="false" android:permission="android.permission.BIND_REMOTEVIEWS" />
     <service android:name=".BookDownloadService" android:exported="false" android:foregroundServiceType="dataSync" />
     <meta-data android:name="com.google.android.gms.car.application" android:resource="@xml/automotive_app_desc" />
     <service android:name=".MediaPlaybackService" android:exported="false" android:foregroundServiceType="mediaPlayback" />
     <service android:name=".CarBrowserService" android:exported="true"><intent-filter><action android:name="android.media.browse.MediaBrowserService" /></intent-filter></service>
-    <provider android:name=".LocalBookProvider" android:authorities="jp.shinwakai.dsbooks.claude.files" android:exported="false" android:grantUriPermissions="true" />
+    <provider android:name=".LocalBookProvider" android:authorities="app.thetahatch.book.files" android:exported="false" android:grantUriPermissions="true" />
     <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
     <meta-data android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME" android:value="jp.shinwakai.dsbooks.preview.DSCastOptions" />
     <service android:name=".CastRelayService" android:exported="false" android:foregroundServiceType="mediaPlayback" />

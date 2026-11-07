@@ -3,7 +3,7 @@
 Theta.Jisui.Viewer は、DSBooks（Theta.Book.Hatch）の PC/Mac 版を NAS 機能なしで動かすビューアです。`.jisui`（jisui-1）をダブルクリックで開けます。秀英体フォントは入っていません（同梱しても配布上の問題がありません）。
 
 ## 取得
-GitHub Release `jisui-viewer-v<版>`（リポジトリ kiwiman0706-beep/dsbooks、非公開）の成果物は次のとおりです。
+GitHub Release `jisui-viewer-v<版>`（リポジトリ kiwiman0706-beep/Theta.Book.Hatch、非公開）の成果物は次のとおりです。
 
 - Windows：`ThetaJisuiViewer-Setup-<版>.exe`（`.jisui` を関連付けるインストーラー）、`ThetaJisuiViewer-<版>-windows-portable.zip`
 - macOS（Apple Silicon）：`ThetaJisuiViewer-<版>-macOS-arm64.dmg` と `.zip`。中身は `Theta.Jisui.Viewer.app` で、`com.theta.jisui` を開ける

@@ -835,6 +835,11 @@ class Bridge:
 
     def n_isViewer(self): return bool(self.viewer)
 
+    def n_hasBundledFont(self):
+        """The user's own Shuei Times is only in private builds (never in the viewer or public releases)."""
+        assets = getattr(self, "assets", None)
+        return bool(assets and not self.viewer and (Path(assets) / "fonts" / "ShueiTimes.ttf").is_file())
+
     def _import(self, source: Path) -> dict:
         ext = source.suffix.lower().lstrip(".")
         if ext not in SUPPORTED_IMPORT:
