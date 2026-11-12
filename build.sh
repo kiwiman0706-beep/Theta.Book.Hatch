@@ -34,6 +34,14 @@ import re, sys
 src, out, app_id, label, vname, vcode = sys.argv[1:7]
 m = open(src, encoding="utf-8").read()
 m = re.sub(r'android:authorities="[^"]+\.files"', 'android:authorities="%s.files"' % app_id, m, count=1)
+# Theta Hatch series parts (app.thetahatch.permission.SHARE is a signature permission defined by the series-key apps):
+# a build on another key must not declare it, or installing next to the series apps fails, so only app.thetahatch.*
+# keeps them.
+if app_id.startswith("app.thetahatch."):
+    m = re.sub(r'android:authorities="[^"]+\.theta"', 'android:authorities="%s.theta"' % app_id, m, count=1)
+else:
+    m = re.sub(r'\s*<!-- theta-series.*?<!-- /theta-series -->', "", m, flags=re.S)
+    assert "thetahatch.permission" not in m and "SeriesProvider" not in m
 m = re.sub(r'(<application\b[^>]*?android:label=")[^"]*(")', lambda x: x.group(1) + label + x.group(2), m, count=1)
 if vname: m = re.sub(r'android:versionName="[^"]*"', 'android:versionName="%s"' % vname, m, count=1)
 if vcode: m = re.sub(r'android:versionCode="[^"]*"', 'android:versionCode="%s"' % vcode, m, count=1)

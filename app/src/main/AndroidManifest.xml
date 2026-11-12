@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="jp.shinwakai.dsbooks.preview" android:versionCode="77" android:versionName="1.1.0">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="jp.shinwakai.dsbooks.preview" android:versionCode="78" android:versionName="1.1.1">
   <queries>
     <!-- Theta Hatch hubs: updates (app.thetahatch.action.UPDATE) and, later, shared settings. -->
     <package android:name="app.thetahatch.home" />
@@ -6,6 +6,10 @@
   <uses-feature android:name="android.software.leanback" android:required="false" />
   <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
   <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="34" />
+  <!-- theta-series: only in the series-key build (app.thetahatch.*); build.sh drops it elsewhere -->
+  <permission android:name="app.thetahatch.permission.SHARE" android:protectionLevel="signature" />
+  <uses-permission android:name="app.thetahatch.permission.SHARE" />
+  <!-- /theta-series -->
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
@@ -60,6 +64,9 @@
     <service android:name=".MediaPlaybackService" android:exported="false" android:foregroundServiceType="mediaPlayback" />
     <service android:name=".CarBrowserService" android:exported="true"><intent-filter><action android:name="android.media.browse.MediaBrowserService" /></intent-filter></service>
     <provider android:name=".LocalBookProvider" android:authorities="app.thetahatch.book.files" android:exported="false" android:grantUriPermissions="true" />
+    <!-- theta-series -->
+    <provider android:name=".SeriesProvider" android:authorities="app.thetahatch.book.theta" android:exported="true" android:permission="app.thetahatch.permission.SHARE" />
+    <!-- /theta-series -->
     <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
     <meta-data android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME" android:value="jp.shinwakai.dsbooks.preview.DSCastOptions" />
     <service android:name=".CastRelayService" android:exported="false" android:foregroundServiceType="mediaPlayback" />

@@ -444,6 +444,11 @@ public final class MainActivity extends Activity {
             prepareWidgetCovers(json);
         }
 
+        /** Theta Hatch /shelf (SeriesProvider): only the series-key build has the provider. */
+        @JavascriptInterface public void updateShelf(String json) {
+            if (getPackageName().startsWith("app.thetahatch.")) SeriesProvider.publish(MainActivity.this, json);
+        }
+
         @JavascriptInterface public void shareBook(String localName, String mime) {
             mainHandler.post(() -> {
                 try {

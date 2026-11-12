@@ -1,5 +1,11 @@
 # Theta Book Hatch リリースノート（Android。`release.yml` が `## <版>` の節を Release の本文にする）
 
+## 1.1.1
+
+- **Theta Home Hatch の「本」に表紙が並びます**：読みかけ・お気に入り・最近開いた本（あわせて 30 冊まで）の表紙・書名・著者・何ページまでを Home に渡し、押すとその本の続きから開きます（Theta.Hatch.Series の「アプリの棚」）。Home の「＋」で作る Book のタブにも並びます。
+- 渡すのは表紙・書名・著者・巻・ページ数だけです（本文・メモ・NAS の接続先やアカウントは渡しません）。シリーズ共通の鍵のアプリだけが読めます。
+- 設定 →「ウィジェット：Theta Home の本棚」で、出す区画（読みかけ・お気に入り・最近）を選べます。
+
 ## 1.1.0
 
 **Theta Book Hatch**（旧 DSBooks）の最初の版です。DSBooks Claude とは別のアプリ（`app.thetahatch.book`、Theta Hatch シリーズ共通の鍵）なので、上書きではなく新しく入ります。
