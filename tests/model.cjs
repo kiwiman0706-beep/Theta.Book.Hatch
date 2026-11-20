@@ -14,6 +14,9 @@ console.log('PASS: newest progress, path matching, notes union/deletion, malform
 const W=require('../app/src/main/assets/work-model.js');
 assert.equal(W.groups([{id:'1',path:'/A/本.epub'},{id:'2',path:'/A/本.pdf'},{id:'3',path:'/B/本.pdf'}]).size,2);
 assert.equal(W.groups([{id:'1',path:'/A/本.epub',separateWork:true},{id:'2',path:'/A/本.pdf'}]).size,2);
+// FullOCR (bookhatch preset) writes X.jisui beside the original X.pdf: one work (PDF + JISUI); the PDF stays the shelf face (it has the cover).
+assert.equal(W.groups([{id:'1',path:'/N/医学書/心電図.pdf',type:'PDF'},{id:'2',path:'/N/医学書/心電図.jisui',type:'Jisui'},{id:'3',path:'/N/医学書/別の本.jisui',type:'Jisui'}]).size,2);
+assert.deepEqual(W.collapse([{id:'2',path:'/N/医学書/心電図.jisui',type:'Jisui'},{id:'1',path:'/N/医学書/心電図.pdf',type:'PDF'}]).map(b=>b.id),['1']);
 const notes=M.mergeWorkNotes([{id:'x',note:'old',updatedAt:10}],[{id:'x',note:'edited',updatedAt:20},{id:'y',note:'summary',updatedAt:20}]);
 assert.equal(notes.length,2);assert.equal(notes[0].note,'edited');assert.equal(M.mergeWorkNotes(notes,[{id:'x',deleted:true,updatedAt:30}])[0].deleted,true);
 const exported=M.snapshot([{bookId:'test',workNotes:notes}]);const dest={bookId:'test'};M.mergeReading([dest],exported);assert.equal(dest.workNotes[1].note,'summary');console.log('PASS: grouping boundaries, split, book-note editing/deletion/export/import');
