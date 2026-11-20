@@ -236,7 +236,7 @@ async function scanLibrary(paths){
      for(const entry of entries){
       const isDir=entry.isdir===true||entry.isdir===1||entry.isdir==='true';
       if(isDir){if(entry.path)queue.push(String(entry.path));continue;}
-      const name=String(entry.name||entry.path||'');if(/\.(pdf|epub|md|m4a|m4b|cbz|cbr)$/i.test(name))files.push(entry);
+      const name=String(entry.name||entry.path||'');if(/\.(pdf|epub|md|m4a|m4b|cbz|cbr|jisui)$/i.test(name))files.push(entry);
      }
      offset+=entries.length;
      if(out)out.textContent=`指定フォルダ内を確認中… ${folders}フォルダ・${itemsSeen}項目・対象${files.length}件`;

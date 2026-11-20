@@ -28,9 +28,11 @@ window.DSMdAnchors=(()=>{
   text=text.replace(/%%[\s\S]*?%%/g,s=>(s.match(/⟦FO:\d+⟧/g)||[]).join('\n\n'));
   text=text.replace(/<!--[\s\S]*?-->/g,'');
   // Display math `$$…$$` (FullOCR's math preset writes LaTeX): shown verbatim as a formula block, untouched by the inline rules.
-  const maths=[];text=text.replace(/^\$\$[ \t]*\r?\n([\s\S]*?)\r?\n\$\$[ \t]*$/gm,(_,tex)=>'⟦MA:'+(maths.push(tex.trim())-1)+'⟧');
+  // Page markers inside a formula or a callout move just after it, so the page stays known and no token shows as text.
+  const FO=/⟦FO:\d+⟧/g,after=s=>{const t=s.match(FO);return t?'\n\n'+t.join('\n\n'):'';},noFO=s=>s.replace(/^[ \t]*(?:⟦FO:\d+⟧[ \t]*)+(?:\r?\n|$)/gm,'').replace(FO,'');
+  const maths=[];text=text.replace(/^\$\$[ \t]*\r?\n([\s\S]*?)\r?\n\$\$[ \t]*$/gm,(_,tex)=>'⟦MA:'+(maths.push(noFO(tex).trim())-1)+'⟧'+after(tex));
   // Obsidian callouts `> [!info]- 題` (FullOCR puts a table's OCR text in a folded one under the table image): a <details> box, closed when `-`.
-  const callouts=[];text=text.replace(/^>[ \t]*\[!([\w-]+)\]([+-]?)[ \t]*(.*)(?:\r?\n|$)((?:>.*(?:\r?\n|$))*)/gm,(_,kind,fold,title,body)=>'⟦CO:'+(callouts.push({kind:kind.toLowerCase(),fold,title:title.trim()||kind,body:body.split(/\r?\n/).map(l=>l.replace(/^>[ \t]?/,'')).join('\n').trim()})-1)+'⟧\n\n');
+  const callouts=[];text=text.replace(/^>[ \t]*\[!([\w-]+)\]([+-]?)[ \t]*(.*)(?:\r?\n|$)((?:>.*(?:\r?\n|$))*)/gm,(_,kind,fold,title,body)=>'⟦CO:'+(callouts.push({kind:kind.toLowerCase(),fold,title:title.trim()||kind,body:noFO(body.split(/\r?\n/).map(l=>l.replace(/^>[ \t]?/,'')).join('\n')).trim()})-1)+'⟧'+after(title+body)+'\n\n');
   // Pictures: kept as tokens with their vault path; a container that can read them (jisui-1) shows them, others show the name.
   const images=[];const img=(src,alt)=>'⟦IM:'+(images.push({src:src.trim(),alt:(alt||src).trim()})-1)+'⟧';
   text=text.replace(/!\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g,(_,t,alt)=>img(t,alt&&!/^\d+(x\d+)?$/.test(alt)?alt:t.split('/').pop()));
