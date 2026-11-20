@@ -142,6 +142,12 @@ body.app-menu-open{overflow:hidden}
 .fo-anchor{display:block;height:0;overflow:hidden}
 .tool-btn.md-original,.tool-btn.md-back{flex:0 0 auto;font-size:12px;font-weight:700;color:#1f3a2c;background:#e7efe5;border:1px solid #c9d8c6;border-radius:999px;padding:5px 10px;white-space:nowrap;max-width:46vw;overflow:hidden;text-overflow:ellipsis}
 .md-wikilink{color:#2d6a4f;text-decoration:underline;text-underline-offset:2px}
+/* FullOCR: folded callout (a table's OCR text under its image) and LaTeX formula blocks. */
+.md-callout{margin:.6em 0;border:1px solid #c9d8c6;border-left:4px solid #6c9a7f;border-radius:6px;background:#f4f8f2;font-size:.92em}
+.md-callout>summary{cursor:pointer;padding:6px 10px;font-weight:700;color:#1f3a2c;list-style-position:inside}
+.md-callout-body{padding:4px 12px 10px;overflow-x:auto;white-space:normal;word-break:break-word}
+.md-math{margin:.6em 0;padding:8px 10px;background:#f6f6f2;border-radius:6px;overflow-x:auto}
+.md-math code{white-space:pre-wrap;word-break:break-all;font-size:.88em}
 .reader-top:has(.md-original) #mdFontFace{min-width:0;max-width:30vw}
 
 /* 0.9.6 Theta digest view: tabs, cards with page/heading chips, mind-map tree, Q&A flash cards. */

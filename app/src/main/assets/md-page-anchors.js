@@ -3,7 +3,8 @@
    declares `page_anchors: fullocr-1` / `pdf_file` / `page_offset` in 00_index.md's front matter.
    The Markdown reader hides the markers, shows the current printed page, and "原文" opens the PDF at page N;
    the PDF reader can jump back to the Markdown at the same page (across chapter files of the same folder).
-   Also hides front matter, HTML comments and Obsidian %%comments%%, and makes [[wikilinks]] open sibling files. */
+   Also hides front matter, HTML comments and Obsidian %%comments%%, and makes [[wikilinks]] open sibling files.
+   Also shows Obsidian callouts (`> [!info]- 表のテキスト`, folded when `-`) as <details>, and `$$…$$` LaTeX as a formula block. */
 window.DSMdAnchors=(()=>{
  'use strict';
  const MARKER=/<!--\s*fullocr:page\s+pdf=(\d+)(?:\s+print="([^"]*)")?\s*-->/g;
@@ -26,17 +27,26 @@ window.DSMdAnchors=(()=>{
   // Obsidian %%comments%% (FullOCR hides the printed table of contents this way): hidden, but their page markers stay.
   text=text.replace(/%%[\s\S]*?%%/g,s=>(s.match(/⟦FO:\d+⟧/g)||[]).join('\n\n'));
   text=text.replace(/<!--[\s\S]*?-->/g,'');
+  // Display math `$$…$$` (FullOCR's math preset writes LaTeX): shown verbatim as a formula block, untouched by the inline rules.
+  const maths=[];text=text.replace(/^\$\$[ \t]*\r?\n([\s\S]*?)\r?\n\$\$[ \t]*$/gm,(_,tex)=>'⟦MA:'+(maths.push(tex.trim())-1)+'⟧');
+  // Obsidian callouts `> [!info]- 題` (FullOCR puts a table's OCR text in a folded one under the table image): a <details> box, closed when `-`.
+  const callouts=[];text=text.replace(/^>[ \t]*\[!([\w-]+)\]([+-]?)[ \t]*(.*)(?:\r?\n|$)((?:>.*(?:\r?\n|$))*)/gm,(_,kind,fold,title,body)=>'⟦CO:'+(callouts.push({kind:kind.toLowerCase(),fold,title:title.trim()||kind,body:body.split(/\r?\n/).map(l=>l.replace(/^>[ \t]?/,'')).join('\n').trim()})-1)+'⟧\n\n');
   // Pictures: kept as tokens with their vault path; a container that can read them (jisui-1) shows them, others show the name.
   const images=[];const img=(src,alt)=>'⟦IM:'+(images.push({src:src.trim(),alt:(alt||src).trim()})-1)+'⟧';
   text=text.replace(/!\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g,(_,t,alt)=>img(t,alt&&!/^\d+(x\d+)?$/.test(alt)?alt:t.split('/').pop()));
   text=text.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g,(_,alt,src)=>/^[a-z]+:/i.test(src)?'［画像：'+(alt||src)+'］':img(decodeURIComponent(src),alt||src.split('/').pop()));
   text=text.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g,(_,target,alias)=>{const [file,heading]=target.split('#');return '⟦WL:'+(links.push({file:file.trim(),heading:(heading||'').trim(),label:(alias||heading||file).trim()})-1)+'⟧';});
   text=text.replace(/\n{3,}/g,'\n\n');
-  return last={text,meta,anchors,links,images};
+  return last={text,meta,anchors,links,images,maths,callouts};
  }
  function html(markup){
   const p=last;if(!p)return markup;
   const anchor=i=>{const a=p.anchors[i];return a?`<span class="fo-anchor" data-pdf="${a.pdf}" data-print="${escapeHtml(a.print)}"></span>`:'';};
+  const callout=i=>{const c=(p.callouts||[])[i];return c?`<details class="md-callout md-callout-${escapeHtml(c.kind)}"${c.fold==='-'?'':' open'}><summary>${escapeHtml(c.title)}</summary><div class="md-callout-body">${escapeHtml(c.body).replace(/\n/g,'<br>')}</div></details>`:'';};
+  const math=i=>{const m=(p.maths||[])[i];return m==null?'':`<div class="md-math" title="LaTeX"><code>${escapeHtml(m)}</code></div>`;};
+  // Block tokens alone in a paragraph replace the paragraph (a <details>/<div> cannot sit inside <p>).
+  markup=markup.replace(/<p>(?:\s|<br>)*⟦(CO|MA):(\d+)⟧(?:\s|<br>)*<\/p>/g,(_,k,i)=>k==='CO'?callout(Number(i)):math(Number(i)))
+   .replace(/⟦CO:(\d+)⟧/g,(_,i)=>callout(Number(i))).replace(/⟦MA:(\d+)⟧/g,(_,i)=>math(Number(i)));
   return markup.replace(/<p>((?:\s|<br>)*⟦FO:\d+⟧(?:\s|<br>)*)+<\/p>/g,s=>(s.match(/⟦FO:(\d+)⟧/g)||[]).map(t=>anchor(Number(t.slice(4,-1)))).join(''))
    .replace(/⟦FO:(\d+)⟧/g,(_,i)=>anchor(Number(i)))
    .replace(/⟦IM:(\d+)⟧/g,(_,i)=>{const m=(p.images||[])[Number(i)];return m?`<span class="md-image" data-src="${escapeHtml(m.src)}">［画像：${escapeHtml(m.alt)}］</span>`:'';})
