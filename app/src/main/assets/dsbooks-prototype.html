@@ -225,7 +225,10 @@ async function scanLibrary(paths){
    // A successful empty listing is a valid new scope, not a failed scan.
   }
   let files=[];
-  if(prefix){
+  // One DSM search per scan, also for prefixed shelves (a shelf of one folder per book, e.g. 9,771 folders, made the
+  // folder-by-folder walk call DSM ~10,000 times). The walk is kept only for a DSM without the Search API.
+  const canSearch=!!dsmConn.apis['SYNO.FileStation.Search'];
+  if(prefix&&!canSearch){
    const queue=targetPaths.slice();let folders=0,itemsSeen=0;
    while(queue.length){
     const folder=queue.shift();if(++folders>3000)throw new Error('対象フォルダ内に3,000以上のフォルダがあります。範囲をさらに限定してください。');
@@ -243,8 +246,8 @@ async function scanLibrary(paths){
      if(entries.length===0||offset>=total)break;
     }while(true);
    }
-  }else{
-   if(!dsmConn.apis['SYNO.FileStation.Search'])throw new Error('このDSMではFile Station検索APIを利用できません。');
+  }else if(targetPaths.length){
+   if(!canSearch)throw new Error('このDSMではFile Station検索APIを利用できません。');
    if(out)out.textContent=`対象フォルダ ${targetPaths.length}か所をDSMで検索しています…`;
    const started=await dsmCall('SYNO.FileStation.Search','start',{folder_path:JSON.stringify(targetPaths),recursive:'true',pattern:'*.pdf *.epub *.md *.m4a *.m4b *.cbz *.cbr *.jisui',filetype:'file'});
    task=started.data?.taskid;if(!task)throw new Error('DSMが検索タスクを開始できませんでした。');let state=null;

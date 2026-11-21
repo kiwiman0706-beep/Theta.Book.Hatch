@@ -565,14 +565,24 @@ public final class MainActivity extends Activity {
         @JavascriptInterface public String appPackageName() { return getPackageName(); }
         /** The user's own Shuei Times is only in local builds; public (CI) builds leave it out, so the menu hides it. */
         @JavascriptInterface public boolean hasBundledFont() { try (java.io.InputStream i = getAssets().open("fonts/ShueiTimes.ttf")) { return true; } catch (Exception e) { return false; } }
-        /** spec §6.1: updates are installed by the hub (Home / KidsHome); without one, the Releases page opens. */
+        /** spec §6.1: updates are installed by a hub; without one, the Releases page opens. The default home goes first when
+         *  it is a hub (Home, KidsHome or TVhome), else Home, KidsHome, then TVhome (TVhome's rule, progress/tvhome.md). */
         @JavascriptInterface public void requestUpdate() {
             mainHandler.post(() -> {
-                for (String hub : new String[]{"app.thetahatch.home", "app.thetahatch.kidshome"}) {
+                for (String hub : updateHubs()) {
                     try { startActivity(new Intent(ACTION_UPDATE).setPackage(hub).putExtra("packageName", getPackageName()).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); return; } catch (Exception ignored) {}
                 }
                 try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kiwiman0706-beep/Theta.Book.Hatch/releases/latest")).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); } catch (Exception ignored) {}
             });
+        }
+        private java.util.List<String> updateHubs() {
+            java.util.List<String> hubs = new java.util.ArrayList<>(java.util.Arrays.asList("app.thetahatch.home", "app.thetahatch.kidshome", "app.thetahatch.tvhome"));
+            try {
+                android.content.pm.ResolveInfo home = getPackageManager().resolveActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME), android.content.pm.PackageManager.MATCH_DEFAULT_ONLY);
+                String pkg = home == null || home.activityInfo == null ? null : home.activityInfo.packageName;
+                if (pkg != null && hubs.remove(pkg)) hubs.add(0, pkg);
+            } catch (Exception ignored) {}
+            return hubs;
         }
         @JavascriptInterface public boolean hasBook(String name) {
             if (JisuiFiles.isMember(name)) { try { return JisuiFiles.has(localFile(JisuiFiles.container(name)), JisuiFiles.entry(name)); } catch (Exception e) { return false; } }

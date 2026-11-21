@@ -73,7 +73,7 @@ window.DSMigrate=(()=>{
  F.settings=()=>{settings();const sheet=document.querySelector('.feature-sheet');if(!sheet||!N().appPackageName)return;const box=document.createElement('section');
   const old=/^jp\.shinwakai\.dsbooks/.test(N().appPackageName());
   box.innerHTML=`<h3>診断と情報：引っ越し・更新</h3><div class="feature-actions">${old?'<button class="primary" id="migrateOut">新しいアプリへ移る（書き出す）</button>':'<button class="secondary" id="migrateIn">前の DSBooks から読み込む</button>'}<button class="secondary" id="appUpdate">更新を確認</button></div>
-   <p class="feature-hint">${old?'Theta Home Hatch があれば、Home の「移行」から進められます。':'更新は Theta Home Hatch／KidsHome Hatch が行います（無ければ Releases ページを開きます）。'}</p>`;
+   <p class="feature-hint">${old?'Theta Home Hatch があれば、Home の「移行」から進められます。':'更新は Theta Home Hatch／KidsHome Hatch／TVhome Hatch が行います（無ければ Releases ページを開きます）。'}</p>`;
   sheet.appendChild(box);
   $('migrateOut')&&($('migrateOut').onclick=()=>exportScreen(false));$('migrateIn')&&($('migrateIn').onclick=()=>N().migrationChooseImport?.());$('appUpdate').onclick=()=>N().requestUpdate?.();};
  $('settingsBtn').onclick=F.settings;$('mobileSettings').onclick=F.settings;
