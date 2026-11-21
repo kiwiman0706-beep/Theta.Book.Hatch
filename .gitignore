@@ -27,3 +27,5 @@ _DSBooksSync/
 .DS_Store
 Thumbs.db
 *.idsig
+# Screenshots written by the browser tests on each run (fixtures live under tests/fixtures/)
+/tests/*.png
