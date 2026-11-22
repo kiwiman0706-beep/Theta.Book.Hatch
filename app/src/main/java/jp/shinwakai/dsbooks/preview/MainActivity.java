@@ -562,6 +562,12 @@ public final class MainActivity extends Activity {
             mainHandler.post(() -> { if (migrationForResult) finishMigration(ok ? RESULT_OK : RESULT_CANCELED, new Intent().putExtra("packageName", getPackageName()).putExtra("error", error == null ? "" : error)); });
         }
         @JavascriptInterface public void migrationCancel() { mainHandler.post(() -> { if (migrationForResult) finishMigration(RESULT_CANCELED, null); }); }
+        /** native-store.js: page data too large for localStorage (the library catalog) lives in files/store. */
+        @JavascriptInterface public int nativeStoreVersion() { return 1; }
+        @JavascriptInterface public String storeGet(String key) { return NativeStore.get(MainActivity.this, key); }
+        @JavascriptInterface public boolean storeSet(String key, String value) { return NativeStore.set(MainActivity.this, key, value); }
+        @JavascriptInterface public boolean storeRemove(String key) { return NativeStore.set(MainActivity.this, key, null); }
+        @JavascriptInterface public String storeKeys() { return NativeStore.keys(MainActivity.this); }
         @JavascriptInterface public String appPackageName() { return getPackageName(); }
         /** The user's own Shuei Times is only in local builds; public (CI) builds leave it out, so the menu hides it. */
         @JavascriptInterface public boolean hasBundledFont() { try (java.io.InputStream i = getAssets().open("fonts/ShueiTimes.ttf")) { return true; } catch (Exception e) { return false; } }

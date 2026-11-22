@@ -7,7 +7,7 @@ window.DSMigrate=(()=>{
  'use strict';
  const $=id=>document.getElementById(id),N=()=>window.DSBooksNative||{},esc=s=>escapeHtml(s);
  const SKIP=new Set(['dsbooks.downloads','dsbooks.downloadState','dsbooks.downloadHistory']); // device file tokens: meaningless in another app
- function collect(){const out={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('dsbooks.')&&!SKIP.has(k))out[k]=localStorage.getItem(k);}return out;}
+ function collect(){const out={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('dsbooks.')&&!SKIP.has(k))out[k]=localStorage.getItem(k);}for(const k of window.DSStore?.keys?.()||[])if(!SKIP.has(k))out[k]=localStorage.getItem(k);return out;}
  function counts(store){let list=[];try{list=JSON.parse(store['dsbooks.catalog']||'[]');}catch(e){}
   const books=list.filter(b=>b&&!b.jisuiOf),reading=books.filter(b=>b.progress>0).length;
   const notes=books.reduce((n,b)=>n+(Array.isArray(b.annotations)?b.annotations.filter(a=>!a.deleted).length:0),0);

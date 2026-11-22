@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="jp.shinwakai.dsbooks.preview" android:versionCode="80" android:versionName="1.1.3">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="jp.shinwakai.dsbooks.preview" android:versionCode="81" android:versionName="1.1.4">
   <queries>
     <!-- Theta Hatch hubs: updates (app.thetahatch.action.UPDATE) and, later, shared settings. -->
     <package android:name="app.thetahatch.home" />
